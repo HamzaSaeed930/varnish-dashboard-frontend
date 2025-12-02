@@ -1,1 +1,0 @@
-export { default } from "file:///Users/rimshaafzal/Documents/GitHub/varnish-dashboard-frontend/node_modules/@nuxt/vite-builder/dist/runtime/client.manifest.mjs"
