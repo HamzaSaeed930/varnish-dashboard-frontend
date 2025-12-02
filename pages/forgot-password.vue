@@ -1,139 +1,181 @@
 <template>
-  <div class="h-screen flex flex-col lg:flex-row bg-gray-900 overflow-hidden">
-    <!-- Left Column - Image Section -->
-    <div class="hidden lg:flex w-[50%] relative overflow-hidden bg-gray-900">
-      <img
-        src="/images/image_2.jpg"
-        alt="Background"
-        class="w-full h-full object-cover object-center"
-      />
-      <div class="absolute inset-0 bg-black/20"></div>
-    </div>
-
-    <!-- Right Column - Form Section -->
-    <div class="flex flex-col w-full lg:w-[50%] h-full bg-white">
-      <!-- Mobile Header -->
-      <div class="lg:hidden px-6 py-4 border-b border-gray-200 bg-white">
-        <img src="/logo/logoname.svg" alt="Varnish Dashboard" class="h-8 w-auto" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" />
-        <h1 class="text-xl font-bold text-gray-900" style="display: none;">Varnish Dashboard</h1>
+  <div
+    class="h-screen flex"
+    style="background: linear-gradient(180deg, #0c1e35 0%, #0c1e35 100%)"
+  >
+    <!-- Background Pattern -->
+    <!-- <div
+      class="absolute inset-0 opacity-100"
+      style="
+        background-image: url('/images/Background_pattern_decorative.svg');
+        background-repeat: no-repeat;
+        background-position: center;
+        pointer-events: none;
+      "
+    ></div> -->
+    <!-- Centered Form Container -->
+    <div class="mx-auto flex flex-col relative z-10" style="margin-top: 100px;">
+      <!-- Logo -->
+      <div class="flex flex-col items-center" style="margin-bottom: 32px">
+        <div class="mb-2">
+          <img src="/images/Vector.svg" alt="Varnish Logo" class="w-8 h-8" />
+        </div>
+        <h1
+          style="
+            font-family: 'Geist', sans-serif;
+            font-weight: 600;
+            font-size: 16px;
+            line-height: 100%;
+            letter-spacing: -0.6%;
+            text-align: center;
+            color: #ffffff;
+          "
+        >
+          Varnish
+        </h1>
       </div>
 
-      <div class="flex-1 flex flex-col justify-center px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-12">
-        <div class="w-full max-w-md mx-auto">
-          <!-- Header Text -->
-          <div class="text-left mb-6 sm:mb-8">
-            <!-- Desktop Logo -->
-            <div class="hidden lg:block">
-              <img
-                src="/logo/logoname.svg"
-                alt="Varnish Dashboard"
-                class="h-10"
-                style="margin-left: -11px"
-                onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
-              />
-              <h1 class="text-4xl font-bold text-gray-900" style="display: none;">Varnish Dashboard</h1>
-            </div>
-
-            <h1 class="mb-2 text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mt-4">
-              Forgot Password
-            </h1>
-            <p class="text-lg text-gray-500">Reset your password</p>
-          </div>
-
-          <!-- Success Message -->
-          <div
-            v-if="isEmailSent"
-            class="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg"
+      <!-- Form Card -->
+      <div class="w-full">
+        <!-- Header Text -->
+        <div class="text-center mb-8">
+          <h2
+            style="
+              font-family: 'Geist', sans-serif;
+              font-weight: 600;
+              font-size: 30px;
+              line-height: 38px;
+              letter-spacing: -5%;
+              text-align: center;
+              text-transform: capitalize;
+              color: #e2e2e2;
+              margin-bottom: 8px;
+            "
           >
-            <div class="flex">
-              <div class="flex-shrink-0">
-                <svg
-                  class="h-5 w-5 text-green-400"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
-              </div>
-              <div class="ml-3">
-                <p class="text-sm font-medium text-green-800">
-                  Reset link sent successfully!
-                </p>
-                <p class="text-sm text-green-700">
-                  Check your email for the password reset link.
-                </p>
-              </div>
-            </div>
-          </div>
+            Forgot Password
+          </h2>
+          <p
+            style="
+              font-family: 'Geist', sans-serif;
+              font-weight: 400;
+              font-size: 16px;
+              line-height: 24px;
+              letter-spacing: 0%;
+              text-align: center;
+              color: #adadad;
+            "
+          >
+            Reset your password
+          </p>
+        </div>
 
-          <!-- Form -->
-          <form v-else @submit.prevent="handleSubmit" class="space-y-6 w-full">
-            <!-- Email Field -->
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2"
-                >Email*</label
-              >
-              <UiInput
-                v-model="email"
-                type="email"
-                placeholder="Enter your email"
-                :disabled="isLoading"
-                class="w-full"
-                :input-style="{
-                  borderRadius: '8px',
-                  border: emailError
-                    ? '1px solid #EF4444'
-                    : '1px solid #D1D5DB',
-                  padding: '12px 16px',
-                  color: '#111827',
-                  background: '#FFFFFF',
-                  fontFamily: 'Inter, sans-serif',
-                  fontWeight: 400,
-                  fontSize: '14px',
-                  lineHeight: '20px',
-                  transition:
-                    'border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out',
-                }"
-              />
-              <div class="h-5 mt-1">
-                <p v-if="emailError" class="text-sm text-red-600">
-                  {{ emailError }}
-                </p>
-              </div>
-            </div>
+        <!-- Error Message -->
+        <div
+          v-if="errorMessage"
+          class="mb-4 p-3 bg-red-500/20 border border-red-500/50 rounded-lg max-w-[360px] mx-auto"
+        >
+          <p class="text-sm text-red-300">{{ errorMessage }}</p>
+        </div>
 
-            <!-- Submit Button -->
-            <UiButton
-              type="submit"
-              variant="primary"
-              size="lg"
-              :disabled="isLoading || !email"
-              class="w-full h-12 text-sm font-semibold"
+        <!-- Form -->
+        <form @submit.prevent="handleSubmit" class="flex flex-col gap-6 w-full">
+          <!-- Email Field -->
+          <div class="flex flex-col items-center">
+            <label
               style="
-                height: 48px;
-                border-radius: 8px;
-                border: 1px solid #00dc6e;
-                background: #00dc6e;
-                color: #ffffff;
-                font-family: 'Inter', sans-serif;
-                font-weight: 600;
+                font-family: 'Geist', sans-serif;
+                font-weight: 500;
                 font-size: 14px;
                 line-height: 20px;
-                transition: all 0.2s ease-in-out;
+                letter-spacing: 0%;
+                color: #ffffff;
               "
-              :style="
-                isLoading
-                  ? `background: #16A34A; border-color: #16A34A;`
-                  : !email
-                  ? `background: #9CA3AF; border-color: #9CA3AF;`
-                  : `background: #00DC6E; border-color: #00DC6E;`
+              class="block mb-2 w-full max-w-[360px]"
+            >
+              Email
+            </label>
+            <input
+              v-model="email"
+              type="email"
+              placeholder="Enter your email"
+              :disabled="isLoading"
+              style="
+                width: 100%;
+                max-width: 360px;
+                height: 44px;
+                padding: 10px 14px;
+                border-radius: 6px;
+                border: 1px solid #5c5c5c;
+                background: #2f3641;
+                color: #ffffff;
+                box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
+                transition: all 0.2s;
+              "
+              class="focus:outline-none focus:border-white/40 transition-all placeholder-gray-400"
+              :class="emailError ? 'border-red-500' : ''"
+            />
+            <div class="h-4 mt-1">
+              <p v-if="emailError" class="text-sm text-red-300">
+                {{ emailError }}
+              </p>
+            </div>
+          </div>
+
+          <!-- Sign In Button -->
+          <div class="flex justify-center">
+            <button
+              type="submit"
+              :disabled="isLoading || !isFormValid"
+              style="
+                font-family: 'Geist', sans-serif;
+                font-weight: 600;
+                font-size: 16px;
+                line-height: 24px;
+                letter-spacing: 0%;
+                color: #ffffff;
+                width: 360px;
+                height: 43px;
+                /* padding: 9px 153px; */
+                border-radius: 6px;
+                background: #182230;
+                border: 2px solid transparent;
+                background-clip: padding-box;
+                position: relative;
+                box-shadow: 0px -3px 3px 0px rgba(0, 0, 0, 0.1) inset,
+                  0px 3px 3px 0px rgba(255, 255, 255, 0.1) inset,
+                  0px 0px 0px 1px rgba(16, 24, 40, 0.24) inset,
+                  0px 1px 9px 3px rgba(0, 0, 0, 0.13);
+                transition: all 0.2s;
+              "
+              class="disabled:opacity-50 disabled:cursor-not-allowed"
+              :class="
+                isLoading || !isFormValid ? 'opacity-50' : 'hover:opacity-90'
               "
             >
-              <span v-if="isLoading" class="flex items-center justify-center">
+              <span
+                style="
+                  position: absolute;
+                  inset: 0;
+                  border-radius: 6px;
+                  padding: 2px;
+                  background: linear-gradient(
+                    180deg,
+                    rgba(255, 255, 255, 0.12) 0%,
+                    rgba(255, 255, 255, 0) 100%
+                  );
+                  -webkit-mask: linear-gradient(#fff 0 0) content-box,
+                    linear-gradient(#fff 0 0);
+                  -webkit-mask-composite: xor;
+                  mask: linear-gradient(#fff 0 0) content-box,
+                    linear-gradient(#fff 0 0);
+                  mask-composite: exclude;
+                  pointer-events: none;
+                "
+              ></span>
+              <span
+                v-if="isLoading"
+                class="flex items-center justify-center relative z-10"
+              >
                 <svg
                   class="animate-spin -ml-1 mr-3 h-4 w-4 text-white"
                   xmlns="http://www.w3.org/2000/svg"
@@ -156,22 +198,39 @@
                 </svg>
                 Sending...
               </span>
-              <span v-else>Send Reset Link</span>
-            </UiButton>
-          </form>
-
-          <!-- Back to Login -->
-          <div class="mt-8 text-center">
-            <p class="text-sm text-gray-600">
-              Remember your password?
-              <NuxtLink
-                to="/login"
-                class="text-sm font-medium text-gray-900 hover:underline transition-colors duration-200"
-              >
-                Sign in
-              </NuxtLink>
-            </p>
+              <span v-else class="relative z-10"> Send Reset Link </span>
+            </button>
           </div>
+        </form>
+
+        <!-- Sign Up Link -->
+        <div class="mt-6 text-center">
+          <p
+            style="
+              font-family: 'Geist', sans-serif;
+              font-weight: 400;
+              font-size: 14px;
+              line-height: 20px;
+              letter-spacing: 0%;
+              color: #7d7d7d;
+            "
+          >
+          Remember your password?
+            <NuxtLink
+              to="/login"
+              style="
+                font-family: 'Geist', sans-serif;
+                font-weight: 600;
+                font-size: 16px;
+                line-height: 24px;
+                letter-spacing: 0%;
+                color: #ffffff;
+              "
+              class="ml-1 hover:opacity-80 transition-opacity duration-200"
+            >
+              Sign in
+            </NuxtLink>
+          </p>
         </div>
       </div>
     </div>
@@ -179,17 +238,30 @@
 </template>
 
 <script setup>
+import { ref, computed, watch } from 'vue'
+
 // Page metadata
 useHead({
   title: "Forgot Password - Varnish Dashboard",
-  meta: [{ name: "description", content: "Reset your Varnish Dashboard account password" }],
+  meta: [
+    {
+      name: "description",
+      content: "Reset your Varnish Dashboard account password",
+    },
+  ],
 });
 
 // Reactive data
 const email = ref("");
 const emailError = ref("");
+const errorMessage = ref("");
 const isLoading = ref(false);
 const isEmailSent = ref(false);
+
+// Computed properties
+const isFormValid = computed(() => {
+  return email.value && !emailError.value;
+});
 
 // Form validation
 const validateEmail = (email) => {
@@ -197,10 +269,20 @@ const validateEmail = (email) => {
   return emailRegex.test(email);
 };
 
+// Watch for changes to validate in real-time
+watch(email, (newEmail) => {
+  if (newEmail && !validateEmail(newEmail)) {
+    emailError.value = "Please enter a valid email address";
+  } else {
+    emailError.value = "";
+  }
+});
+
 // Handle form submission
 const handleSubmit = async () => {
   // Reset errors
   emailError.value = "";
+  errorMessage.value = "";
 
   // Validate email
   if (!email.value) {
@@ -226,7 +308,7 @@ const handleSubmit = async () => {
     // Reset form
     email.value = "";
   } catch (error) {
-    emailError.value = "Something went wrong. Please try again.";
+    errorMessage.value = "Something went wrong. Please try again.";
   } finally {
     isLoading.value = false;
   }

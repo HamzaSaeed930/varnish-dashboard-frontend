@@ -32,10 +32,11 @@
         >
           <img
             :class="sidebarCollapsed ? 'h-8 w-8' : 'h-8 w-auto'"
-            src="/logo/logoname.svg"
+            src="/logo/Logomark.svg"
             alt="Varnish Dashboard"
           />
         </div>
+        <h1 class="text-2xl font-bold ml-2">Varnish</h1>
       </div>
 
       <!-- Navigation -->
