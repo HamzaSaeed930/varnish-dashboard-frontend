@@ -1,159 +1,258 @@
 <template>
-  <div class="h-screen flex flex-col lg:flex-row bg-gray-900 overflow-hidden">
-    <!-- Left Column - Image Section -->
-    <div class="hidden lg:flex w-[50%] relative overflow-hidden bg-gray-900">
-      <!-- Background Image -->
-      <img
-        src="/images/image_2.jpg"
-        alt="Background"
-        class="w-full h-full object-cover object-center"
-      />
-      <!-- Optional Overlay for better text contrast if needed -->
-      <div class="absolute inset-0 bg-black/20"></div>
-    </div>
-
-    <!-- Right Column - Form Section -->
-    <div class="flex flex-col w-full lg:w-[50%] h-full bg-white">
-      <!-- Mobile Header -->
-      <div class="lg:hidden px-6 py-4 border-b border-gray-200 bg-white">
-        <img src="/logo/logoname.svg" alt="Varnish Dashboard" class="h-8 w-auto" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" />
-        <h1 class="text-xl font-bold text-gray-900" style="display: none;">Varnish Dashboard</h1>
+  <div
+    class="h-screen flex"
+    style="background: linear-gradient(180deg, #0c1e35 0%, #0c1e35 100%)"
+  >
+    <!-- Background Pattern -->
+    <!-- <div
+      class="absolute inset-0 opacity-100"
+      style="
+        background-image: url('/images/Background_pattern_decorative.svg');
+        background-repeat: no-repeat;
+        background-position: center;
+        pointer-events: none;
+      "
+    ></div> -->
+    <!-- Centered Form Container -->
+    <div class="mx-auto flex flex-col relative z-10" style="margin-top: 100px;">
+      <!-- Logo -->
+      <div class="flex flex-col items-center" style="margin-bottom: 32px">
+        <div class="mb-2">
+          <img src="/images/Vector.svg" alt="Varnish Logo" class="w-8 h-8" />
+        </div>
+        <h1
+          style="
+            font-family: 'Geist', sans-serif;
+            font-weight: 600;
+            font-size: 16px;
+            line-height: 100%;
+            letter-spacing: -0.6%;
+            text-align: center;
+            color: #ffffff;
+          "
+        >
+          Varnish
+        </h1>
       </div>
 
-      <!-- Form Container -->
-      <div class="flex-1 flex flex-col justify-center px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-12">
-        <!-- Form Card -->
-        <div class="w-full max-w-md mx-auto">
-          <!-- Header Text -->
-          <div class="text-left mb-6 sm:mb-8">
-            <!-- Desktop Logo -->
-            <div class="hidden lg:block">
-              <img src="/logo/logoname.svg" alt="Varnish Dashboard" class="h-10" style="margin-left: -10px;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" />
-              <h1 class="text-4xl font-bold text-gray-900" style="display: none;">Varnish Dashboard</h1>
-            </div>
-            <p class="text-lg text-gray-500 mt-4">Please sign in to your account</p>
-          </div>
-
-          <!-- Error Message -->
-          <div v-if="errorMessage" class="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
-            <p class="text-sm text-red-600">{{ errorMessage }}</p>
-          </div>
-
-          <!-- Form -->
-          <form
-            @submit.prevent="handleSubmit"
-            class="flex flex-col gap-4 sm:gap-6 w-full"
+      <!-- Form Card -->
+      <div class="w-full">
+        <!-- Header Text -->
+        <div class="text-center mb-8">
+          <h2
+            style="
+              font-family: 'Geist', sans-serif;
+              font-weight: 600;
+              font-size: 30px;
+              line-height: 38px;
+              letter-spacing: -5%;
+              text-align: center;
+              text-transform: capitalize;
+              color: #e2e2e2;
+              margin-bottom: 8px;
+            "
           >
-            <!-- Email Field -->
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">
-                Email address
-              </label>
-              <UiInput
-                v-model="email"
-                type="email"
-                placeholder="Email address"
-                :disabled="isLoading"
-                class="w-full"
-                :input-style="{
-                  borderRadius: '8px',
-                  border: emailError ? '1px solid #EF4444' : '1px solid #D1D5DB',
-                  padding: '12px 16px',
-                  color: '#111827',
-                  background: '#FFFFFF',
-                  fontFamily: 'Inter, sans-serif',
-                  fontWeight: 400,
-                  fontSize: '14px',
-                  lineHeight: '20px',
-                  transition: 'border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out',
-                }"
-              />
-              <div class="h-4">
-                <p v-if="emailError" class="text-sm text-red-400">
-                  {{ emailError }}
-                </p>
-              </div>
-            </div>
+            Log in to your account
+          </h2>
+          <p
+            style="
+              font-family: 'Geist', sans-serif;
+              font-weight: 400;
+              font-size: 16px;
+              line-height: 24px;
+              letter-spacing: 0%;
+              text-align: center;
+              color: #adadad;
+            "
+          >
+            Welcome back! Please enter your details.
+          </p>
+        </div>
 
-            <!-- Password Field -->
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">
-                Password
-              </label>
-              <UiInput
-                v-model="password"
-                type="password"
-                placeholder="Password"
-                :disabled="isLoading"
-                class="w-full"
-                :input-style="{
-                  borderRadius: '8px',
-                  border: passwordError ? '1px solid #EF4444' : '1px solid #D1D5DB',
-                  padding: '12px 16px',
-                  background: '#FFFFFF',
-                  fontFamily: 'Inter, sans-serif',
-                  fontWeight: 400,
-                  fontSize: '14px',
-                  lineHeight: '20px',
-                  color: '#111827',
-                  transition: 'border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out',
-                }"
-              />
-              <div class="h-4">
-                <p v-if="passwordError" class="text-sm text-red-400">
-                  {{ passwordError }}
-                </p>
-              </div>
-            </div>
+        <!-- Error Message -->
+        <div
+          v-if="errorMessage"
+          class="mb-4 p-3 bg-red-500/20 border border-red-500/50 rounded-lg"
+        >
+          <p class="text-sm text-red-300">{{ errorMessage }}</p>
+        </div>
 
-            <!-- Forgot password -->
-            <div class="flex justify-end">
-              <NuxtLink
-                to="/forgot-password"
-                class="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200"
-              >
-                Forgot your password?
-              </NuxtLink>
-            </div>
-
-            <UiButton
-              type="submit"
-              variant="primary"
-              size="lg"
-              :disabled="isLoading || !isFormValid"
-              class="w-full h-12 text-sm font-semibold"
+        <!-- Form -->
+        <form @submit.prevent="handleSubmit" class="flex flex-col gap-6 w-full">
+          <!-- Email Field -->
+          <div class="flex flex-col items-center">
+            <label
               style="
-                height: 48px;
-                border-radius: 8px;
-                border: 1px solid #00DC6E;
-                background: #00DC6E;
+                font-family: 'Geist', sans-serif;
+                font-weight: 500;
+                font-size: 14px;
+                line-height: 20px;
+                letter-spacing: 0%;
                 color: #ffffff;
-                font-family: 'Inter', sans-serif;
+              "
+              class="block mb-2 w-full max-w-[360px]"
+            >
+              Email
+            </label>
+            <input
+              v-model="email"
+              type="email"
+              placeholder="Enter your email"
+              :disabled="isLoading"
+              style="
+                width: 100%;
+                height: 44px;
+                padding: 10px 14px;
+                border-radius: 6px;
+                border: 1px solid #5c5c5c;
+                background: #2f3641;
+                color: #ffffff;
+                box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
+                transition: all 0.2s;
+              "
+              class="focus:outline-none focus:border-white/40 transition-all placeholder-gray-400"
+              :class="emailError ? 'border-red-500' : ''"
+            />
+            <div class="h-4 mt-1">
+              <p v-if="emailError" class="text-sm text-red-300">
+                {{ emailError }}
+              </p>
+            </div>
+          </div>
+
+          <!-- Password Field -->
+          <div class="flex flex-col items-center">
+            <label
+              style="
+                font-family: 'Geist', sans-serif;
+                font-weight: 500;
+                font-size: 14px;
+                line-height: 20px;
+                letter-spacing: 0%;
+                color: #ffffff;
+              "
+              class="block mb-2 w-full max-w-[360px]"
+            >
+              Password
+            </label>
+            <input
+              v-model="password"
+              type="password"
+              placeholder="Enter your password"
+              :disabled="isLoading"
+              style="
+                width: 100%;
+                height: 44px;
+                padding: 10px 14px;
+                border-radius: 6px;
+                border: 1px solid #5c5c5c;
+                background: #2f3641;
+                color: #ffffff;
+                box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
+                transition: all 0.2s;
+              "
+              class="focus:outline-none focus:border-white/40 transition-all placeholder-gray-400"
+              :class="passwordError ? 'border-red-500' : ''"
+            />
+            <div class="h-4 mt-1">
+              <p v-if="passwordError" class="text-sm text-red-300">
+                {{ passwordError }}
+              </p>
+            </div>
+          </div>
+
+          <!-- Remember me and Forgot password -->
+          <div class="flex items-center justify-between">
+            <label class="flex items-center cursor-pointer">
+              <input
+                type="checkbox"
+                v-model="rememberMe"
+                class="w-4 h-4 rounded border-white/20 bg-white/10 text-white focus:ring-white/20 focus:ring-2"
+              />
+              <span
+                style="
+                  font-family: 'Geist', sans-serif;
+                  font-weight: 500;
+                  font-size: 14px;
+                  line-height: 20px;
+                  letter-spacing: -2%;
+                  color: #979ba2;
+                "
+                class="ml-2"
+                >Remember for 30 days</span
+              >
+            </label>
+            <NuxtLink
+              to="/forgot-password"
+              style="
+                font-family: 'Geist', sans-serif;
                 font-weight: 600;
                 font-size: 14px;
                 line-height: 20px;
-                transition: all 0.2s ease-in-out;
+                letter-spacing: 0%;
+                color: #ffffff;
               "
-              :style="
-                isLoading
-                  ? `
-                    background: #16A34A;
-                    border-color: #16A34A;
-                  `
-                  : !isFormValid
-                  ? `
-                    background: #9CA3AF;
-                    border-color: #9CA3AF;
-                  `
-                  : `
-                    background: #00DC6E;
-                    border-color: #00DC6E;
-                  `
+              class="hover:opacity-80 transition-opacity duration-200"
+            >
+              Forgot password
+            </NuxtLink>
+          </div>
+
+          <!-- Sign In Button -->
+          <div class="flex justify-center">
+            <button
+              type="submit"
+              :disabled="isLoading || !isFormValid"
+              style="
+                font-family: 'Geist', sans-serif;
+                font-weight: 600;
+                font-size: 16px;
+                line-height: 24px;
+                letter-spacing: 0%;
+                color: #ffffff;
+                padding: 9px 153px;
+                border-radius: 6px;
+                background: #182230;
+                border: 2px solid transparent;
+                background-clip: padding-box;
+                position: relative;
+                box-shadow: 0px -3px 3px 0px rgba(0, 0, 0, 0.1) inset,
+                  0px 3px 3px 0px rgba(255, 255, 255, 0.1) inset,
+                  0px 0px 0px 1px rgba(16, 24, 40, 0.24) inset,
+                  0px 1px 9px 3px rgba(0, 0, 0, 0.13);
+                transition: all 0.2s;
+              "
+              class="disabled:opacity-50 disabled:cursor-not-allowed"
+              :class="
+                isLoading || !isFormValid ? 'opacity-50' : 'hover:opacity-90'
               "
             >
-              <span v-if="isLoading" class="flex items-center justify-center">
+              <span
+                style="
+                  position: absolute;
+                  inset: 0;
+                  border-radius: 6px;
+                  padding: 2px;
+                  background: linear-gradient(
+                    180deg,
+                    rgba(255, 255, 255, 0.12) 0%,
+                    rgba(255, 255, 255, 0) 100%
+                  );
+                  -webkit-mask: linear-gradient(#fff 0 0) content-box,
+                    linear-gradient(#fff 0 0);
+                  -webkit-mask-composite: xor;
+                  mask: linear-gradient(#fff 0 0) content-box,
+                    linear-gradient(#fff 0 0);
+                  mask-composite: exclude;
+                  pointer-events: none;
+                "
+              ></span>
+              <span
+                v-if="isLoading"
+                class="flex items-center justify-center relative z-10"
+              >
                 <svg
-                  class="animate-spin -ml-1 mr-3 h-4 w-4 text-gray-600"
+                  class="animate-spin -ml-1 mr-3 h-4 w-4 text-white"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
@@ -172,83 +271,41 @@
                     d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                   ></path>
                 </svg>
-                  Signing in...
+                Signing in...
               </span>
-              <span v-else>
-                Sign in
-              </span>
-            </UiButton>
-          </form>
-
-          <!-- Divider -->
-          <div class="mt-6 sm:mt-8">
-            <div class="relative">
-              <div class="absolute inset-0 flex items-center">
-                <div class="w-full border-t border-gray-300" />
-              </div>
-              <div class="relative flex justify-center text-sm">
-                <span class="px-3 bg-white text-gray-500 font-medium">or continue with</span>
-              </div>
-            </div>
+              <span v-else class="relative z-10"> Sign in </span>
+            </button>
           </div>
+        </form>
 
-          <!-- Social Login Buttons -->
-          <div class="flex gap-3 mt-4 sm:mt-6">
-              <!-- Google -->
-              <button
-                type="button"
-              class="flex items-center justify-center hover:bg-gray-50 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex-1"
-                @click="handleSocialLogin('google')"
-                :disabled="isLoading"
-                style="
-                  height: 40px;
-                  padding: 8px 12px;
-                  border-radius: 8px;
-                border: 1px solid #D1D5DB;
-                background: #FFFFFF;
-                "
-              >
-                <svg class="w-5 h-5" viewBox="0 0 24 24">
-                  <path
-                    fill="#4285F4"
-                    d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
-                  />
-                  <path
-                    fill="#34A853"
-                    d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
-                  />
-                  <path
-                    fill="#FBBC05"
-                    d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
-                  />
-                  <path
-                    fill="#EA4335"
-                    d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
-                  />
-                </svg>
-              </button>
-
-            <!-- GitHub -->
-              <button
-                type="button"
-              class="flex items-center justify-center hover:bg-gray-50 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex-1"
-              @click="handleSocialLogin('github')"
-                :disabled="isLoading"
-                style="
-                  height: 40px;
-                  padding: 8px 12px;
-                  border-radius: 8px;
-                border: 1px solid #D1D5DB;
-                background: #FFFFFF;
-                "
-              >
-          <svg class="w-5 h-5" fill="#111827" viewBox="0 0 24 24">
-                  <path
-              d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
-                  />
-                </svg>
-              </button>
-      </div>
+        <!-- Sign Up Link -->
+        <div class="mt-6 text-center">
+          <p
+            style="
+              font-family: 'Geist', sans-serif;
+              font-weight: 400;
+              font-size: 14px;
+              line-height: 20px;
+              letter-spacing: 0%;
+              color: #7d7d7d;
+            "
+          >
+            Don't have an account?
+            <NuxtLink
+              to="/signup"
+              style="
+                font-family: 'Geist', sans-serif;
+                font-weight: 600;
+                font-size: 16px;
+                line-height: 24px;
+                letter-spacing: 0%;
+                color: #ffffff;
+              "
+              class="ml-1 hover:opacity-80 transition-opacity duration-200"
+            >
+              Sign up
+            </NuxtLink>
+          </p>
         </div>
       </div>
     </div>
@@ -256,14 +313,29 @@
 </template>
 
 <script setup lang="ts">
-import { useAuthApi } from "~/composables/useAuthApi";
+/// <reference types="nuxt/app" />
+import { ref, computed, watch } from 'vue'
+
+// Type declarations for Nuxt auto-imports (Vetur-compatible)
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+declare const useHead: any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+declare const useRouter: any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+declare const useCookie: any
 
 // Page metadata
 useHead({
   title: "Sign In - Varnish Dashboard",
   meta: [
-    { name: "description", content: "Sign in to your Varnish Dashboard account" },
-    { name: "keywords", content: "Varnish Dashboard, Project Management, Login, Sign In" },
+    {
+      name: "description",
+      content: "Sign in to your Varnish Dashboard account",
+    },
+    {
+      name: "keywords",
+      content: "Varnish Dashboard, Project Management, Login, Sign In",
+    },
   ],
   link: [
     { rel: "icon", type: "image/x-icon", href: "/favicon.ico" },
@@ -271,8 +343,6 @@ useHead({
   ],
 });
 
-// Initialize API
-const { login } = useAuthApi();
 const router = useRouter();
 
 // Reactive data
@@ -282,6 +352,7 @@ const emailError = ref("");
 const passwordError = ref("");
 const isLoading = ref(false);
 const errorMessage = ref("");
+const rememberMe = ref(false);
 
 // Computed properties
 const isFormValid = computed(() => {
@@ -291,12 +362,12 @@ const isFormValid = computed(() => {
 });
 
 // Form validation
-const validateEmail = (email) => {
+const validateEmail = (email: string) => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailRegex.test(email);
 };
 
-const validatePassword = (password) => {
+const validatePassword = (password: string) => {
   return password.length >= 6;
 };
 
@@ -345,28 +416,54 @@ const handleSubmit = async () => {
     return;
   }
 
-  // API call
+  // UI only - no backend integration
   isLoading.value = true;
 
+  // Simulate API delay
+  await new Promise((resolve) => setTimeout(resolve, 500));
+
   try {
-    const response = await login({
+    // Mock authentication - set token cookie
+    const mockToken = "mock_auth_token_" + Date.now();
+    const mockUser = {
+      id: "1",
       email: email.value.trim(),
-      password: password.value,
+      name: email.value.trim().split("@")[0],
+      isSuperAdmin: true,
+      permissions: {
+        countries: true,
+        visaProducts: true,
+        nationalities: true,
+        embassies: true,
+        coupons: true,
+        additionalInfo: true,
+        customers: true,
+        applications: true,
+        finances: true,
+      },
+    };
+
+    // Set cookies
+    const tokenCookie = useCookie("admin_auth_token", {
+      maxAge: rememberMe.value ? 60 * 60 * 24 * 30 : 60 * 60 * 24 * 7,
+      secure: false,
+      sameSite: "lax",
+      httpOnly: false,
+    });
+    const userCookie = useCookie("admin_user_info", {
+      maxAge: rememberMe.value ? 60 * 60 * 24 * 30 : 60 * 60 * 24 * 7,
+      secure: false,
+      sameSite: "lax",
+      httpOnly: false,
     });
 
-    if (response.success) {
-      // Success - token is already stored in cookie by login function
-      // Redirect to dashboard countries page
-      await router.push("/dashboard/countries");
-    }
+    tokenCookie.value = mockToken;
+    userCookie.value = mockUser;
+
+    // Redirect to dashboard
+    await router.push("/dashboard/countries");
   } catch (error) {
-    errorMessage.value = error instanceof Error ? error.message : "Invalid email or password";
-    // Also set individual field errors for better UX
-    if (errorMessage.value.toLowerCase().includes("email")) {
-      emailError.value = errorMessage.value;
-    } else {
-      passwordError.value = errorMessage.value || "Invalid email or password";
-    }
+    errorMessage.value = "Something went wrong. Please try again.";
   } finally {
     isLoading.value = false;
   }
@@ -381,11 +478,11 @@ const handleSocialLogin = async (provider: string) => {
     // TODO: Implement social login OAuth flow
     console.log(`Social login with ${provider}`);
     errorMessage.value = `${provider} login is not yet implemented`;
-    
-    // For now, just show a message
-    // await router.push("/dashboard/countries");
   } catch (error) {
-    errorMessage.value = error instanceof Error ? error.message : `Failed to login with ${provider}`;
+    errorMessage.value =
+      error instanceof Error
+        ? error.message
+        : `Failed to login with ${provider}`;
     console.error(`Social login error with ${provider}:`, error);
   } finally {
     isLoading.value = false;

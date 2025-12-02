@@ -1,7 +1,7 @@
 <template>
   <div class="w-full max-w-sm mx-auto" style="min-height: 500px;">
     <!-- Heading -->
-    <h1 
+    <h1
       class="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-6 sm:mb-8 relative z-10 text-center mt-0"
       style="
         font-family: 'Inter', sans-serif;
@@ -12,22 +12,55 @@
         margin-top: 0px;
       "
     >
-      Account Details
+      Billing
     </h1>
 
     <!-- Form -->
-    <form @submit.prevent="$emit('submit')">
-      <!-- Name Field -->
+    <form @submit.prevent="$emit('submit')" class="space-y-6">
+      <!-- Payment Method -->
       <div class="mb-4">
         <label class="block text-sm font-medium text-gray-700 mb-2">
-          Name*
+          Payment Method
         </label>
         <UiInput
-          :model-value="formData.name"
-          @update:model-value="updateField('name', $event)"
+          :model-value="formData.paymentMethod"
+          @update:model-value="updateField('paymentMethod', $event)"
+          type="text"
+          placeholder="Select Method"
+          :error="errors.paymentMethod"
+          :disabled="isLoading"
+          class="w-full"
+          :input-style="{
+            width: '100%',
+            height: '44px',
+            borderRadius: '6px',
+            border: '1px solid #D0D5DD',
+            opacity: 1,
+            gap: '8px',
+            padding: '10px 14px',
+            background: '#FFFFFF',
+            boxShadow: '0px 1px 2px 0px #1018280D',
+            fontFamily: 'Inter, sans-serif',
+            fontWeight: 400,
+            fontSize: '16px',
+            lineHeight: '24px',
+            letterSpacing: '0%',
+            color: '#101828'
+          }"
+        />
+      </div>
+
+      <!-- Card Holder Name -->
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-700 mb-2">
+          Card Holder Name*
+        </label>
+        <UiInput
+          :model-value="formData.cardHolderName"
+          @update:model-value="updateField('cardHolderName', $event)"
           type="text"
           placeholder="Enter your name"
-          :error="errors.name"
+          :error="errors.cardHolderName"
           :disabled="isLoading"
           class="w-full"
           :input-style="{
@@ -50,17 +83,17 @@
         />
       </div>
 
-      <!-- Email Field -->
+      <!-- Card Number -->
       <div class="mb-4">
         <label class="block text-sm font-medium text-gray-700 mb-2">
-          Email*
+          Card Number*
         </label>
         <UiInput
-          :model-value="formData.email"
-          @update:model-value="updateField('email', $event)"
-          type="email"
-          placeholder="Enter your email"
-          :error="errors.email"
+          :model-value="formData.cardNumber"
+          @update:model-value="updateField('cardNumber', $event)"
+          type="text"
+          placeholder="Enter your card number"
+          :error="errors.cardNumber"
           :disabled="isLoading"
           class="w-full"
           :input-style="{
@@ -83,74 +116,72 @@
         />
       </div>
 
-      <!-- Password Field -->
-      <div class="mb-4">
-        <label class="block text-sm font-medium text-gray-700 mb-2">
-          Password*
-        </label>
-        <UiInput
-          :model-value="formData.password"
-          @update:model-value="updateField('password', $event)"
-          type="password"
-          placeholder="Create a password"
-          :error="errors.password"
-          :disabled="isLoading"
-          class="w-full"
-          :input-style="{
-            width: '100%',
-            height: '44px',
-            borderRadius: '6px',
-            border: '1px solid #D0D5DD',
-            opacity: 1,
-            gap: '8px',
-            padding: '10px 14px',
-            background: '#FFFFFF',
-            boxShadow: '0px 1px 2px 0px #1018280D',
-            fontFamily: 'Inter, sans-serif',
-            fontWeight: 400,
-            fontSize: '16px',
-            lineHeight: '24px',
-            letterSpacing: '0%',
-            color: '#101828'
-          }"
-        />
-      </div>
-
-      <!-- Password Requirements -->
-      <div class="space-y-2 mb-6">
-        <div class="flex items-center space-x-2">
-          <div class="w-4 h-4 rounded-full bg-black flex items-center justify-center flex-shrink-0">
-            <svg 
-              class="w-3 h-3 text-white" 
-              fill="currentColor" 
-              viewBox="0 0 20 20"
-            >
-              <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
-            </svg>
-          </div>
-          <span 
-            class="text-sm text-gray-700"
-            style="font-family: 'Inter', sans-serif; font-weight: 400;"
-          >
-            Must be at least 8 characters
-          </span>
+      <!-- CVC and Expiry Date Row -->
+      <div class="grid grid-cols-2 gap-4 mb-4">
+        <!-- CVC -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">
+            CVC*
+          </label>
+          <UiInput
+            :model-value="formData.cvc"
+            @update:model-value="updateField('cvc', $event)"
+            type="text"
+            placeholder="Enter CVC"
+            :error="errors.cvc"
+            :disabled="isLoading"
+            class="w-full"
+            :input-style="{
+              width: '100%',
+              height: '44px',
+              borderRadius: '6px',
+              border: '1px solid #D0D5DD',
+              opacity: 1,
+              gap: '8px',
+              padding: '10px 14px',
+              background: '#FFFFFF',
+              boxShadow: '0px 1px 2px 0px #1018280D',
+              fontFamily: 'Inter, sans-serif',
+              fontWeight: 400,
+              fontSize: '16px',
+              lineHeight: '24px',
+              letterSpacing: '0%',
+              color: '#101828'
+            }"
+          />
         </div>
-        <div class="flex items-center space-x-2">
-          <div class="w-4 h-4 rounded-full bg-black flex items-center justify-center flex-shrink-0">
-            <svg 
-              class="w-3 h-3 text-white" 
-              fill="currentColor" 
-              viewBox="0 0 20 20"
-            >
-              <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
-            </svg>
-          </div>
-          <span 
-            class="text-sm text-gray-700"
-            style="font-family: 'Inter', sans-serif; font-weight: 400;"
-          >
-            Must contain one special character
-          </span>
+
+        <!-- Expiry Date -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">
+            Expiry Date
+          </label>
+          <UiInput
+            :model-value="formData.expiryDate"
+            @update:model-value="updateField('expiryDate', $event)"
+            type="text"
+            placeholder="DD MM YYYY"
+            :error="errors.expiryDate"
+            :disabled="isLoading"
+            class="w-full"
+            :input-style="{
+              width: '100%',
+              height: '44px',
+              borderRadius: '6px',
+              border: '1px solid #D0D5DD',
+              opacity: 1,
+              gap: '8px',
+              padding: '10px 14px',
+              background: '#FFFFFF',
+              boxShadow: '0px 1px 2px 0px #1018280D',
+              fontFamily: 'Inter, sans-serif',
+              fontWeight: 400,
+              fontSize: '16px',
+              lineHeight: '24px',
+              letterSpacing: '0%',
+              color: '#101828'
+            }"
+          />
         </div>
       </div>
 
@@ -198,7 +229,7 @@
             `
         "
       >
-        <span 
+        <span
           v-if="isLoading"
           class="flex items-center justify-center"
         >
@@ -217,10 +248,10 @@
               opacity: 1;
             "
           >
-            Creating...
+            Saving...
           </span>
         </span>
-        <span 
+        <span
           v-else
           style="
             font-family: 'Inter', sans-serif;
@@ -235,6 +266,27 @@
           Next
         </span>
       </UiButton>
+
+      <!-- Back Link -->
+      <div class="text-center mt-4">
+        <button
+          type="button"
+          @click="$emit('go-back')"
+          class="text-gray-600 hover:text-gray-800 transition-colors flex items-center justify-center mx-auto"
+          style="
+            font-family: 'Inter', sans-serif;
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 20px;
+            letter-spacing: 0%;
+          "
+        >
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+          </svg>
+          Back to Services
+        </button>
+      </div>
     </form>
   </div>
 </template>
@@ -243,30 +295,26 @@
 const props = defineProps({
   formData: {
     type: Object,
-    required: true
+    required: true,
   },
   errors: {
     type: Object,
-    required: true
+    required: true,
   },
   isLoading: {
     type: Boolean,
-    default: false
+    default: false,
   },
   isFormValid: {
     type: Boolean,
-    default: false
+    default: false,
   },
-  passwordRequirements: {
-    type: Object,
-    required: true
-  }
-})
+});
 
-const emit = defineEmits(['submit', 'update:form-data'])
+const emit = defineEmits(["submit", "update:form-data", "go-back"]);
 
 const updateField = (field, value) => {
-  emit('update:form-data', { [field]: value })
-}
+  emit("update:form-data", { [field]: value });
+};
 </script>
 
