@@ -92,7 +92,7 @@
           :model-value="formData.cardNumber"
           @update:model-value="updateField('cardNumber', $event)"
           type="text"
-          placeholder="Enter your card number"
+          placeholder="Enter your email"
           :error="errors.cardNumber"
           :disabled="isLoading"
           class="w-full"
@@ -117,7 +117,7 @@
       </div>
 
       <!-- CVC and Expiry Date Row -->
-      <div class="grid grid-cols-2 gap-4 mb-4">
+      <div class="grid mb-4">
         <!-- CVC -->
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">
@@ -127,7 +127,7 @@
             :model-value="formData.cvc"
             @update:model-value="updateField('cvc', $event)"
             type="text"
-            placeholder="Enter CVC"
+            placeholder="Create a password"
             :error="errors.cvc"
             :disabled="isLoading"
             class="w-full"
@@ -152,7 +152,7 @@
         </div>
 
         <!-- Expiry Date -->
-        <div>
+        <div class="mt-4">
           <label class="block text-sm font-medium text-gray-700 mb-2">
             Expiry Date
           </label>

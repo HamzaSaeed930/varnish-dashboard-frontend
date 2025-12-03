@@ -603,18 +603,10 @@ const handleSubmit = async () => {
   }
 };
 
-// Handle service selection - go directly to congrats screen
+// Handle service selection - go to billing screen
 const handleServiceNext = () => {
-  // Mock: Set auth token cookie
-  const tokenCookie = useCookie("admin_auth_token", {
-    maxAge: 60 * 60 * 24 * 7, // 7 days
-    secure: false,
-    sameSite: "lax",
-    httpOnly: false,
-  });
-  tokenCookie.value = "mock_signup_token_" + Date.now();
-
-  // Move directly to Congrats screen
-  currentStep.value = 5;
+  // Move to Billing screen (step 4)
+  currentStep.value = 4;
 };
+
 </script>

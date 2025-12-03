@@ -69,6 +69,22 @@
     >
       Continue to Dashboard
     </Button>
+
+    <!-- Celebration Illustration -->
+    <div class="flex justify-center relative z-10 mt-auto" style="width:704px;">
+      <img
+        src="/images/image_7.svg"
+        alt="Celebration illustration"
+        style="
+          width: 704px;
+          height: 469px;
+          opacity: 1;
+          top: 89px;
+          position: absolute;
+          object-fit: contain;
+        "
+      />
+    </div>
   </div>
 </template>
 

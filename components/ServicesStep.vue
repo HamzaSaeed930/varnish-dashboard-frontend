@@ -237,7 +237,7 @@ const toggleService = (index) => {
   
   emit('update:form-data', { selectedServices: newServices })
   
-  // If a service is selected (not deselected), automatically go to congrats screen
+  // If a service is selected (not deselected), automatically go to billing screen
   if (!currentServices.includes(index) && newServices.length > 0) {
     // Small delay to ensure checkbox is visible
     setTimeout(() => {
