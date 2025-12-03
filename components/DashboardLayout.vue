@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-gray-50 dark:bg-[#09090B]">
+  <div class="min-h-screen bg-gray-50 dark:bg-[#0C1E35]">
     <!-- Mobile Menu Button -->
     <button
       @click="toggleSidebar"
@@ -19,56 +19,131 @@
     <!-- Sidebar -->
     <div
       :class="sidebarClasses"
-      class="fixed inset-y-0 left-0 z-40 bg-[#f4f4f6] dark:bg-[#18181B] border-none shadow-none transition-all duration-300 ease-in-out"
+      class="fixed inset-y-0 left-0 z-40 transition-all duration-300 ease-in-out flex flex-col"
+      :style="
+        isDarkMode
+          ? 'background: #0C1E35; padding: 0% 1%;'
+          : 'background: #F3F2F0; padding: 0% 1%;'
+      "
     >
       <!-- Logo -->
-      <div
-        class="flex h-16 items-center border-b border-none"
-        :class="sidebarCollapsed ? 'px-2 justify-center' : 'px-2 sm:px-4'"
-      >
-        <div
-          class="flex items-center"
-          :class="sidebarCollapsed ? 'justify-center w-full' : ''"
-        >
+      <div style="margin: 10% 0% 15% 0%" class="flex flex-col items-start">
+        <div class="flex items-center gap-2 mb-1">
           <img
-            :class="sidebarCollapsed ? 'h-8 w-8' : 'h-8 w-auto'"
             src="/logo/Logomark.svg"
-            alt="Varnish Dashboard"
+            alt="Varnish Logo"
+            style="height: 45px; width: 45px"
           />
+          <div class="flex flex-col items-start">
+            <h1
+              :style="
+                isDarkMode
+                  ? 'font-family: Geist, sans-serif; font-weight: 600; font-style: SemiBold; font-size: 19px; color: #FFFFFF;'
+                  : 'font-family: Geist, sans-serif; font-weight: 600; font-style: SemiBold; font-size: 19px; color: #101828;'
+              "
+            >
+              Varnish
+            </h1>
+            <p
+              :style="
+                isDarkMode
+                  ? 'font-family: Geist, sans-serif; font-weight: 400; font-style: Regular; font-size: 10px; vertical-align: middle; color: #FFFFFF;'
+                  : 'font-family: Geist, sans-serif; font-weight: 400; font-style: Regular; font-size: 10px; vertical-align: middle; color: #101828;'
+              "
+            >
+              Enterprise
+            </p>
+          </div>
         </div>
-        <h1 class="text-2xl font-bold ml-2">Varnish</h1>
       </div>
 
       <!-- Navigation -->
-      <nav :class="sidebarCollapsed ? 'px-2' : 'px-2'" style="padding: 10px">
-        <div class="space-y-1">
+      <nav
+        :class="sidebarCollapsed ? 'px-2' : 'px-4'"
+        style="
+          padding: 16px 0px;
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+        "
+      >
+        <!-- MENU Heading -->
+        <div v-if="!sidebarCollapsed" class="px-4 mb-4">
+          <h2
+            class="text-xs font-medium uppercase tracking-wider"
+            :class="isDarkMode ? 'text-gray-400' : 'text-gray-500'"
+            :style="
+              isDarkMode
+                ? 'font-family: Inter, sans-serif; font-weight: 500; font-size: 12px; color: #9CA3AF;'
+                : 'font-family: Inter, sans-serif; font-weight: 500; font-size: 12px; color: #6B7280;'
+            "
+          >
+            MENU
+          </h2>
+        </div>
+        <div class="space-y-1 flex-1">
           <!-- Dashboard -->
           <a
             href="/dashboard"
-            class="group flex items-center py-2 text-sm font-medium rounded-md transition-colors text-gray-700 dark:hover:bg-[#2F2F31] dark:text-white hover:bg-[#DCDCDE] hover:text-gray-900 dark:text-white hover:rounded-[5px]"
+            class="group flex items-center py-2 text-sm font-medium transition-colors"
             :class="[
               sidebarCollapsed ? 'justify-center px-2' : 'px-3',
-              isDashboardActive ? 'bg-[#DCDCDE] dark:bg-[#2F2F31] text-gray-900 dark:text-white' : ''
+              isDashboardActive
+                ? isDarkMode
+                  ? 'text-white bg-white bg-opacity-10'
+                  : 'text-gray-900 bg-gray-200'
+                : isDarkMode
+                ? 'text-white hover:text-white'
+                : 'text-gray-700 hover:text-gray-900',
             ]"
+            style="border-radius: 6px"
           >
-            <Dashboard class="h-4 w-4" :class="sidebarCollapsed ? '' : 'mr-3'" />
+            <Dashboard
+              class="h-4 w-4"
+              :class="[
+                sidebarCollapsed ? '' : 'mr-3',
+                isDarkMode ? 'text-white' : 'text-gray-700',
+              ]"
+            />
             <span v-show="!sidebarCollapsed" class="truncate">Dashboard</span>
+            <ChevronDown
+              v-show="!sidebarCollapsed"
+              :class="isDarkMode ? 'text-white' : 'text-gray-700'"
+              class="ml-auto h-4 w-4"
+            />
           </a>
 
-          <!-- Countries -->
-          <div v-if="isSuperAdmin() || hasPermission('countries')">
+          <!-- Domains -->
+          <div>
             <button
-              @click="toggleCountries"
-              class="group flex items-center w-full py-2 text-sm font-medium rounded-md transition-colors dark:hover:bg-[#2F2F31] text-gray-700 dark:text-white hover:bg-[#DCDCDE] hover:text-gray-900 dark:text-white hover:rounded-[5px]"
+              @click="toggleDomains"
+              class="group flex items-center w-full py-2 text-sm font-medium transition-colors"
               :class="[
                 sidebarCollapsed ? 'justify-center px-2' : 'px-3',
+                isDomainsActive
+                  ? isDarkMode
+                    ? 'text-white'
+                    : 'text-gray-900'
+                  : isDarkMode
+                  ? 'text-white hover:text-white'
+                  : 'text-gray-700 hover:text-gray-900',
               ]"
+              style="border-radius: 6px"
             >
-              <Countries class="h-4 w-4 " :class="sidebarCollapsed ? '' : 'mr-3'" />
-              <span v-show="!sidebarCollapsed" class="truncate">Countries</span>
+              <Network
+                class="h-4 w-4"
+                :class="[
+                  sidebarCollapsed ? '' : 'mr-3',
+                  isDarkMode ? 'text-white' : 'text-gray-700',
+                ]"
+              />
+              <span v-show="!sidebarCollapsed" class="truncate">Domains</span>
               <ChevronDown
                 v-show="!sidebarCollapsed"
-                :class="countriesOpen ? 'rotate-180' : ''"
+                :class="[
+                  domainsOpen ? 'rotate-180' : '',
+                  isDarkMode ? 'text-white' : 'text-gray-700',
+                ]"
                 class="ml-auto h-4 w-4 transition-transform"
               />
             </button>
@@ -81,51 +156,136 @@
               leave-to-class="opacity-0 transform -translate-y-2"
             >
               <div
-                v-if="countriesOpen && !sidebarCollapsed"
-                class="ml-4 mt-1 space-y-1 border-l border-gray-200 dark:border-gray-700 pl-3"
+                v-if="domainsOpen && !sidebarCollapsed"
+                class="ml-4 mt-1 space-y-1 border-l pl-3"
+                :class="isDarkMode ? 'border-gray-700' : 'border-gray-300'"
+                :style="
+                  isDarkMode
+                    ? 'border-left: 1px solid rgba(255, 255, 255, 0.1);'
+                    : 'border-left: 1px solid rgba(0, 0, 0, 0.1);'
+                "
               >
-              <a
-                href="/dashboard/countries"
-                :class="[
-                  'block px-3 py-1.5 text-sm transition-colors',
-                  isCountriesListActive 
-                    ? 'bg-[#DCDCDE] dark:bg-[#2F2F31] text-gray-900 dark:text-white' 
-                    : 'text-gray-600 hover:text-gray-900 dark:text-white hover:bg-[#DCDCDE] dark:hover:bg-[#2F2F31]'
-                ]"
-                style="border-radius: 5px"
-                >List of Countries</a
-              >
-              <a
-                href="/dashboard/countries/add"
-                :class="[
-                  'block px-3 py-1.5 text-sm transition-colors',
-                  isCountriesAddActive 
-                    ? 'bg-[#DCDCDE] dark:bg-[#2F2F31] text-gray-900 dark:text-white' 
-                    : 'text-gray-600 hover:text-gray-900 dark:text-white hover:bg-[#DCDCDE] dark:hover:bg-[#2F2F31]'
-                ]"
-                style="border-radius: 5px"
-                >Add Country</a
-              >
+                <a
+                  href="/dashboard/domains"
+                  :class="[
+                    'block px-3 py-1.5 text-sm transition-colors',
+                    isDomainsListActive
+                      ? isDarkMode
+                        ? 'text-black bg-white'
+                        : 'text-gray-900 bg-gray-200'
+                      : isDarkMode
+                      ? 'text-gray-400 hover:text-white'
+                      : 'text-gray-600 hover:text-gray-900',
+                  ]"
+                  style="border-radius: 6px"
+                  >List of Domains</a
+                >
+                <a
+                  href="/dashboard/domains/add"
+                  :class="[
+                    'block px-3 py-1.5 text-sm transition-colors',
+                    isDomainsAddActive
+                      ? isDarkMode
+                        ? 'text-black bg-white'
+                        : 'text-gray-900 bg-gray-200'
+                      : isDarkMode
+                      ? 'text-gray-400 hover:text-white'
+                      : 'text-gray-600 hover:text-gray-900',
+                  ]"
+                  style="border-radius: 6px"
+                  >Add New Domains</a
+                >
               </div>
             </Transition>
           </div>
 
-          <!-- Visa Products -->
-          <div v-if="isSuperAdmin() || hasPermission('visaProducts')">
+          <!-- Hosting -->
+          <div>
             <button
-              @click="toggleVisaproducts"
-              class="group flex items-center w-full py-2 text-sm font-medium rounded-md transition-colors dark:hover:bg-[#2F2F31] text-gray-700 dark:text-white hover:bg-[#DCDCDE] hover:text-gray-900 dark:text-white hover:rounded-[5px]"
+              class="group flex items-center w-full py-2 text-sm font-medium transition-colors"
               :class="[
                 sidebarCollapsed ? 'justify-center px-2' : 'px-3',
+                isDarkMode
+                  ? 'text-white hover:text-white'
+                  : 'text-gray-700 hover:text-gray-900',
               ]"
+              style="border-radius: 6px"
             >
-              <VisaProducts class="h-4 w-4" :class="sidebarCollapsed ? '' : 'mr-3'" />
-              <span v-show="!sidebarCollapsed" class="truncate"
-                >Visa Products</span
-              >
+              <Box
+                class="h-4 w-4"
+                :class="[
+                  sidebarCollapsed ? '' : 'mr-3',
+                  isDarkMode ? 'text-white' : 'text-gray-700',
+                ]"
+              />
+              <span v-show="!sidebarCollapsed" class="truncate">Hosting</span>
               <ChevronDown
                 v-show="!sidebarCollapsed"
-                :class="visaproductsOpen ? 'rotate-180' : ''"
+                :class="isDarkMode ? 'text-white' : 'text-gray-700'"
+                class="ml-auto h-4 w-4"
+              />
+            </button>
+          </div>
+
+          <!-- Varnish -->
+          <div>
+            <button
+              class="group flex items-center w-full py-2 text-sm font-medium transition-colors"
+              :class="[
+                sidebarCollapsed ? 'justify-center px-2' : 'px-3',
+                isDarkMode
+                  ? 'text-white hover:text-white'
+                  : 'text-gray-700 hover:text-gray-900',
+              ]"
+              style="border-radius: 6px"
+            >
+              <Columns
+                class="h-4 w-4"
+                :class="[
+                  sidebarCollapsed ? '' : 'mr-3',
+                  isDarkMode ? 'text-white' : 'text-gray-700',
+                ]"
+              />
+              <span v-show="!sidebarCollapsed" class="truncate">Varnish</span>
+              <ChevronDown
+                v-show="!sidebarCollapsed"
+                :class="isDarkMode ? 'text-white' : 'text-gray-700'"
+                class="ml-auto h-4 w-4"
+              />
+            </button>
+          </div>
+
+          <!-- SSL -->
+          <div>
+            <button
+              @click="toggleSSL"
+              class="group flex items-center w-full py-2 text-sm font-medium transition-colors"
+              :class="[
+                sidebarCollapsed ? 'justify-center px-2' : 'px-3',
+                isSSLActive
+                  ? isDarkMode
+                    ? 'text-white'
+                    : 'text-gray-900'
+                  : isDarkMode
+                  ? 'text-white hover:text-white'
+                  : 'text-gray-700 hover:text-gray-900',
+              ]"
+              style="border-radius: 6px"
+            >
+              <Key
+                class="h-4 w-4"
+                :class="[
+                  sidebarCollapsed ? '' : 'mr-3',
+                  isDarkMode ? 'text-white' : 'text-gray-700',
+                ]"
+              />
+              <span v-show="!sidebarCollapsed" class="truncate">SSL</span>
+              <ChevronDown
+                v-show="!sidebarCollapsed"
+                :class="[
+                  sslOpen ? 'rotate-180' : '',
+                  isDarkMode ? 'text-white' : 'text-gray-700',
+                ]"
                 class="ml-auto h-4 w-4 transition-transform"
               />
             </button>
@@ -138,51 +298,80 @@
               leave-to-class="opacity-0 transform -translate-y-2"
             >
               <div
-                v-if="visaproductsOpen && !sidebarCollapsed"
-                class="ml-4 mt-1 space-y-1 border-l border-gray-200 dark:border-gray-700 pl-3"
+                v-if="sslOpen && !sidebarCollapsed"
+                class="ml-4 mt-1 space-y-1 border-l pl-3"
+                :class="isDarkMode ? 'border-gray-700' : 'border-gray-300'"
+                :style="
+                  isDarkMode
+                    ? 'border-left: 1px solid rgba(255, 255, 255, 0.1);'
+                    : 'border-left: 1px solid rgba(0, 0, 0, 0.1);'
+                "
               >
-              <a
-                href="/dashboard/visaproducts"
-                :class="[
-                  'block px-3 py-1.5 text-sm transition-colors',
-                  isVisaproductsListActive 
-                    ? 'bg-[#DCDCDE] dark:bg-[#2F2F31] text-gray-900 dark:text-white' 
-                    : 'text-gray-600 hover:text-gray-900 dark:text-white hover:bg-[#DCDCDE] dark:hover:bg-[#2F2F31]'
-                ]"
-                style="border-radius: 5px"
-                >List of Visa Products</a
-              >
-              <a
-                href="/dashboard/visaproducts/add"
-                :class="[
-                  'block px-3 py-1.5 text-sm transition-colors',
-                  isVisaproductsAddActive 
-                    ? 'bg-[#DCDCDE] dark:bg-[#2F2F31] text-gray-900 dark:text-white' 
-                    : 'text-gray-600 hover:text-gray-900 dark:text-white hover:bg-[#DCDCDE] dark:hover:bg-[#2F2F31]'
-                ]"
-                style="border-radius: 5px"
-                >Add Visa Product</a
-              >
+                <a
+                  href="/dashboard/ssl"
+                  :class="[
+                    'block px-3 py-1.5 text-sm transition-colors',
+                    isSSLListActive
+                      ? isDarkMode
+                        ? 'text-black bg-white'
+                        : 'text-gray-900 bg-gray-200'
+                      : isDarkMode
+                      ? 'text-gray-400 hover:text-white'
+                      : 'text-gray-600 hover:text-gray-900',
+                  ]"
+                  style="border-radius: 6px"
+                  >List of SSL</a
+                >
+                <a
+                  href="/dashboard/ssl/add"
+                  :class="[
+                    'block px-3 py-1.5 text-sm transition-colors',
+                    isSSLAddActive
+                      ? isDarkMode
+                        ? 'text-black bg-white'
+                        : 'text-gray-900 bg-gray-200'
+                      : isDarkMode
+                      ? 'text-gray-400 hover:text-white'
+                      : 'text-gray-600 hover:text-gray-900',
+                  ]"
+                  style="border-radius: 6px"
+                  >Add New SSL</a
+                >
               </div>
             </Transition>
           </div>
 
-          <!-- Nationalities -->
-          <div v-if="isSuperAdmin() || hasPermission('nationalities')">
+          <!-- Images -->
+          <div>
             <button
-              @click="toggleNationalities"
-              class="group flex items-center w-full py-2 text-sm font-medium rounded-md transition-colors dark:hover:bg-[#2F2F31] text-gray-700 dark:text-white hover:bg-[#DCDCDE] hover:text-gray-900 dark:text-white hover:rounded-[5px]"
+              @click="toggleImages"
+              class="group flex items-center w-full py-2 text-sm font-medium transition-colors"
               :class="[
                 sidebarCollapsed ? 'justify-center px-2' : 'px-3',
+                isImagesActive
+                  ? isDarkMode
+                    ? 'text-white'
+                    : 'text-gray-900'
+                  : isDarkMode
+                  ? 'text-white hover:text-white'
+                  : 'text-gray-700 hover:text-gray-900',
               ]"
+              style="border-radius: 6px"
             >
-              <Nationalities class="h-4 w-4" :class="sidebarCollapsed ? '' : 'mr-3'" />
-              <span v-show="!sidebarCollapsed" class="truncate"
-                >Nationalities</span
-              >
+              <Image
+                class="h-4 w-4"
+                :class="[
+                  sidebarCollapsed ? '' : 'mr-3',
+                  isDarkMode ? 'text-white' : 'text-gray-700',
+                ]"
+              />
+              <span v-show="!sidebarCollapsed" class="truncate">Images</span>
               <ChevronDown
                 v-show="!sidebarCollapsed"
-                :class="nationalitiesOpen ? 'rotate-180' : ''"
+                :class="[
+                  imagesOpen ? 'rotate-180' : '',
+                  isDarkMode ? 'text-white' : 'text-gray-700',
+                ]"
                 class="ml-auto h-4 w-4 transition-transform"
               />
             </button>
@@ -195,378 +384,213 @@
               leave-to-class="opacity-0 transform -translate-y-2"
             >
               <div
-                v-if="nationalitiesOpen && !sidebarCollapsed"
-                class="ml-4 mt-1 space-y-1 border-l border-gray-200 dark:border-gray-700 pl-3"
+                v-if="imagesOpen && !sidebarCollapsed"
+                class="ml-4 mt-1 space-y-1 border-l pl-3"
+                :class="isDarkMode ? 'border-gray-700' : 'border-gray-300'"
+                :style="
+                  isDarkMode
+                    ? 'border-left: 1px solid rgba(255, 255, 255, 0.1);'
+                    : 'border-left: 1px solid rgba(0, 0, 0, 0.1);'
+                "
               >
-              <a
-                href="/dashboard/nationalities"
-                :class="[
-                  'block px-3 py-1.5 text-sm transition-colors',
-                  isNationalitiesListActive 
-                    ? 'bg-[#DCDCDE] dark:bg-[#2F2F31] text-gray-900 dark:text-white' 
-                    : 'text-gray-600 hover:text-gray-900 dark:text-white hover:bg-[#DCDCDE] dark:hover:bg-[#2F2F31]'
-                ]"
-                style="border-radius: 5px"
-                >List of Nationalities</a
-              >
-              <a
-                href="/dashboard/nationalities/add"
-                :class="[
-                  'block px-3 py-1.5 text-sm transition-colors',
-                  isNationalitiesAddActive 
-                    ? 'bg-[#DCDCDE] dark:bg-[#2F2F31] text-gray-900 dark:text-white' 
-                    : 'text-gray-600 hover:text-gray-900 dark:text-white hover:bg-[#DCDCDE] dark:hover:bg-[#2F2F31]'
-                ]"
-                style="border-radius: 5px"
-                >Add Nationality</a
-              >
+                <a
+                  href="/dashboard/images"
+                  :class="[
+                    'block px-3 py-1.5 text-sm transition-colors',
+                    isImagesListActive
+                      ? isDarkMode
+                        ? 'text-black bg-white'
+                        : 'text-gray-900 bg-gray-200'
+                      : isDarkMode
+                      ? 'text-gray-400 hover:text-white'
+                      : 'text-gray-600 hover:text-gray-900',
+                  ]"
+                  style="border-radius: 6px"
+                  >List of Images</a
+                >
+                <a
+                  href="/dashboard/images/add"
+                  :class="[
+                    'block px-3 py-1.5 text-sm transition-colors',
+                    isImagesAddActive
+                      ? isDarkMode
+                        ? 'text-black bg-white'
+                        : 'text-gray-900 bg-gray-200'
+                      : isDarkMode
+                      ? 'text-gray-400 hover:text-white'
+                      : 'text-gray-600 hover:text-gray-900',
+                  ]"
+                  style="border-radius: 6px"
+                  >Add Rule</a
+                >
               </div>
             </Transition>
           </div>
 
-          
-
-          <!-- Embassies -->
-          <div v-if="isSuperAdmin() || hasPermission('embassies')">
-            <button
-              @click="toggleEmbassies"
-              class="group flex items-center w-full py-2 text-sm font-medium rounded-md transition-colors dark:hover:bg-[#2F2F31] text-gray-700 dark:text-white hover:bg-[#DCDCDE] hover:text-gray-900 dark:text-white hover:rounded-[5px]"
+          <!-- Billings -->
+          <div>
+            <NuxtLink
+              to="/dashboard/billings"
+              class="group flex items-center w-full py-2 text-sm font-medium transition-colors"
               :class="[
                 sidebarCollapsed ? 'justify-center px-2' : 'px-3',
+                isBillingsActive
+                  ? isDarkMode
+                    ? 'text-white bg-white bg-opacity-10'
+                    : 'text-gray-900 bg-gray-200'
+                  : isDarkMode
+                  ? 'text-white hover:text-white'
+                  : 'text-gray-700 hover:text-gray-900',
               ]"
+              style="border-radius: 6px; text-decoration: none"
             >
-              <Embassies class="h-4 w-4" :class="sidebarCollapsed ? '' : 'mr-3'" />
-              <span v-show="!sidebarCollapsed" class="truncate">Embassies</span>
-              <ChevronDown
-                v-show="!sidebarCollapsed"
-                :class="embassiesOpen ? 'rotate-180' : ''"
-                class="ml-auto h-4 w-4 transition-transform"
+              <CreditCard
+                class="h-4 w-4"
+                :class="[
+                  sidebarCollapsed ? '' : 'mr-3',
+                  isDarkMode ? 'text-white' : 'text-gray-700',
+                ]"
               />
-            </button>
-            <Transition
-              enter-active-class="transition-all duration-300 ease-out"
-              enter-from-class="opacity-0 transform -translate-y-2"
-              enter-to-class="opacity-100 transform translate-y-0"
-              leave-active-class="transition-all duration-200 ease-in"
-              leave-from-class="opacity-100 transform translate-y-0"
-              leave-to-class="opacity-0 transform -translate-y-2"
-            >
-              <div
-                v-if="embassiesOpen && !sidebarCollapsed"
-                class="ml-4 mt-1 space-y-1 border-l border-gray-200 dark:border-gray-700 pl-3"
-              >
-              <a
-                href="/dashboard/embassies"
-                :class="[
-                  'block px-3 py-1.5 text-sm transition-colors',
-                  isEmbassiesListActive 
-                    ? 'bg-[#DCDCDE] dark:bg-[#2F2F31] text-gray-900 dark:text-white' 
-                    : 'text-gray-600 hover:text-gray-900 dark:text-white hover:bg-[#DCDCDE] dark:hover:bg-[#2F2F31]'
-                ]"
-                style="border-radius: 5px"
-                >List of Embassies</a
-              >
-              <a
-                href="/dashboard/embassies/add"
-                :class="[
-                  'block px-3 py-1.5 text-sm transition-colors',
-                  isEmbassiesAddActive 
-                    ? 'bg-[#DCDCDE] dark:bg-[#2F2F31] text-gray-900 dark:text-white' 
-                    : 'text-gray-600 hover:text-gray-900 dark:text-white hover:bg-[#DCDCDE] dark:hover:bg-[#2F2F31]'
-                ]"
-                style="border-radius: 5px"
-                >Add Embassy</a
-              >
-              </div>
-            </Transition>
+              <span v-show="!sidebarCollapsed" class="truncate">Billings</span>
+            </NuxtLink>
           </div>
 
-
-          <!-- Coupons -->
-<div v-if="isSuperAdmin() || hasPermission('coupons')">
-  <button
-    @click="toggleCoupons"
-    class="group flex items-center w-full py-2 text-sm font-medium rounded-md transition-colors dark:hover:bg-[#2F2F31] text-gray-700 dark:text-white hover:bg-[#DCDCDE] hover:text-gray-900 dark:text-white hover:rounded-[5px]"
-    :class="[
-      sidebarCollapsed ? 'justify-center px-2' : 'px-3',
-    ]"
-  >
-    <Coupons class="h-4 w-4" :class="sidebarCollapsed ? '' : 'mr-3'" />
-    <span v-show="!sidebarCollapsed" class="truncate">Coupons</span>
-    <ChevronDown
-      v-show="!sidebarCollapsed"
-      :class="couponsOpen ? 'rotate-180' : ''"
-      class="ml-auto h-4 w-4 transition-transform"
-    />
-  </button>
-
-  <Transition
-    enter-active-class="transition-all duration-300 ease-out"
-    enter-from-class="opacity-0 transform -translate-y-2"
-    enter-to-class="opacity-100 transform translate-y-0"
-    leave-active-class="transition-all duration-200 ease-in"
-    leave-from-class="opacity-100 transform translate-y-0"
-    leave-to-class="opacity-0 transform -translate-y-2"
-  >
-    <div
-      v-if="couponsOpen && !sidebarCollapsed"
-      class="ml-4 mt-1 space-y-1 border-l border-gray-200 dark:border-gray-700 pl-3"
-    >
-      <a
-        href="/dashboard/coupons"
-        :class="[
-          'block px-3 py-1.5 text-sm transition-colors',
-          isCouponsListActive 
-            ? 'bg-[#DCDCDE] dark:bg-[#2F2F31] text-gray-900 dark:text-white' 
-            : 'text-gray-600 hover:text-gray-900 dark:text-white hover:bg-[#DCDCDE] dark:hover:bg-[#2F2F31]'
-        ]"
-        style="border-radius: 5px"
-      >
-        List of Coupons
-      </a>
-      <a
-        href="/dashboard/coupons/add"
-        :class="[
-          'block px-3 py-1.5 text-sm transition-colors',
-          isCouponsAddActive 
-            ? 'bg-[#DCDCDE] dark:bg-[#2F2F31] text-gray-900 dark:text-white' 
-            : 'text-gray-600 hover:text-gray-900 dark:text-white hover:bg-[#DCDCDE] dark:hover:bg-[#2F2F31]'
-        ]"
-        style="border-radius: 5px"
-      >
-        Add Coupon
-      </a>
-    </div>
-  </Transition>
-          </div>
-
-          <!-- Additional Info -->
-          <div v-if="isSuperAdmin() || hasPermission('additionalInfo')">
-            <button
-              @click="toggleAdditionalInfo"
-              class="group flex items-center w-full py-2 text-sm font-medium rounded-md transition-colors dark:hover:bg-[#2F2F31] text-gray-700 dark:text-white hover:bg-[#DCDCDE] hover:text-gray-900 dark:text-white hover:rounded-[5px]"
-              :class="[
-                sidebarCollapsed ? 'justify-center px-2' : 'px-3',
-              ]"
-            >
-              <AdditionalInfo class="h-4 w-4" :class="sidebarCollapsed ? '' : 'mr-3'" />
-              <span v-show="!sidebarCollapsed" class="truncate">Additional Info</span>
-              <ChevronDown
-                v-show="!sidebarCollapsed"
-                :class="additionalInfoOpen ? 'rotate-180' : ''"
-                class="ml-auto h-4 w-4 transition-transform"
-              />
-            </button>
-            <Transition
-              enter-active-class="transition-all duration-300 ease-out"
-              enter-from-class="opacity-0 transform -translate-y-2"
-              enter-to-class="opacity-100 transform translate-y-0"
-              leave-active-class="transition-all duration-200 ease-in"
-              leave-from-class="opacity-100 transform translate-y-0"
-              leave-to-class="opacity-0 transform -translate-y-2"
-            >
-              <div
-                v-if="additionalInfoOpen && !sidebarCollapsed"
-                class="ml-4 mt-1 space-y-1 border-l border-gray-200 dark:border-gray-700 pl-3"
-              >
-              <a
-                href="/dashboard/additional-info"
+          <!-- Bottom Section: Support and Settings -->
+          <div
+            class="absolute bottom-0 left-0 right-0"
+            style="padding: 16px 8px"
+          >
+            <!-- Support -->
+            <div>
+              <button
+                @click="toggleSupport"
+                class="group flex items-center w-full py-2 text-sm font-medium transition-colors"
                 :class="[
-                  'block px-3 py-1.5 text-sm transition-colors',
-                  isAdditionalInfoListActive 
-                    ? 'bg-[#DCDCDE] dark:bg-[#2F2F31] text-gray-900 dark:text-white' 
-                    : 'text-gray-600 hover:text-gray-900 dark:text-white hover:bg-[#DCDCDE] dark:hover:bg-[#2F2F31]'
+                  sidebarCollapsed ? 'justify-center px-2' : 'px-3',
+                  isSupportActive
+                    ? isDarkMode
+                      ? 'text-white'
+                      : 'text-gray-900'
+                    : isDarkMode
+                    ? 'text-white hover:text-white'
+                    : 'text-gray-700 hover:text-gray-900',
                 ]"
-                style="border-radius: 5px"
-                >List of Forms</a
+                style="border-radius: 6px"
               >
-              <a
-                href="/dashboard/additional-info/add"
+                <Clock
+                  class="h-4 w-4"
+                  :class="[
+                    sidebarCollapsed ? '' : 'mr-3',
+                    isDarkMode ? 'text-white' : 'text-gray-700',
+                  ]"
+                />
+                <span
+                  v-show="!sidebarCollapsed"
+                  class="truncate"
+                  :class="isDarkMode ? 'text-white' : 'text-gray-700'"
+                  >Support</span
+                >
+                <ChevronDown
+                  v-show="!sidebarCollapsed"
+                  :class="[
+                    supportOpen ? 'rotate-180' : '',
+                    isDarkMode ? 'text-white' : 'text-gray-700',
+                  ]"
+                  class="ml-auto h-4 w-4 transition-transform"
+                />
+              </button>
+              <Transition
+                enter-active-class="transition-all duration-300 ease-out"
+                enter-from-class="opacity-0 transform -translate-y-2"
+                enter-to-class="opacity-100 transform translate-y-0"
+                leave-active-class="transition-all duration-200 ease-in"
+                leave-from-class="opacity-100 transform translate-y-0"
+                leave-to-class="opacity-0 transform -translate-y-2"
+              >
+                <div
+                  v-if="supportOpen && !sidebarCollapsed"
+                  class="ml-4 mt-1 space-y-1 border-l pl-3"
+                  :class="isDarkMode ? 'border-gray-700' : 'border-gray-300'"
+                  :style="
+                    isDarkMode
+                      ? 'border-left: 1px solid rgba(255, 255, 255, 0.1);'
+                      : 'border-left: 1px solid rgba(0, 0, 0, 0.1);'
+                  "
+                >
+                  <NuxtLink
+                    to="/dashboard/support"
+                    @click="supportOpen = true"
+                    :class="[
+                      'block px-3 py-1.5 text-sm transition-colors',
+                      isSupportListActive
+                        ? isDarkMode
+                          ? 'text-black bg-white'
+                          : 'text-gray-900 bg-gray-200'
+                        : isDarkMode
+                        ? 'text-gray-400 hover:text-white'
+                        : 'text-gray-600 hover:text-gray-900',
+                    ]"
+                    style="border-radius: 6px; text-decoration: none"
+                    >List of Support</NuxtLink
+                  >
+                  <NuxtLink
+                    to="/dashboard/support/add"
+                    @click="supportOpen = true"
+                    :class="[
+                      'block px-3 py-1.5 text-sm transition-colors',
+                      isSupportAddActive
+                        ? isDarkMode
+                          ? 'text-black bg-white'
+                          : 'text-gray-900 bg-gray-200'
+                        : isDarkMode
+                        ? 'text-gray-400 hover:text-white'
+                        : 'text-gray-600 hover:text-gray-900',
+                    ]"
+                    style="border-radius: 6px; text-decoration: none"
+                    >Add New Ticket</NuxtLink
+                  >
+                </div>
+              </Transition>
+            </div>
+
+            <!-- Settings -->
+            <div>
+              <button
+                @click.stop="toggleSettingsDropdown"
+                data-settings-button
+                class="group flex items-center w-full py-2 text-sm font-medium transition-colors"
                 :class="[
-                  'block px-3 py-1.5 text-sm transition-colors',
-                  isAdditionalInfoAddActive 
-                    ? 'bg-[#DCDCDE] dark:bg-[#2F2F31] text-gray-900 dark:text-white' 
-                    : 'text-gray-600 hover:text-gray-900 dark:text-white hover:bg-[#DCDCDE] dark:hover:bg-[#2F2F31]'
+                  sidebarCollapsed ? 'justify-center px-2' : 'px-3',
+                  isSettingsActive
+                    ? isDarkMode
+                      ? 'text-white bg-white bg-opacity-10'
+                      : 'text-gray-900 bg-gray-200'
+                    : isDarkMode
+                    ? 'text-white hover:text-white'
+                    : 'text-gray-700 hover:text-gray-900',
                 ]"
-                style="border-radius: 5px"
-                >Add New</a
+                style="border-radius: 6px"
               >
-              </div>
-            </Transition>
-          </div>
-
-          <!-- Guides -->
-          <div v-if="isSuperAdmin()">
-            <button
-              @click="toggleGuides"
-              class="group flex items-center w-full py-2 text-sm font-medium rounded-md transition-colors dark:hover:bg-[#2F2F31] text-gray-700 dark:text-white hover:bg-[#DCDCDE] hover:text-gray-900 dark:text-white hover:rounded-[5px]"
-              :class="[
-                sidebarCollapsed ? 'justify-center px-2' : 'px-3',
-              ]"
-            >
-              <Guides class="h-4 w-4" :class="sidebarCollapsed ? '' : 'mr-3'" />
-              <span v-show="!sidebarCollapsed" class="truncate">Guides</span>
-              <ChevronDown
-                v-show="!sidebarCollapsed"
-                :class="guidesOpen ? 'rotate-180' : ''"
-                class="ml-auto h-4 w-4 transition-transform"
-              />
-            </button>
-            <Transition
-              enter-active-class="transition-all duration-300 ease-out"
-              enter-from-class="opacity-0 transform -translate-y-2"
-              enter-to-class="opacity-100 transform translate-y-0"
-              leave-active-class="transition-all duration-200 ease-in"
-              leave-from-class="opacity-100 transform translate-y-0"
-              leave-to-class="opacity-0 transform -translate-y-2"
-            >
-              <div
-                v-if="guidesOpen && !sidebarCollapsed"
-                class="ml-4 mt-1 space-y-1 border-l border-gray-200 dark:border-gray-700 pl-3"
-              >
-              <a
-                href="/dashboard/guides"
-                :class="[
-                  'block px-3 py-1.5 text-sm transition-colors',
-                  isGuidesListActive 
-                    ? 'bg-[#DCDCDE] dark:bg-[#2F2F31] text-gray-900 dark:text-white' 
-                    : 'text-gray-600 hover:text-gray-900 dark:text-white hover:bg-[#DCDCDE] dark:hover:bg-[#2F2F31]'
-                ]"
-                style="border-radius: 5px"
-                >List of Guides</a
-              >
-              <a
-                href="/dashboard/guides/add"
-                :class="[
-                  'block px-3 py-1.5 text-sm transition-colors',
-                  isGuidesAddActive 
-                    ? 'bg-[#DCDCDE] dark:bg-[#2F2F31] text-gray-900 dark:text-white' 
-                    : 'text-gray-600 hover:text-gray-900 dark:text-white hover:bg-[#DCDCDE] dark:hover:bg-[#2F2F31]'
-                ]"
-                style="border-radius: 5px"
-                >Add Guide</a
-              >
-              </div>
-            </Transition>
-          </div>
-
-          
-
-          <!-- Customers -->
-          <div v-if="isSuperAdmin() || hasPermission('customers')">
-            <a
-              href="/dashboard/customers"
-              class="group flex items-center w-full py-2 text-sm font-medium rounded-md transition-colors dark:hover:bg-[#2F2F31] text-gray-700 dark:text-white hover:bg-[#DCDCDE] hover:text-gray-900 dark:text-white hover:rounded-[5px]"
-              :class="[
-                sidebarCollapsed ? 'justify-center px-2' : 'px-3',
-                isCustomersActive ? 'bg-[#DCDCDE] dark:bg-[#2F2F31] text-gray-900 dark:text-white' : ''
-              ]"
-            >
-                <Customers class="h-4 w-4" :class="sidebarCollapsed ? '' : 'mr-3'" />
-              <span v-show="!sidebarCollapsed" class="truncate">Customers</span>
-            </a>
-          </div>
-
-          <!-- Applications -->
-          <div v-if="isSuperAdmin() || hasPermission('applications')">
-            <a
-              href="/dashboard/applications"
-              class="group flex items-center w-full py-2 text-sm font-medium rounded-md transition-colors dark:hover:bg-[#2F2F31] text-gray-700 dark:text-white hover:bg-[#DCDCDE] hover:text-gray-900 dark:text-white hover:rounded-[5px]"
-              :class="[
-                sidebarCollapsed ? 'justify-center px-2' : 'px-3',
-                isApplicationsActive ? 'bg-[#DCDCDE] dark:bg-[#2F2F31] text-gray-900 dark:text-white' : ''
-              ]"
-            >
-              <Applications class="h-4 w-4" :class="sidebarCollapsed ? '' : 'mr-3'" />
-              <span v-show="!sidebarCollapsed" class="truncate"
-                >Applications</span
-              >
-            </a>
-          </div>
-
-          <!-- Finances -->
-          <div v-if="isSuperAdmin() || hasPermission('finances')">
-            <a
-              href="/dashboard/finances"
-              class="group flex items-center w-full py-2 text-sm font-medium rounded-md transition-colors dark:hover:bg-[#2F2F31] text-gray-700 dark:text-white hover:bg-[#DCDCDE] hover:text-gray-900 dark:text-white hover:rounded-[5px]"
-              :class="[
-                sidebarCollapsed ? 'justify-center px-2' : 'px-3',
-                isFinancesActive ? 'bg-[#DCDCDE] dark:bg-[#2F2F31] text-gray-900 dark:text-white' : ''
-              ]"
-            >
-              <Finances class="h-4 w-4" :class="sidebarCollapsed ? '' : 'mr-3'" />
-              <span v-show="!sidebarCollapsed" class="truncate">Finances</span>
-            </a>
-          </div>
-
-          <!-- Settings -->
-          <div v-if="isSuperAdmin() || hasPermission('applications')">
-            <a
-              href="/dashboard/settings"
-              class="group flex items-center w-full py-2 text-sm font-medium rounded-md transition-colors dark:hover:bg-[#2F2F31] text-gray-700 dark:text-white hover:bg-[#DCDCDE] hover:text-gray-900 dark:text-white hover:rounded-[5px]"
-              :class="[
-                sidebarCollapsed ? 'justify-center px-2' : 'px-3',
-                isSettingsActive ? 'bg-[#DCDCDE] dark:bg-[#2F2F31] text-gray-900 dark:text-white' : ''
-              ]"
-            >
-              <Settings class="h-4 w-4" :class="sidebarCollapsed ? '' : 'mr-3'" />
-              <span v-show="!sidebarCollapsed" class="truncate">Settings</span>
-            </a>
-          </div>
-
-          <!-- Users (Only for Super Admins) -->
-          <div v-if="isSuperAdmin()">
-            <button
-              @click="toggleUsers"
-              class="group flex items-center w-full py-2 text-sm font-medium rounded-md transition-colors dark:hover:bg-[#2F2F31] text-gray-700 dark:text-white hover:bg-[#DCDCDE] hover:text-gray-900 dark:text-white hover:rounded-[5px]"
-              :class="[
-                sidebarCollapsed ? 'justify-center px-2' : 'px-3',
-              ]"
-            >
-              <UsersIcon class="h-4 w-4" :class="sidebarCollapsed ? '' : 'mr-3'" />
-              <span v-show="!sidebarCollapsed" class="truncate">Users</span>
-              <ChevronDown
-                v-show="!sidebarCollapsed"
-                :class="usersOpen ? 'rotate-180' : ''"
-                class="ml-auto h-4 w-4 transition-transform"
-              />
-            </button>
-            <Transition
-              enter-active-class="transition-all duration-300 ease-out"
-              enter-from-class="opacity-0 transform -translate-y-2"
-              enter-to-class="opacity-100 transform translate-y-0"
-              leave-active-class="transition-all duration-200 ease-in"
-              leave-from-class="opacity-100 transform translate-y-0"
-              leave-to-class="opacity-0 transform -translate-y-2"
-            >
-              <div
-                v-if="usersOpen && !sidebarCollapsed"
-                class="ml-4 mt-1 space-y-1 border-l border-gray-200 dark:border-gray-700 pl-3"
-              >
-              <a
-                href="/dashboard/users"
-                :class="[
-                  'block px-3 py-1.5 text-sm transition-colors',
-                  isUsersListActive 
-                    ? 'bg-[#DCDCDE] dark:bg-[#2F2F31] text-gray-900 dark:text-white' 
-                    : 'text-gray-600 hover:text-gray-900 dark:text-white hover:bg-[#DCDCDE] dark:hover:bg-[#2F2F31]'
-                ]"
-                style="border-radius: 5px"
-                >List of Users</a
-              >
-              <a
-                href="/dashboard/users/add"
-                :class="[
-                  'block px-3 py-1.5 text-sm transition-colors',
-                  isUsersAddActive 
-                    ? 'bg-[#DCDCDE] dark:bg-[#2F2F31] text-gray-900 dark:text-white' 
-                    : 'text-gray-600 hover:text-gray-900 dark:text-white hover:bg-[#DCDCDE] dark:hover:bg-[#2F2F31]'
-                ]"
-                style="border-radius: 5px"
-                >Add User</a
-              >
-              </div>
-            </Transition>
+                <Settings
+                  class="h-4 w-4"
+                  :class="[
+                    sidebarCollapsed ? '' : 'mr-3',
+                    isDarkMode ? 'text-white' : 'text-gray-700',
+                  ]"
+                />
+                <span v-show="!sidebarCollapsed" class="truncate"
+                  >Settings</span
+                >
+                <ChevronDown
+                  v-show="!sidebarCollapsed"
+                  :class="[
+                    settingsDropdownOpen ? 'rotate-180' : '',
+                    isDarkMode ? 'text-white' : 'text-gray-700',
+                  ]"
+                  class="ml-auto h-4 w-4 transition-transform"
+                />
+              </button>
+            </div>
           </div>
         </div>
       </nav>
@@ -575,359 +599,444 @@
     <!-- Main Content -->
     <div
       :class="sidebarCollapsed ? 'pl-2 lg:pl-16' : 'pl-2 lg:pl-64'"
-      class="h-screen p-2 transition-all duration-300 dark:bg-[#18181B] bg-[#f4f4f6]  dark:border-gray-700 border border-gray-200"
+      class="p-2 transition-all duration-300 dark:bg-[#0C1E35] bg-[#f4f4f6]"
     >
       <!-- Top Header -->
 
-        <header
-          class="bg-[#FFFFFF] dark:bg-[#09090B] border shadow-sm border-[#e4e4e8] rounded-t-xl dark:border-gray-800"
+      <header
+        class="bg-[#FFFFFF] border shadow-sm border-[#e4e4e8] rounded-t-xl"
+        style="display: none"
+      >
+        <div
+          class="flex h-14 items-center justify-between px-3 sm:px-4 lg:px-6 border-b border-gray-200"
         >
-          <div
-            class="flex h-14 items-center justify-between px-3 sm:px-4 lg:px-6 border-b border-gray-200 dark:border-gray-800"
-          >
-            <!-- Left side - Sidebar Toggle and Search -->
-            <div class="flex items-center space-x-4">
+          <!-- Right side - Icons -->
+          <div class="flex items-center space-x-1 sm:space-x-2">
+            <!-- Theme Toggle -->
+            <div class="relative">
               <button
-                @click="toggleSidebar"
-                class="p-2 hover:bg-[#E4E4E8] dark:hover:bg-[#2F2F31]"
+                @click="toggleTheme"
+                class="p-2 hover:bg-[#E4E4E8] dark:hover:bg-[#1a2f4a]"
                 style="border-radius: 5px"
-                :title="
-                  sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'
-                "
               >
-                <PanelLeft
-                  :class="
-                    sidebarCollapsed
-                      ? 'h-5 w-5 text-gray-600 dark:text-gray-300 rotate-180'
-                      : 'h-5 w-5 text-gray-600 dark:text-gray-300'
-                  "
+                <Sun
+                  v-if="!isDarkMode"
+                  class="sm:h-5 sm:w-5 text-gray-600 dark:text-gray-300"
+                  style="height: 15px; width: 15px"
+                />
+                <Moon
+                  v-else
+                  class="sm:h-5 sm:w-5 text-gray-600 dark:text-gray-300"
+                  style="height: 15px; width: 15px"
                 />
               </button>
-              <label style="color: #e4e4e8">|</label>
-              <!-- Search Box -->
-              <div class="relative hidden md:block">
-                <div
-                  class="flex items-center bg-white dark:bg-[#18181B] w-[380px] h-[35px] border border-gray-300 dark:border-gray-700 px-3 py-2 w-80"
-                  style="border-radius: 7px"
-                >
-                  <Search
-                    class="h-4 w-4 text-gray-400 dark:text-gray-500 mr-2"
-                  />
-                  <input
-                    type="text"
-                    placeholder="Search..."
-                    class="flex-1 h-[36px] bg-transparent text-sm text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none"
-                  />
-                  <button
-                    class="bg-gray-200 dark:bg-[#18181B] text-gray-600 dark:text-gray-300 px-2 py-1 text-xs font-medium hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
-                    style="border-radius: 7px"
-                  >
-                    ⌘K
-                  </button>
-                </div>
-              </div>
             </div>
-
-            <!-- Right side - Icons -->
-            <div class="flex items-center space-x-1 sm:space-x-2">
-              <!-- Theme Toggle -->
-              <div class="relative">
-                <button
-                  @click="toggleTheme"
-                  class="p-2 hover:bg-[#E4E4E8] dark:hover:bg-[#2F2F31]"
-                  style="border-radius: 5px"
-                >
-                  <Sun
-                    v-if="!isDarkMode"
-                    class="sm:h-5 sm:w-5 text-gray-600 dark:text-gray-300"
-                    style="height: 15px; width: 15px"
-                  />
-                  <Moon
-                    v-else
-                    class="sm:h-5 sm:w-5 text-gray-600 dark:text-gray-300"
-                    style="height: 15px; width: 15px"
-                  />
-                </button>
-              </div>
-              <!-- Settings -->
-              <div class="relative">
-             
-
-                <!-- Settings Dropdown -->
-                <div
-                  v-if="settingsDropdownOpen"
-                  class="absolute right-0 z-10 mt-2 w-80 bg-white dark:bg-[#09090B] border border-gray-200 dark:border-gray-700 rounded-md shadow-lg"
-                  style="border-radius: 5px"
-                >
-                  <!-- Theme Preset -->
-                  <div class="px-4 py-2 border-none">
-                    <label
-                      class="block text-sm font-medium text-gray-700 dark:text-white mb-3"
-                      >Theme preset:</label
+            <!-- Settings -->
+            <div class="relative">
+              <!-- Settings Dropdown -->
+              <div
+                v-if="settingsDropdownOpen"
+                class="absolute right-0 z-10 mt-2 w-80 bg-white dark:bg-[#0C1E35] border border-gray-200 dark:border-gray-700 rounded-md shadow-lg"
+                style="border-radius: 5px"
+              >
+                <!-- Theme Preset -->
+                <div class="px-4 py-2 border-none">
+                  <label
+                    class="block text-sm font-medium text-gray-700 dark:text-white mb-3"
+                    >Theme preset:</label
+                  >
+                  <div class="relative">
+                    <button
+                      @click.stop="toggleThemeDropdown"
+                      class="w-full flex items-center justify-between px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-[#1a2f4a] text-sm text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-[#1a2f4a]"
+                      style="border-radius: 5px; height: 36px"
                     >
-                    <div class="relative">
-                      <button
-                        @click.stop="toggleThemeDropdown"
-                        class="w-full flex items-center justify-between px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-[#18181B] text-sm text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-[#18181B]"
-                        style="border-radius: 5px; height: 36px"
-                      >
-                        <div class="flex items-center">
-                          <div
-                            class="w-3 h-3 rounded-full mr-2"
-                            :style="{
-                              backgroundColor: getSelectedThemeColor(),
-                            }"
-                          ></div>
-                          <span>{{ selectedTheme }}</span>
-                        </div>
-                        <ChevronDown class="h-4 w-4 text-gray-400" />
-                      </button>
+                      <div class="flex items-center">
+                        <div
+                          class="w-3 h-3 rounded-full mr-2"
+                          :style="{
+                            backgroundColor: getSelectedThemeColor(),
+                          }"
+                        ></div>
+                        <span>{{ selectedTheme }}</span>
+                      </div>
+                      <ChevronDown class="h-4 w-4 text-gray-400" />
+                    </button>
 
-                      <!-- Custom Dropdown -->
-                      <div
-                        v-if="themeDropdownOpen"
-                        @click.stop
-                        class="absolute left-0 right-0 z-10 mt-2 bg-white dark:bg-[#18181B] border border-gray-200 dark:border-gray-600 rounded-md shadow-lg"
-                        style="border-radius: 5px"
-                      >
-                        <div class="py-1">
-                          <button
-                            v-for="theme in themeOptions"
-                            :key="theme.value"
-                            @click.stop="
-                              setTheme(theme.label);
-                              themeDropdownOpen = false;
-                            "
-                            :class="[
-                              'w-full flex items-center justify-between px-3 py-2 text-sm text-left text-gray-900 dark:text-white',
-                              selectedTheme === theme.label
-                                ? 'bg-gray-100 dark:bg-[#18181B]'
-                                : 'hover:bg-gray-50 dark:hover:bg-[#18181B]',
-                            ]"
-                          >
-                            <div class="flex items-center">
-                              <div
-                                class="w-3 h-3 rounded-full mr-2"
-                                :style="{ backgroundColor: theme.color }"
-                              ></div>
-                              <span>{{ theme.label }}</span>
-                            </div>
+                    <!-- Custom Dropdown -->
+                    <div
+                      v-if="themeDropdownOpen"
+                      @click.stop
+                      class="absolute left-0 right-0 z-10 mt-2 bg-white dark:bg-[#1a2f4a] border border-gray-200 dark:border-gray-600 rounded-md shadow-lg"
+                      style="border-radius: 5px"
+                    >
+                      <div class="py-1">
+                        <button
+                          v-for="theme in themeOptions"
+                          :key="theme.value"
+                          @click.stop="
+                            setTheme(theme.label);
+                            themeDropdownOpen = false;
+                          "
+                          :class="[
+                            'w-full flex items-center justify-between px-3 py-2 text-sm text-left text-gray-900 dark:text-white',
+                            selectedTheme === theme.label
+                              ? 'bg-gray-100 dark:bg-[#1a2f4a]'
+                              : 'hover:bg-gray-50 dark:hover:bg-[#1a2f4a]',
+                          ]"
+                        >
+                          <div class="flex items-center">
                             <div
-                              v-if="selectedTheme === theme.label"
-                              class="text-gray-600"
+                              class="w-3 h-3 rounded-full mr-2"
+                              :style="{ backgroundColor: theme.color }"
+                            ></div>
+                            <span>{{ theme.label }}</span>
+                          </div>
+                          <div
+                            v-if="selectedTheme === theme.label"
+                            class="text-gray-600"
+                          >
+                            <svg
+                              class="h-4 w-4"
+                              fill="currentColor"
+                              viewBox="0 0 20 20"
                             >
-                              <svg
-                                class="h-4 w-4"
-                                fill="currentColor"
-                                viewBox="0 0 20 20"
-                              >
-                                <path
-                                  fill-rule="evenodd"
-                                  d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                  clip-rule="evenodd"
-                                ></path>
-                              </svg>
-                            </div>
-                          </button>
-                        </div>
+                              <path
+                                fill-rule="evenodd"
+                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                clip-rule="evenodd"
+                              ></path>
+                            </svg>
+                          </div>
+                        </button>
                       </div>
                     </div>
                   </div>
+                </div>
 
-                  <!-- Scale -->
-                  <div class="px-4 py-2 border-none">
-                    <label
-                      class="block text-sm font-medium text-gray-700 dark:text-white mb-3"
-                      >Scale:</label
-                    >
-                    <div
-                      class="flex gap-2 justify-center dark:text-white dark:bg-[#09090B]"
-                    >
-                      <button
-                        v-for="scale in scaleOptions"
-                        :key="scale.value"
-                        @click="selectedScale = scale.value"
-                        :class="[
-                          'px-3 py-2 text-sm border transition-colors flex items-center justify-center flex-1 dark:text-white dark:bg-[#18181B] dark:border-gray-600',
-                          selectedScale === scale.value
-                            ? 'bg-gray-100 border-gray-300 text-gray-900 dark:text-white'
-                            : 'bg-white border-gray-300 text-gray-700 dark:text-white hover:bg-gray-50',
-                        ]"
-                        :style="{
-                          'border-radius': '5px',
-                          height: '36px',
-                        }"
-                      >
-                        <span v-if="scale.value === 'none'" class="text-lg"
-                          >⊘</span
-                        >
-                        <span v-else>{{ scale.label }}</span>
-                      </button>
-                    </div>
-                  </div>
-
-                  <!-- Radius -->
-                  <div class="px-4 py-2 border-none">
-                    <label
-                      class="block text-sm font-medium text-gray-700 dark:text-white mb-3"
-                      >Radius:</label
-                    >
-                    <div class="flex gap-2 justify-center">
-                      <button
-                        v-for="radius in radiusOptions"
-                        :key="radius.value"
-                        @click="selectedRadius = radius.value"
-                        :class="[
-                          'px-3 py-2 text-sm border transition-colors flex items-center justify-center flex-1 dark:text-white dark:bg-[#18181B] dark:border-gray-600',
-                          selectedRadius === radius.value
-                            ? 'bg-gray-100 border-gray-300 text-gray-900 dark:text-white'
-                            : 'bg-white border-gray-300 text-gray-700 dark:text-white hover:bg-gray-50',
-                        ]"
-                        :style="{
-                          'border-radius': '5px',
-                          height: '36px',
-                        }"
-                      >
-                        <span v-if="radius.value === 'none'" class="text-lg"
-                          >⊘</span
-                        >
-                        <span v-else>{{ radius.label }}</span>
-                      </button>
-                    </div>
-                  </div>
-
-                  <!-- Color Mode -->
-                  <div class="px-4 py-2 border-none">
-                    <label
-                      class="block text-sm font-medium text-gray-700 dark:text-white mb-3"
-                      >Color mode:</label
-                    >
-                    <div class="flex gap-2 justify-center">
-                      <button
-                        v-for="mode in colorModes"
-                        :key="mode.value"
-                        @click="selectedColorMode = mode.value"
-                        :class="[
-                          'px-3 py-2 text-sm border transition-colors flex items-center justify-center flex-1 dark:text-white dark:bg-[#18181B] dark:border-gray-600',
-                          selectedColorMode === mode.value
-                            ? 'bg-gray-100 border-gray-300 text-gray-900 dark:text-white'
-                            : 'bg-white border-gray-300 text-gray-700 dark:text-white hover:bg-gray-50',
-                        ]"
-                        :style="{
-                          'border-radius': '5px',
-                          height: '36px',
-                        }"
-                      >
-                        {{ mode.label }}
-                      </button>
-                    </div>
-                  </div>
-
-                  <!-- Content Layout -->
-                  <div class="px-4 py-2 border-none">
-                    <label
-                      class="block text-sm font-medium text-gray-700 dark:text-white mb-3 dark:text-white dark:bg-[#18181B] dark:border-gray-600"
-                      >Content layout:</label
-                    >
-                    <div class="flex gap-2 justify-center">
-                      <button
-                        v-for="layout in contentLayouts"
-                        :key="layout.value"
-                        @click="selectedContentLayout = layout.value"
-                        :class="[
-                          'px-3 py-2 text-sm border transition-colors flex items-center justify-center flex-1 dark:text-white dark:bg-[#18181B] dark:border-gray-600',
-                          selectedContentLayout === layout.value
-                            ? 'bg-gray-100 border-gray-300 text-gray-900 dark:text-white'
-                            : 'bg-white border-gray-300 text-gray-700 dark:text-white hover:bg-gray-50',
-                        ]"
-                        :style="{
-                          'border-radius': '5px',
-                          height: '36px',
-                        }"
-                      >
-                        {{ layout.label }}
-                      </button>
-                    </div>
-                  </div>
-
-                  <!-- Sidebar Mode -->
-                  <div class="px-4 py-2 border-none">
-                    <label
-                      class="block text-sm font-medium text-gray-700 dark:text-white mb-3"
-                      >Sidebar mode:</label
-                    >
-                    <div class="flex gap-2 justify-center">
-                      <button
-                        v-for="mode in sidebarModes"
-                        :key="mode.value"
-                        @click="selectedSidebarMode = mode.value"
-                        :class="[
-                          'px-3 py-2 text-sm border transition-colors flex items-center justify-center flex-1 dark:text-white dark:bg-[#18181B] dark:border-gray-600',
-                          selectedSidebarMode === mode.value
-                            ? 'bg-gray-100 border-gray-300 text-gray-900 dark:text-white'
-                            : 'bg-white border-gray-300 text-gray-700 dark:text-white hover:bg-gray-50',
-                        ]"
-                        :style="{
-                          'border-radius': '5px',
-                          height: '36px',
-                        }"
-                      >
-                        {{ mode.label }}
-                      </button>
-                    </div>
-                  </div>
-
-                  <!-- Reset Button -->
-                  <div class="px-4 py-4">
+                <!-- Scale -->
+                <div class="px-4 py-2 border-none">
+                  <label
+                    class="block text-sm font-medium text-gray-700 dark:text-white mb-3"
+                    >Scale:</label
+                  >
+                  <div
+                    class="flex gap-2 justify-center dark:text-white dark:bg-[#0C1E35]"
+                  >
                     <button
-                      @click="resetToDefault"
-                      class="w-full bg-red-600 text-white py-2 px-4 hover:bg-red-700 transition-colors text-sm font-medium"
-                      style="border-radius: 5px; height: 36px"
+                      v-for="scale in scaleOptions"
+                      :key="scale.value"
+                      @click="selectedScale = scale.value"
+                      :class="[
+                        'px-3 py-2 text-sm border transition-colors flex items-center justify-center flex-1 dark:text-white dark:bg-[#1a2f4a] dark:border-gray-600',
+                        selectedScale === scale.value
+                          ? 'bg-gray-100 border-gray-300 text-gray-900 dark:text-white'
+                          : 'bg-white border-gray-300 text-gray-700 dark:text-white hover:bg-gray-50',
+                      ]"
+                      :style="{
+                        'border-radius': '5px',
+                        height: '36px',
+                      }"
                     >
-                      Reset to Default
+                      <span v-if="scale.value === 'none'" class="text-lg"
+                        >⊘</span
+                      >
+                      <span v-else>{{ scale.label }}</span>
                     </button>
                   </div>
                 </div>
-              </div>
 
-              <!-- User Avatar -->
-              <div class="relative">
-                <button
-                  @click="toggleUserDropdown"
-                  class="h-7 w-7 sm:h-8 sm:w-8 bg-gradient-to-br from-purple-400 to-blue-500 rounded-full flex items-center justify-center cursor-pointer hover:opacity-90 transition-opacity"
-                >
-                  <span class="text-white font-medium text-xs sm:text-sm"
-                    >TB</span
+                <!-- Radius -->
+                <div class="px-4 py-2 border-none">
+                  <label
+                    class="block text-sm font-medium text-gray-700 dark:text-white mb-3"
+                    >Radius:</label
                   >
-                </button>
+                  <div class="flex gap-2 justify-center">
+                    <button
+                      v-for="radius in radiusOptions"
+                      :key="radius.value"
+                      @click="selectedRadius = radius.value"
+                      :class="[
+                        'px-3 py-2 text-sm border transition-colors flex items-center justify-center flex-1 dark:text-white dark:bg-[#1a2f4a] dark:border-gray-600',
+                        selectedRadius === radius.value
+                          ? 'bg-gray-100 border-gray-300 text-gray-900 dark:text-white'
+                          : 'bg-white border-gray-300 text-gray-700 dark:text-white hover:bg-gray-50',
+                      ]"
+                      :style="{
+                        'border-radius': '5px',
+                        height: '36px',
+                      }"
+                    >
+                      <span v-if="radius.value === 'none'" class="text-lg"
+                        >⊘</span
+                      >
+                      <span v-else>{{ radius.label }}</span>
+                    </button>
+                  </div>
+                </div>
 
-                <!-- User Dropdown -->
-                <div
-                  v-if="userDropdownOpen"
-                  class="absolute right-0 z-10 mt-2 w-56 bg-white dark:bg-[#09090B] border border-gray-200 dark:border-gray-700 rounded-md shadow-lg"
-                  style="border-radius: 5px"
-                >
+                <!-- Color Mode -->
+                <div class="px-4 py-2 border-none">
+                  <label
+                    class="block text-sm font-medium text-gray-700 dark:text-white mb-3"
+                    >Color mode:</label
+                  >
+                  <div class="flex gap-2 justify-center">
+                    <button
+                      v-for="mode in colorModes"
+                      :key="mode.value"
+                      @click="selectedColorMode = mode.value"
+                      :class="[
+                        'px-3 py-2 text-sm border transition-colors flex items-center justify-center flex-1 dark:text-white dark:bg-[#1a2f4a] dark:border-gray-600',
+                        selectedColorMode === mode.value
+                          ? 'bg-gray-100 border-gray-300 text-gray-900 dark:text-white'
+                          : 'bg-white border-gray-300 text-gray-700 dark:text-white hover:bg-gray-50',
+                      ]"
+                      :style="{
+                        'border-radius': '5px',
+                        height: '36px',
+                      }"
+                    >
+                      {{ mode.label }}
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Content Layout -->
+                <div class="px-4 py-2 border-none">
+                  <label
+                    class="block text-sm font-medium text-gray-700 dark:text-white mb-3 dark:text-white dark:bg-[#1a2f4a] dark:border-gray-600"
+                    >Content layout:</label
+                  >
+                  <div class="flex gap-2 justify-center">
+                    <button
+                      v-for="layout in contentLayouts"
+                      :key="layout.value"
+                      @click="selectedContentLayout = layout.value"
+                      :class="[
+                        'px-3 py-2 text-sm border transition-colors flex items-center justify-center flex-1 dark:text-white dark:bg-[#1a2f4a] dark:border-gray-600',
+                        selectedContentLayout === layout.value
+                          ? 'bg-gray-100 border-gray-300 text-gray-900 dark:text-white'
+                          : 'bg-white border-gray-300 text-gray-700 dark:text-white hover:bg-gray-50',
+                      ]"
+                      :style="{
+                        'border-radius': '5px',
+                        height: '36px',
+                      }"
+                    >
+                      {{ layout.label }}
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Sidebar Mode -->
+                <div class="px-4 py-2 border-none">
+                  <label
+                    class="block text-sm font-medium text-gray-700 dark:text-white mb-3"
+                    >Sidebar mode:</label
+                  >
+                  <div class="flex gap-2 justify-center">
+                    <button
+                      v-for="mode in sidebarModes"
+                      :key="mode.value"
+                      @click="selectedSidebarMode = mode.value"
+                      :class="[
+                        'px-3 py-2 text-sm border transition-colors flex items-center justify-center flex-1 dark:text-white dark:bg-[#1a2f4a] dark:border-gray-600',
+                        selectedSidebarMode === mode.value
+                          ? 'bg-gray-100 border-gray-300 text-gray-900 dark:text-white'
+                          : 'bg-white border-gray-300 text-gray-700 dark:text-white hover:bg-gray-50',
+                      ]"
+                      :style="{
+                        'border-radius': '5px',
+                        height: '36px',
+                      }"
+                    >
+                      {{ mode.label }}
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Reset Button -->
+                <div class="px-4 py-4">
                   <button
-                    @click="handleSignOutClick"
-                    class="w-full flex items-center px-4 py-2 text-sm text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 text-left"
+                    @click="resetToDefault"
+                    class="w-full bg-red-600 text-white py-2 px-4 hover:bg-red-700 transition-colors text-sm font-medium"
+                    style="border-radius: 5px; height: 36px"
                   >
-                    <LogOut class="h-4 w-4 text-gray-400 mr-3" />
-                    <span>Log out</span>
+                    Reset to Default
                   </button>
                 </div>
               </div>
             </div>
+
+            <!-- User Avatar -->
+            <div class="relative">
+              <button
+                @click="toggleUserDropdown"
+                class="h-7 w-7 sm:h-8 sm:w-8 bg-gradient-to-br from-purple-400 to-blue-500 rounded-full flex items-center justify-center cursor-pointer hover:opacity-90 transition-opacity"
+              >
+                <span class="text-white font-medium text-xs sm:text-sm"
+                  >TB</span
+                >
+              </button>
+
+              <!-- User Dropdown -->
+              <div
+                v-if="userDropdownOpen"
+                class="absolute right-0 z-10 mt-2 w-56 bg-white dark:bg-[#0C1E35] border border-gray-200 dark:border-gray-700 rounded-md shadow-lg"
+                style="border-radius: 5px"
+              >
+                <button
+                  @click="handleSignOutClick"
+                  class="w-full flex items-center px-4 py-2 text-sm text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 text-left"
+                >
+                  <LogOut class="h-4 w-4 text-gray-400 mr-3" />
+                  <span>Log out</span>
+                </button>
+              </div>
+            </div>
           </div>
-        </header>
+        </div>
+      </header>
 
-        <!-- Page Content -->
-        <main
-          class="p-3 sm:p-4 lg:p-6 border border-[#e4e4e8] dark:border-gray-800 border-t-0 rounded-b-xl shadow-sm dark:bg-[#09090B] bg-white h-[calc(100vh-72px)] overflow-y-scroll"
+      <!-- Settings Card Overlay -->
+      <Transition
+        enter-active-class="transition-all duration-300 ease-out"
+        enter-from-class="opacity-0 transform translate-x-4"
+        enter-to-class="opacity-100 transform translate-x-0"
+        leave-active-class="transition-all duration-200 ease-in"
+        leave-from-class="opacity-100 transform translate-x-0"
+        leave-to-class="opacity-0 transform translate-x-4"
+      >
+        <div
+          v-if="settingsDropdownOpen"
+          @click.stop
+          data-settings-dropdown
+          class="fixed right-4 top-20 z-50 w-64 rounded-lg shadow-xl border"
+          :class="
+            isDarkMode
+              ? 'bg-[#0C1E35] border-gray-700'
+              : 'bg-white border-gray-200'
+          "
+          style="
+            border-radius: 8px;
+            position: absolute;
+            top: 764px;
+            left: 255px;
+            height: 20vh;
+            margin-bottom: 0px;
+          "
         >
+          <!-- Card Header -->
+          <div
+            class="px-4 py-3 border-b flex items-center justify-between"
+            :class="isDarkMode ? 'border-gray-700' : 'border-gray-200'"
+          >
+            <div class="flex items-center gap-2">
+              <Settings
+                class="h-4 w-4"
+                :class="isDarkMode ? 'text-white' : 'text-gray-700'"
+              />
+              <span
+                class="text-sm font-semibold"
+                :class="isDarkMode ? 'text-white' : 'text-gray-900'"
+                style="font-family: 'Inter', sans-serif"
+              >
+                Settings
+              </span>
+            </div>
+            <button
+              @click.stop="toggleSettingsDropdown"
+              class="p-1 hover:bg-opacity-10 rounded"
+              :class="isDarkMode ? 'hover:bg-white' : 'hover:bg-gray-100'"
+            >
+              <svg
+                class="h-4 w-4"
+                :class="isDarkMode ? 'text-white' : 'text-gray-600'"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+          </div>
 
-        
-          <slot />
-        </main>
+          <!-- Card Content -->
+          <div class="p-2 space-y-1">
+            <!-- Theme Toggle -->
+            <button
+              @click.stop="toggleTheme"
+              class="w-full px-3 py-2.5 text-sm transition-colors text-left rounded-md flex items-center gap-3"
+              :class="
+                isDarkMode
+                  ? 'text-white hover:bg-white hover:bg-opacity-10'
+                  : 'text-gray-700 hover:bg-gray-100'
+              "
+              style="border-radius: 6px; font-family: 'Inter', sans-serif"
+            >
+              <Moon
+                v-if="!isDarkMode"
+                class="h-4 w-4"
+                :class="isDarkMode ? 'text-white' : 'text-gray-700'"
+              />
+              <Sun
+                v-else
+                class="h-4 w-4"
+                :class="isDarkMode ? 'text-white' : 'text-gray-700'"
+              />
+              <span>{{ isDarkMode ? "Light Mode" : "Dark Mode" }}</span>
+            </button>
+
+            <!-- Logout -->
+            <button
+              @click.stop="handleSignOutClick"
+              class="w-full px-3 py-2.5 text-sm transition-colors text-left rounded-md flex items-center gap-3"
+              :class="
+                isDarkMode
+                  ? 'text-white hover:bg-white hover:bg-opacity-10'
+                  : 'text-gray-700 hover:bg-gray-100'
+              "
+              style="border-radius: 6px; font-family: 'Inter', sans-serif"
+            >
+              <LogOut
+                class="h-4 w-4"
+                :class="isDarkMode ? 'text-white' : 'text-gray-700'"
+              />
+              <span>Log out</span>
+            </button>
+          </div>
+        </div>
+      </Transition>
+
+      <!-- Backdrop -->
+      <Transition
+        enter-active-class="transition-opacity duration-200"
+        enter-from-class="opacity-0"
+        enter-to-class="opacity-100"
+        leave-active-class="transition-opacity duration-200"
+        leave-from-class="opacity-100"
+        leave-to-class="opacity-0"
+      >
+        <div
+          v-if="settingsDropdownOpen"
+          @click="settingsDropdownOpen = false"
+          class="fixed inset-0 z-40 bg-black bg-opacity-20"
+        ></div>
+      </Transition>
+
+      <!-- Page Content -->
+      <main
+        class="p-3 sm:p-4 lg:p-6 border border-[#e4e4e8] rounded-xl shadow-sm bg-white"
+      >
+        <slot />
+      </main>
     </div>
   </div>
 </template>
@@ -1002,8 +1111,6 @@ const { hasPermission, isSuperAdmin, getUserPermissions } = usePermissions();
 const { getCurrentUser, logout } = useAuthApi();
 const router = useRouter();
 
-
-
 // State management
 const sidebarCollapsed = ref(false);
 const isDarkMode = ref(false);
@@ -1017,208 +1124,336 @@ const couponsOpen = ref(false);
 const additionalInfoOpen = ref(false);
 const guidesOpen = ref(false);
 const usersOpen = ref(false);
+const domainsOpen = ref(false);
+const sslOpen = ref(false);
+const imagesOpen = ref(false);
+const supportOpen = ref(false);
 
 // Route detection for active states
-const route = useRoute()
+const route = useRoute();
 
 // Computed properties for active states
-const isDashboardActive = computed(() => route.path === '/dashboard')
-const isCountriesActive = computed(() => route.path.startsWith('/dashboard/countries'))
-const isVisaproductsActive = computed(() => route.path.startsWith('/dashboard/visaproducts'))
-const isNationalitiesActive = computed(() => route.path.startsWith('/dashboard/nationalities'))
-const isEmbassiesActive = computed(() => route.path.startsWith('/dashboard/embassies'))
-const isCustomersActive = computed(() => route.path.startsWith('/dashboard/customers'))
-const isApplicationsActive = computed(() => route.path.startsWith('/dashboard/applications'))
-const isFinancesActive = computed(() => route.path.startsWith('/dashboard/finances'))
-const isSettingsActive = computed(() => route.path.startsWith('/dashboard/settings'))
-const isCouponsActive = computed(() => route.path.startsWith('/dashboard/coupons'))
-const isCouponsListActive = computed(() => route.path === '/dashboard/coupons')
-const isCouponsAddActive = computed(() => route.path === '/dashboard/coupons/add')
-const isAdditionalInfoActive = computed(() => route.path.startsWith('/dashboard/additional-info'))
-const isAdditionalInfoListActive = computed(() => route.path === '/dashboard/additional-info')
-const isAdditionalInfoAddActive = computed(() => route.path === '/dashboard/additional-info/add')
-const isGuidesActive = computed(() => route.path.startsWith('/dashboard/guides'))
-const isGuidesListActive = computed(() => route.path === '/dashboard/guides')
-const isGuidesAddActive = computed(() => route.path === '/dashboard/guides/add')
-const isUsersActive = computed(() => route.path.startsWith('/dashboard/users'))
-const isUsersListActive = computed(() => route.path === '/dashboard/users')
-const isUsersAddActive = computed(() => route.path === '/dashboard/users/add')
+const isDashboardActive = computed(() => route.path === "/dashboard");
+const isDomainsActive = computed(() =>
+  route.path.startsWith("/dashboard/domains")
+);
+const isDomainsListActive = computed(() => route.path === "/dashboard/domains");
+const isDomainsAddActive = computed(
+  () => route.path === "/dashboard/domains/add"
+);
+const isSSLActive = computed(() => route.path.startsWith("/dashboard/ssl"));
+const isSSLListActive = computed(() => route.path === "/dashboard/ssl");
+const isSSLAddActive = computed(() => route.path === "/dashboard/ssl/add");
+const isImagesActive = computed(() =>
+  route.path.startsWith("/dashboard/images")
+);
+const isImagesListActive = computed(() => route.path === "/dashboard/images");
+const isImagesAddActive = computed(
+  () => route.path === "/dashboard/images/add"
+);
+const isSupportActive = computed(() =>
+  route.path.startsWith("/dashboard/support")
+);
+const isSupportListActive = computed(() => route.path === "/dashboard/support");
+const isSupportAddActive = computed(
+  () => route.path === "/dashboard/support/add"
+);
+const isBillingsActive = computed(() =>
+  route.path.startsWith("/dashboard/billings")
+);
+const isCountriesActive = computed(() =>
+  route.path.startsWith("/dashboard/countries")
+);
+const isVisaproductsActive = computed(() =>
+  route.path.startsWith("/dashboard/visaproducts")
+);
+const isNationalitiesActive = computed(() =>
+  route.path.startsWith("/dashboard/nationalities")
+);
+const isEmbassiesActive = computed(() =>
+  route.path.startsWith("/dashboard/embassies")
+);
+const isCustomersActive = computed(() =>
+  route.path.startsWith("/dashboard/customers")
+);
+const isApplicationsActive = computed(() =>
+  route.path.startsWith("/dashboard/applications")
+);
+const isFinancesActive = computed(() =>
+  route.path.startsWith("/dashboard/finances")
+);
+const isSettingsActive = computed(() =>
+  route.path.startsWith("/dashboard/settings")
+);
+const isCouponsActive = computed(() =>
+  route.path.startsWith("/dashboard/coupons")
+);
+const isCouponsListActive = computed(() => route.path === "/dashboard/coupons");
+const isCouponsAddActive = computed(
+  () => route.path === "/dashboard/coupons/add"
+);
+const isAdditionalInfoActive = computed(() =>
+  route.path.startsWith("/dashboard/additional-info")
+);
+const isAdditionalInfoListActive = computed(
+  () => route.path === "/dashboard/additional-info"
+);
+const isAdditionalInfoAddActive = computed(
+  () => route.path === "/dashboard/additional-info/add"
+);
+const isGuidesActive = computed(() =>
+  route.path.startsWith("/dashboard/guides")
+);
+const isGuidesListActive = computed(() => route.path === "/dashboard/guides");
+const isGuidesAddActive = computed(
+  () => route.path === "/dashboard/guides/add"
+);
+const isUsersActive = computed(() => route.path.startsWith("/dashboard/users"));
+const isUsersListActive = computed(() => route.path === "/dashboard/users");
+const isUsersAddActive = computed(() => route.path === "/dashboard/users/add");
 
 // Individual dropdown item active states
-const isCountriesListActive = computed(() => route.path === '/dashboard/countries')
-const isCountriesAddActive = computed(() => route.path === '/dashboard/countries/add')
-const isVisaproductsListActive = computed(() => route.path === '/dashboard/visaproducts')
-const isVisaproductsAddActive = computed(() => route.path === '/dashboard/visaproducts/add')
-const isNationalitiesListActive = computed(() => route.path === '/dashboard/nationalities')
-const isNationalitiesAddActive = computed(() => route.path === '/dashboard/nationalities/add')
-const isEmbassiesListActive = computed(() => route.path === '/dashboard/embassies')
-const isEmbassiesAddActive = computed(() => route.path === '/dashboard/embassies/add')
+const isCountriesListActive = computed(
+  () => route.path === "/dashboard/countries"
+);
+const isCountriesAddActive = computed(
+  () => route.path === "/dashboard/countries/add"
+);
+const isVisaproductsListActive = computed(
+  () => route.path === "/dashboard/visaproducts"
+);
+const isVisaproductsAddActive = computed(
+  () => route.path === "/dashboard/visaproducts/add"
+);
+const isNationalitiesListActive = computed(
+  () => route.path === "/dashboard/nationalities"
+);
+const isNationalitiesAddActive = computed(
+  () => route.path === "/dashboard/nationalities/add"
+);
+const isEmbassiesListActive = computed(
+  () => route.path === "/dashboard/embassies"
+);
+const isEmbassiesAddActive = computed(
+  () => route.path === "/dashboard/embassies/add"
+);
 
 // Initialize dropdown states from localStorage and route
 onMounted(() => {
   if (process.client) {
     // Check if we should open dropdowns based on current route
+    if (isDomainsActive.value) {
+      domainsOpen.value = true;
+      localStorage.setItem("domainsOpen", "true");
+    } else {
+      domainsOpen.value = localStorage.getItem("domainsOpen") === "true";
+    }
+
+    if (isSSLActive.value) {
+      sslOpen.value = true;
+      localStorage.setItem("sslOpen", "true");
+    } else {
+      sslOpen.value = localStorage.getItem("sslOpen") === "true";
+    }
+
+    if (isImagesActive.value) {
+      imagesOpen.value = true;
+      localStorage.setItem("imagesOpen", "true");
+    } else {
+      imagesOpen.value = localStorage.getItem("imagesOpen") === "true";
+    }
+
+    if (isSSLActive.value) {
+      sslOpen.value = true;
+      localStorage.setItem("sslOpen", "true");
+    } else {
+      sslOpen.value = localStorage.getItem("sslOpen") === "true";
+    }
+
+    if (isImagesActive.value) {
+      imagesOpen.value = true;
+      localStorage.setItem("imagesOpen", "true");
+    } else {
+      imagesOpen.value = localStorage.getItem("imagesOpen") === "true";
+    }
+
     if (isCountriesActive.value) {
-      countriesOpen.value = true
-      localStorage.setItem('countriesOpen', 'true')
+      countriesOpen.value = true;
+      localStorage.setItem("countriesOpen", "true");
     } else {
-      countriesOpen.value = localStorage.getItem('countriesOpen') === 'true'
+      countriesOpen.value = localStorage.getItem("countriesOpen") === "true";
     }
-    
+
     if (isVisaproductsActive.value) {
-      visaproductsOpen.value = true
-      localStorage.setItem('visaproductsOpen', 'true')
+      visaproductsOpen.value = true;
+      localStorage.setItem("visaproductsOpen", "true");
     } else {
-      visaproductsOpen.value = localStorage.getItem('visaproductsOpen') === 'true'
+      visaproductsOpen.value =
+        localStorage.getItem("visaproductsOpen") === "true";
     }
-    
+
     if (isNationalitiesActive.value) {
-      nationalitiesOpen.value = true
-      localStorage.setItem('nationalitiesOpen', 'true')
+      nationalitiesOpen.value = true;
+      localStorage.setItem("nationalitiesOpen", "true");
     } else {
-      nationalitiesOpen.value = localStorage.getItem('nationalitiesOpen') === 'true'
+      nationalitiesOpen.value =
+        localStorage.getItem("nationalitiesOpen") === "true";
     }
-    
+
     if (isEmbassiesActive.value) {
-      embassiesOpen.value = true
-      localStorage.setItem('embassiesOpen', 'true')
+      embassiesOpen.value = true;
+      localStorage.setItem("embassiesOpen", "true");
     } else {
-      embassiesOpen.value = localStorage.getItem('embassiesOpen') === 'true'
+      embassiesOpen.value = localStorage.getItem("embassiesOpen") === "true";
     }
     if (isCouponsActive.value) {
-    couponsOpen.value = true
-      localStorage.setItem('couponsOpen', 'true')
+      couponsOpen.value = true;
+      localStorage.setItem("couponsOpen", "true");
     } else {
-     couponsOpen.value = localStorage.getItem('couponsOpen') === 'true'
-}
+      couponsOpen.value = localStorage.getItem("couponsOpen") === "true";
+    }
     if (isAdditionalInfoActive.value) {
-      additionalInfoOpen.value = true
-      localStorage.setItem('additionalInfoOpen', 'true')
+      additionalInfoOpen.value = true;
+      localStorage.setItem("additionalInfoOpen", "true");
     } else {
-      additionalInfoOpen.value = localStorage.getItem('additionalInfoOpen') === 'true'
+      additionalInfoOpen.value =
+        localStorage.getItem("additionalInfoOpen") === "true";
     }
     if (isGuidesActive.value) {
-      guidesOpen.value = true
-      localStorage.setItem('guidesOpen', 'true')
+      guidesOpen.value = true;
+      localStorage.setItem("guidesOpen", "true");
     } else {
-      guidesOpen.value = localStorage.getItem('guidesOpen') === 'true'
+      guidesOpen.value = localStorage.getItem("guidesOpen") === "true";
     }
     if (isUsersActive.value) {
-      usersOpen.value = true
-      localStorage.setItem('usersOpen', 'true')
+      usersOpen.value = true;
+      localStorage.setItem("usersOpen", "true");
     } else {
-      usersOpen.value = localStorage.getItem('usersOpen') === 'true'
+      usersOpen.value = localStorage.getItem("usersOpen") === "true";
     }
   }
 });
 
 // Watch for route changes to maintain dropdown state
-watch(() => route.path, (newPath) => {
-  if (process.client) {
-    // Update dropdown states based on new route
-    if (newPath.startsWith('/dashboard/countries')) {
-      countriesOpen.value = true
-      visaproductsOpen.value = false
-      nationalitiesOpen.value = false
-      embassiesOpen.value = false
-      localStorage.setItem('countriesOpen', 'true')
-      localStorage.setItem('visaproductsOpen', 'false')
-      localStorage.setItem('nationalitiesOpen', 'false')
-      localStorage.setItem('embassiesOpen', 'false')
-    } else if (newPath.startsWith('/dashboard/visaproducts')) {
-      countriesOpen.value = false
-      visaproductsOpen.value = true
-      nationalitiesOpen.value = false
-      embassiesOpen.value = false
-      localStorage.setItem('countriesOpen', 'false')
-      localStorage.setItem('visaproductsOpen', 'true')
-      localStorage.setItem('nationalitiesOpen', 'false')
-      localStorage.setItem('embassiesOpen', 'false')
-    } else if (newPath.startsWith('/dashboard/nationalities')) {
-      countriesOpen.value = false
-      visaproductsOpen.value = false
-      nationalitiesOpen.value = true
-      embassiesOpen.value = false
-      localStorage.setItem('countriesOpen', 'false')
-      localStorage.setItem('visaproductsOpen', 'false')
-      localStorage.setItem('nationalitiesOpen', 'true')
-      localStorage.setItem('embassiesOpen', 'false')
-    } else if (newPath.startsWith('/dashboard/embassies')) {
-      countriesOpen.value = false
-      visaproductsOpen.value = false
-      nationalitiesOpen.value = false
-      embassiesOpen.value = true
-      localStorage.setItem('countriesOpen', 'false')
-      localStorage.setItem('visaproductsOpen', 'false')
-      localStorage.setItem('nationalitiesOpen', 'false')
-      localStorage.setItem('embassiesOpen', 'true')
-    } else if (newPath.startsWith('/dashboard/coupons')) {
-      countriesOpen.value = false
-      visaproductsOpen.value = false
-      nationalitiesOpen.value = false
-      embassiesOpen.value = false
-      couponsOpen.value = true
-      additionalInfoOpen.value = false
-      localStorage.setItem('countriesOpen', 'false')
-      localStorage.setItem('visaproductsOpen', 'false')
-      localStorage.setItem('nationalitiesOpen', 'false')
-      localStorage.setItem('embassiesOpen', 'false')
-      localStorage.setItem('couponsOpen', 'true')
-      localStorage.setItem('additionalInfoOpen', 'false')
-    } else if (newPath.startsWith('/dashboard/additional-info')) {
-      countriesOpen.value = false
-      visaproductsOpen.value = false
-      nationalitiesOpen.value = false
-      embassiesOpen.value = false
-      couponsOpen.value = false
-      additionalInfoOpen.value = true
-      guidesOpen.value = false
-      usersOpen.value = false
-      localStorage.setItem('countriesOpen', 'false')
-      localStorage.setItem('visaproductsOpen', 'false')
-      localStorage.setItem('nationalitiesOpen', 'false')
-      localStorage.setItem('embassiesOpen', 'false')
-      localStorage.setItem('couponsOpen', 'false')
-      localStorage.setItem('additionalInfoOpen', 'true')
-      localStorage.setItem('guidesOpen', 'false')
-      localStorage.setItem('usersOpen', 'false')
-    } else if (newPath.startsWith('/dashboard/guides')) {
-      countriesOpen.value = false
-      visaproductsOpen.value = false
-      nationalitiesOpen.value = false
-      embassiesOpen.value = false
-      couponsOpen.value = false
-      additionalInfoOpen.value = false
-      guidesOpen.value = true
-      usersOpen.value = false
-      localStorage.setItem('countriesOpen', 'false')
-      localStorage.setItem('visaproductsOpen', 'false')
-      localStorage.setItem('nationalitiesOpen', 'false')
-      localStorage.setItem('embassiesOpen', 'false')
-      localStorage.setItem('couponsOpen', 'false')
-      localStorage.setItem('additionalInfoOpen', 'false')
-      localStorage.setItem('guidesOpen', 'true')
-      localStorage.setItem('usersOpen', 'false')
-    } else if (newPath.startsWith('/dashboard/users')) {
-      countriesOpen.value = false
-      visaproductsOpen.value = false
-      nationalitiesOpen.value = false
-      embassiesOpen.value = false
-      couponsOpen.value = false
-      additionalInfoOpen.value = false
-      usersOpen.value = true
-      localStorage.setItem('countriesOpen', 'false')
-      localStorage.setItem('visaproductsOpen', 'false')
-      localStorage.setItem('nationalitiesOpen', 'false')
-      localStorage.setItem('embassiesOpen', 'false')
-      localStorage.setItem('couponsOpen', 'false')
-      localStorage.setItem('additionalInfoOpen', 'false')
-      localStorage.setItem('usersOpen', 'true')
-    } else if (newPath.startsWith('/dashboard/settings')) {
-      // Settings page - no dropdown to manage
+watch(
+  () => route.path,
+  (newPath) => {
+    if (process.client) {
+      // Update dropdown states based on new route
+      if (newPath.startsWith("/dashboard/countries")) {
+        countriesOpen.value = true;
+        visaproductsOpen.value = false;
+        nationalitiesOpen.value = false;
+        embassiesOpen.value = false;
+        localStorage.setItem("countriesOpen", "true");
+        localStorage.setItem("visaproductsOpen", "false");
+        localStorage.setItem("nationalitiesOpen", "false");
+        localStorage.setItem("embassiesOpen", "false");
+      } else if (newPath.startsWith("/dashboard/visaproducts")) {
+        countriesOpen.value = false;
+        visaproductsOpen.value = true;
+        nationalitiesOpen.value = false;
+        embassiesOpen.value = false;
+        localStorage.setItem("countriesOpen", "false");
+        localStorage.setItem("visaproductsOpen", "true");
+        localStorage.setItem("nationalitiesOpen", "false");
+        localStorage.setItem("embassiesOpen", "false");
+      } else if (newPath.startsWith("/dashboard/nationalities")) {
+        countriesOpen.value = false;
+        visaproductsOpen.value = false;
+        nationalitiesOpen.value = true;
+        embassiesOpen.value = false;
+        localStorage.setItem("countriesOpen", "false");
+        localStorage.setItem("visaproductsOpen", "false");
+        localStorage.setItem("nationalitiesOpen", "true");
+        localStorage.setItem("embassiesOpen", "false");
+      } else if (newPath.startsWith("/dashboard/embassies")) {
+        countriesOpen.value = false;
+        visaproductsOpen.value = false;
+        nationalitiesOpen.value = false;
+        embassiesOpen.value = true;
+        localStorage.setItem("countriesOpen", "false");
+        localStorage.setItem("visaproductsOpen", "false");
+        localStorage.setItem("nationalitiesOpen", "false");
+        localStorage.setItem("embassiesOpen", "true");
+      } else if (newPath.startsWith("/dashboard/coupons")) {
+        countriesOpen.value = false;
+        visaproductsOpen.value = false;
+        nationalitiesOpen.value = false;
+        embassiesOpen.value = false;
+        couponsOpen.value = true;
+        additionalInfoOpen.value = false;
+        localStorage.setItem("countriesOpen", "false");
+        localStorage.setItem("visaproductsOpen", "false");
+        localStorage.setItem("nationalitiesOpen", "false");
+        localStorage.setItem("embassiesOpen", "false");
+        localStorage.setItem("couponsOpen", "true");
+        localStorage.setItem("additionalInfoOpen", "false");
+      } else if (newPath.startsWith("/dashboard/additional-info")) {
+        countriesOpen.value = false;
+        visaproductsOpen.value = false;
+        nationalitiesOpen.value = false;
+        embassiesOpen.value = false;
+        couponsOpen.value = false;
+        additionalInfoOpen.value = true;
+        guidesOpen.value = false;
+        usersOpen.value = false;
+        localStorage.setItem("countriesOpen", "false");
+        localStorage.setItem("visaproductsOpen", "false");
+        localStorage.setItem("nationalitiesOpen", "false");
+        localStorage.setItem("embassiesOpen", "false");
+        localStorage.setItem("couponsOpen", "false");
+        localStorage.setItem("additionalInfoOpen", "true");
+        localStorage.setItem("guidesOpen", "false");
+        localStorage.setItem("usersOpen", "false");
+      } else if (newPath.startsWith("/dashboard/guides")) {
+        countriesOpen.value = false;
+        visaproductsOpen.value = false;
+        nationalitiesOpen.value = false;
+        embassiesOpen.value = false;
+        couponsOpen.value = false;
+        additionalInfoOpen.value = false;
+        guidesOpen.value = true;
+        usersOpen.value = false;
+        localStorage.setItem("countriesOpen", "false");
+        localStorage.setItem("visaproductsOpen", "false");
+        localStorage.setItem("nationalitiesOpen", "false");
+        localStorage.setItem("embassiesOpen", "false");
+        localStorage.setItem("couponsOpen", "false");
+        localStorage.setItem("additionalInfoOpen", "false");
+        localStorage.setItem("guidesOpen", "true");
+        localStorage.setItem("usersOpen", "false");
+      } else if (newPath.startsWith("/dashboard/users")) {
+        countriesOpen.value = false;
+        visaproductsOpen.value = false;
+        nationalitiesOpen.value = false;
+        embassiesOpen.value = false;
+        couponsOpen.value = false;
+        additionalInfoOpen.value = false;
+        usersOpen.value = true;
+        localStorage.setItem("countriesOpen", "false");
+        localStorage.setItem("visaproductsOpen", "false");
+        localStorage.setItem("nationalitiesOpen", "false");
+        localStorage.setItem("embassiesOpen", "false");
+        localStorage.setItem("couponsOpen", "false");
+        localStorage.setItem("additionalInfoOpen", "false");
+        localStorage.setItem("usersOpen", "true");
+      } else if (newPath.startsWith("/dashboard/support")) {
+        domainsOpen.value = false;
+        sslOpen.value = false;
+        imagesOpen.value = false;
+        supportOpen.value = true;
+        localStorage.setItem("domainsOpen", "false");
+        localStorage.setItem("sslOpen", "false");
+        localStorage.setItem("imagesOpen", "false");
+        localStorage.setItem("supportOpen", "true");
+      } else if (newPath.startsWith("/dashboard/settings")) {
+        // Settings page - no dropdown to manage
+      }
     }
-  }
-}, { immediate: true });
+  },
+  { immediate: true }
+);
 
 // Dropdown states
 const settingsDropdownOpen = ref(false);
@@ -1297,18 +1532,108 @@ const toggleTheme = () => {
 };
 
 // Navigation toggle functions
+const toggleDomains = () => {
+  countriesOpen.value = false;
+  visaproductsOpen.value = false;
+  nationalitiesOpen.value = false;
+  embassiesOpen.value = false;
+  sslOpen.value = false;
+  imagesOpen.value = false;
+  domainsOpen.value = !domainsOpen.value;
+
+  // Save to localStorage
+  if (process.client) {
+    localStorage.setItem("domainsOpen", domainsOpen.value.toString());
+    localStorage.setItem("countriesOpen", "false");
+    localStorage.setItem("visaproductsOpen", "false");
+    localStorage.setItem("nationalitiesOpen", "false");
+    localStorage.setItem("embassiesOpen", "false");
+    localStorage.setItem("sslOpen", "false");
+    localStorage.setItem("imagesOpen", "false");
+  }
+};
+
+const toggleSSL = () => {
+  domainsOpen.value = false;
+  countriesOpen.value = false;
+  visaproductsOpen.value = false;
+  nationalitiesOpen.value = false;
+  embassiesOpen.value = false;
+  imagesOpen.value = false;
+  sslOpen.value = !sslOpen.value;
+
+  // Save to localStorage
+  if (process.client) {
+    localStorage.setItem("sslOpen", sslOpen.value.toString());
+    localStorage.setItem("domainsOpen", "false");
+    localStorage.setItem("countriesOpen", "false");
+    localStorage.setItem("visaproductsOpen", "false");
+    localStorage.setItem("nationalitiesOpen", "false");
+    localStorage.setItem("embassiesOpen", "false");
+    localStorage.setItem("imagesOpen", "false");
+  }
+};
+
+const toggleImages = () => {
+  domainsOpen.value = false;
+  countriesOpen.value = false;
+  visaproductsOpen.value = false;
+  nationalitiesOpen.value = false;
+  embassiesOpen.value = false;
+  sslOpen.value = false;
+  supportOpen.value = false;
+  imagesOpen.value = !imagesOpen.value;
+
+  // Save to localStorage
+  if (process.client) {
+    localStorage.setItem("imagesOpen", imagesOpen.value.toString());
+    localStorage.setItem("domainsOpen", "false");
+    localStorage.setItem("countriesOpen", "false");
+    localStorage.setItem("visaproductsOpen", "false");
+    localStorage.setItem("nationalitiesOpen", "false");
+    localStorage.setItem("embassiesOpen", "false");
+    localStorage.setItem("sslOpen", "false");
+    localStorage.setItem("supportOpen", "false");
+  }
+};
+
+const toggleSupport = () => {
+  domainsOpen.value = false;
+  countriesOpen.value = false;
+  visaproductsOpen.value = false;
+  nationalitiesOpen.value = false;
+  embassiesOpen.value = false;
+  sslOpen.value = false;
+  imagesOpen.value = false;
+  settingsDropdownOpen.value = false;
+  supportOpen.value = !supportOpen.value;
+
+  // Save to localStorage
+  if (process.client) {
+    localStorage.setItem("supportOpen", supportOpen.value.toString());
+    localStorage.setItem("domainsOpen", "false");
+    localStorage.setItem("countriesOpen", "false");
+    localStorage.setItem("visaproductsOpen", "false");
+    localStorage.setItem("nationalitiesOpen", "false");
+    localStorage.setItem("embassiesOpen", "false");
+    localStorage.setItem("sslOpen", "false");
+    localStorage.setItem("imagesOpen", "false");
+  }
+};
+
 const toggleCountries = () => {
+  domainsOpen.value = false;
   visaproductsOpen.value = false;
   nationalitiesOpen.value = false;
   embassiesOpen.value = false;
   countriesOpen.value = !countriesOpen.value;
-  
+
   // Save to localStorage
   if (process.client) {
-    localStorage.setItem('countriesOpen', countriesOpen.value.toString());
-    localStorage.setItem('visaproductsOpen', 'false');
-    localStorage.setItem('nationalitiesOpen', 'false');
-    localStorage.setItem('embassiesOpen', 'false');
+    localStorage.setItem("countriesOpen", countriesOpen.value.toString());
+    localStorage.setItem("visaproductsOpen", "false");
+    localStorage.setItem("nationalitiesOpen", "false");
+    localStorage.setItem("embassiesOpen", "false");
   }
 };
 
@@ -1317,13 +1642,13 @@ const toggleVisaproducts = () => {
   nationalitiesOpen.value = false;
   embassiesOpen.value = false;
   visaproductsOpen.value = !visaproductsOpen.value;
-  
+
   // Save to localStorage
   if (process.client) {
-    localStorage.setItem('visaproductsOpen', visaproductsOpen.value.toString());
-    localStorage.setItem('countriesOpen', 'false');
-    localStorage.setItem('nationalitiesOpen', 'false');
-    localStorage.setItem('embassiesOpen', 'false');
+    localStorage.setItem("visaproductsOpen", visaproductsOpen.value.toString());
+    localStorage.setItem("countriesOpen", "false");
+    localStorage.setItem("nationalitiesOpen", "false");
+    localStorage.setItem("embassiesOpen", "false");
   }
 };
 
@@ -1332,13 +1657,16 @@ const toggleNationalities = () => {
   visaproductsOpen.value = false;
   embassiesOpen.value = false;
   nationalitiesOpen.value = !nationalitiesOpen.value;
-  
+
   // Save to localStorage
   if (process.client) {
-    localStorage.setItem('nationalitiesOpen', nationalitiesOpen.value.toString());
-    localStorage.setItem('countriesOpen', 'false');
-    localStorage.setItem('visaproductsOpen', 'false');
-    localStorage.setItem('embassiesOpen', 'false');
+    localStorage.setItem(
+      "nationalitiesOpen",
+      nationalitiesOpen.value.toString()
+    );
+    localStorage.setItem("countriesOpen", "false");
+    localStorage.setItem("visaproductsOpen", "false");
+    localStorage.setItem("embassiesOpen", "false");
   }
 };
 
@@ -1347,13 +1675,13 @@ const toggleEmbassies = () => {
   visaproductsOpen.value = false;
   nationalitiesOpen.value = false;
   embassiesOpen.value = !embassiesOpen.value;
-  
+
   // Save to localStorage
   if (process.client) {
-    localStorage.setItem('embassiesOpen', embassiesOpen.value.toString());
-    localStorage.setItem('countriesOpen', 'false');
-    localStorage.setItem('visaproductsOpen', 'false');
-    localStorage.setItem('nationalitiesOpen', 'false');
+    localStorage.setItem("embassiesOpen", embassiesOpen.value.toString());
+    localStorage.setItem("countriesOpen", "false");
+    localStorage.setItem("visaproductsOpen", "false");
+    localStorage.setItem("nationalitiesOpen", "false");
   }
 };
 
@@ -1364,15 +1692,15 @@ const toggleCoupons = () => {
   embassiesOpen.value = false;
   additionalInfoOpen.value = false;
   couponsOpen.value = !couponsOpen.value;
-  
+
   // Save to localStorage
   if (process.client) {
-    localStorage.setItem('couponsOpen', couponsOpen.value.toString());
-    localStorage.setItem('countriesOpen', 'false');
-    localStorage.setItem('visaproductsOpen', 'false');
-    localStorage.setItem('nationalitiesOpen', 'false');
-    localStorage.setItem('embassiesOpen', 'false');
-    localStorage.setItem('additionalInfoOpen', 'false');
+    localStorage.setItem("couponsOpen", couponsOpen.value.toString());
+    localStorage.setItem("countriesOpen", "false");
+    localStorage.setItem("visaproductsOpen", "false");
+    localStorage.setItem("nationalitiesOpen", "false");
+    localStorage.setItem("embassiesOpen", "false");
+    localStorage.setItem("additionalInfoOpen", "false");
   }
 };
 
@@ -1385,17 +1713,20 @@ const toggleAdditionalInfo = () => {
   guidesOpen.value = false;
   usersOpen.value = false;
   additionalInfoOpen.value = !additionalInfoOpen.value;
-  
+
   // Save to localStorage
   if (process.client) {
-    localStorage.setItem('additionalInfoOpen', additionalInfoOpen.value.toString());
-    localStorage.setItem('countriesOpen', 'false');
-    localStorage.setItem('visaproductsOpen', 'false');
-    localStorage.setItem('nationalitiesOpen', 'false');
-    localStorage.setItem('embassiesOpen', 'false');
-    localStorage.setItem('couponsOpen', 'false');
-    localStorage.setItem('guidesOpen', 'false');
-    localStorage.setItem('usersOpen', 'false');
+    localStorage.setItem(
+      "additionalInfoOpen",
+      additionalInfoOpen.value.toString()
+    );
+    localStorage.setItem("countriesOpen", "false");
+    localStorage.setItem("visaproductsOpen", "false");
+    localStorage.setItem("nationalitiesOpen", "false");
+    localStorage.setItem("embassiesOpen", "false");
+    localStorage.setItem("couponsOpen", "false");
+    localStorage.setItem("guidesOpen", "false");
+    localStorage.setItem("usersOpen", "false");
   }
 };
 
@@ -1408,17 +1739,17 @@ const toggleGuides = () => {
   additionalInfoOpen.value = false;
   usersOpen.value = false;
   guidesOpen.value = !guidesOpen.value;
-  
+
   // Save to localStorage
   if (process.client) {
-    localStorage.setItem('guidesOpen', guidesOpen.value.toString());
-    localStorage.setItem('countriesOpen', 'false');
-    localStorage.setItem('visaproductsOpen', 'false');
-    localStorage.setItem('nationalitiesOpen', 'false');
-    localStorage.setItem('embassiesOpen', 'false');
-    localStorage.setItem('couponsOpen', 'false');
-    localStorage.setItem('additionalInfoOpen', 'false');
-    localStorage.setItem('usersOpen', 'false');
+    localStorage.setItem("guidesOpen", guidesOpen.value.toString());
+    localStorage.setItem("countriesOpen", "false");
+    localStorage.setItem("visaproductsOpen", "false");
+    localStorage.setItem("nationalitiesOpen", "false");
+    localStorage.setItem("embassiesOpen", "false");
+    localStorage.setItem("couponsOpen", "false");
+    localStorage.setItem("additionalInfoOpen", "false");
+    localStorage.setItem("usersOpen", "false");
   }
 };
 
@@ -1431,25 +1762,30 @@ const toggleUsers = () => {
   additionalInfoOpen.value = false;
   guidesOpen.value = false;
   usersOpen.value = !usersOpen.value;
-  
+
   // Save to localStorage
   if (process.client) {
-    localStorage.setItem('usersOpen', usersOpen.value.toString());
-    localStorage.setItem('countriesOpen', 'false');
-    localStorage.setItem('visaproductsOpen', 'false');
-    localStorage.setItem('nationalitiesOpen', 'false');
-    localStorage.setItem('embassiesOpen', 'false');
-    localStorage.setItem('couponsOpen', 'false');
-    localStorage.setItem('additionalInfoOpen', 'false');
-    localStorage.setItem('guidesOpen', 'false');
+    localStorage.setItem("usersOpen", usersOpen.value.toString());
+    localStorage.setItem("countriesOpen", "false");
+    localStorage.setItem("visaproductsOpen", "false");
+    localStorage.setItem("nationalitiesOpen", "false");
+    localStorage.setItem("embassiesOpen", "false");
+    localStorage.setItem("couponsOpen", "false");
+    localStorage.setItem("additionalInfoOpen", "false");
+    localStorage.setItem("guidesOpen", "false");
   }
 };
-
 
 // Dropdown toggle functions
 const toggleSettingsDropdown = () => {
   userDropdownOpen.value = false;
+  supportOpen.value = false;
   settingsDropdownOpen.value = !settingsDropdownOpen.value;
+
+  // Save to localStorage
+  if (process.client) {
+    localStorage.setItem("supportOpen", "false");
+  }
 };
 
 const toggleUserDropdown = () => {
@@ -1466,7 +1802,7 @@ const toggleThemeDropdown = () => {
 const handleSignOutClick = () => {
   logout();
   userDropdownOpen.value = false;
-  router.push('/login');
+  router.push("/login");
 };
 
 // Theme management
@@ -1491,9 +1827,16 @@ const resetToDefault = () => {
 
 // Click outside handling
 const handleClickOutside = (event) => {
-  // Close all dropdowns when clicking outside
-  if (!event.target.closest('.relative')) {
+  // Close Settings dropdown when clicking outside
+  const settingsDropdown = event.target.closest("[data-settings-dropdown]");
+  const settingsButton = event.target.closest("[data-settings-button]");
+
+  if (!settingsDropdown && !settingsButton) {
     settingsDropdownOpen.value = false;
+  }
+
+  // Close other dropdowns when clicking outside
+  if (!event.target.closest(".relative")) {
     userDropdownOpen.value = false;
     themeDropdownOpen.value = false;
   }
@@ -1509,13 +1852,13 @@ onMounted(() => {
     isDarkMode.value = false;
     document.documentElement.classList.remove("dark");
   }
-  
+
   // Add click outside listener
-  document.addEventListener('click', handleClickOutside);
+  document.addEventListener("click", handleClickOutside);
 });
 
 // Component unmounted
 onUnmounted(() => {
-  document.removeEventListener('click', handleClickOutside);
+  document.removeEventListener("click", handleClickOutside);
 });
 </script>
