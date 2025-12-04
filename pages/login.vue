@@ -78,9 +78,9 @@
         </div>
 
         <!-- Form -->
-        <form @submit.prevent="handleSubmit" class="flex flex-col gap-6 w-full">
+        <form @submit.prevent="handleSubmit" class="flex flex-col gap-6 w-full" style="align-items: center;">
           <!-- Email Field -->
-          <div class="flex flex-col items-center">
+          <div class="flex flex-col items-center" style="width: 100%; max-width: 360px;">
             <label
               style="
                 font-family: 'Geist', sans-serif;
@@ -90,7 +90,7 @@
                 letter-spacing: 0%;
                 color: #ffffff;
               "
-              class="block mb-2 w-full max-w-[360px]"
+              class="block mb-2 w-full"
             >
               Email
             </label>
@@ -101,6 +101,8 @@
               :disabled="isLoading"
               style="
                 width: 100%;
+                min-width: 360px;
+                max-width: 360px;
                 height: 44px;
                 padding: 10px 14px;
                 border-radius: 6px;
@@ -108,12 +110,13 @@
                 background: #2f3641;
                 color: #ffffff;
                 box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
-                transition: all 0.2s;
+                transition: border-color 0.2s;
+                box-sizing: border-box;
               "
-              class="focus:outline-none focus:border-white/40 transition-all placeholder-gray-400"
+              class="focus:outline-none focus:border-white/40 placeholder-gray-400"
               :class="emailError ? 'border-red-500' : ''"
             />
-            <div class="h-4 mt-1">
+            <div class="h-4 mt-1 w-full" style="min-height: 16px;">
               <p v-if="emailError" class="text-sm text-red-300">
                 {{ emailError }}
               </p>
@@ -121,7 +124,7 @@
           </div>
 
           <!-- Password Field -->
-          <div class="flex flex-col items-center">
+          <div class="flex flex-col items-center" style="width: 100%; max-width: 360px;">
             <label
               style="
                 font-family: 'Geist', sans-serif;
@@ -131,7 +134,7 @@
                 letter-spacing: 0%;
                 color: #ffffff;
               "
-              class="block mb-2 w-full max-w-[360px]"
+              class="block mb-2 w-full"
             >
               Password
             </label>
@@ -142,6 +145,8 @@
               :disabled="isLoading"
               style="
                 width: 100%;
+                min-width: 360px;
+                max-width: 360px;
                 height: 44px;
                 padding: 10px 14px;
                 border-radius: 6px;
@@ -149,12 +154,13 @@
                 background: #2f3641;
                 color: #ffffff;
                 box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
-                transition: all 0.2s;
+                transition: border-color 0.2s;
+                box-sizing: border-box;
               "
-              class="focus:outline-none focus:border-white/40 transition-all placeholder-gray-400"
+              class="focus:outline-none focus:border-white/40 placeholder-gray-400"
               :class="passwordError ? 'border-red-500' : ''"
             />
-            <div class="h-4 mt-1">
+            <div class="h-4 mt-1 w-full" style="min-height: 16px;">
               <p v-if="passwordError" class="text-sm text-red-300">
                 {{ passwordError }}
               </p>
@@ -162,7 +168,7 @@
           </div>
 
           <!-- Remember me and Forgot password -->
-          <div class="flex items-center justify-between">
+          <div class="flex items-center justify-between" style="width: 100%; max-width: 360px;">
             <label class="flex items-center cursor-pointer">
               <input
                 type="checkbox"
@@ -199,7 +205,7 @@
           </div>
 
           <!-- Sign In Button -->
-          <div class="flex justify-center">
+          <div class="flex justify-center" style="width: 100%; max-width: 360px;">
             <button
               type="submit"
               :disabled="isLoading || !isFormValid"
@@ -210,7 +216,11 @@
                 line-height: 24px;
                 letter-spacing: 0%;
                 color: #ffffff;
-                padding: 9px 153px;
+                width: 100%;
+                min-width: 360px;
+                max-width: 360px;
+                height: 44px;
+                padding: 0;
                 border-radius: 6px;
                 background: #182230;
                 border: 2px solid transparent;
@@ -220,7 +230,11 @@
                   0px 3px 3px 0px rgba(255, 255, 255, 0.1) inset,
                   0px 0px 0px 1px rgba(16, 24, 40, 0.24) inset,
                   0px 1px 9px 3px rgba(0, 0, 0, 0.13);
-                transition: all 0.2s;
+                transition: opacity 0.2s, background-color 0.2s;
+                box-sizing: border-box;
+                display: flex;
+                align-items: center;
+                justify-content: center;
               "
               class="disabled:opacity-50 disabled:cursor-not-allowed"
               :class="
@@ -249,7 +263,7 @@
               ></span>
               <span
                 v-if="isLoading"
-                class="flex items-center justify-center relative z-10"
+                class="flex items-center justify-center relative z-10 whitespace-nowrap"
               >
                 <svg
                   class="animate-spin -ml-1 mr-3 h-4 w-4 text-white"
@@ -273,7 +287,7 @@
                 </svg>
                 Signing in...
               </span>
-              <span v-else class="relative z-10"> Sign in </span>
+              <span v-else class="relative z-10 whitespace-nowrap">Sign in</span>
             </button>
           </div>
         </form>

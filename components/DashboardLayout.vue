@@ -972,8 +972,9 @@
           <div class="p-2 space-y-1">
             <!-- Theme Toggle -->
             <button
-              @click.stop="toggleTheme"
-              class="w-full px-3 py-2.5 text-sm transition-colors text-left rounded-md flex items-center gap-3"
+              @click="handleThemeToggle"
+              type="button"
+              class="w-full px-3 py-2.5 text-sm transition-colors text-left rounded-md flex items-center gap-3 cursor-pointer"
               :class="
                 isDarkMode
                   ? 'text-white hover:bg-white hover:bg-opacity-10'
@@ -996,8 +997,9 @@
 
             <!-- Logout -->
             <button
-              @click.stop="handleSignOutClick"
-              class="w-full px-3 py-2.5 text-sm transition-colors text-left rounded-md flex items-center gap-3"
+              @click="handleLogoutClick"
+              type="button"
+              class="w-full px-3 py-2.5 text-sm transition-colors text-left rounded-md flex items-center gap-3 cursor-pointer"
               :class="
                 isDarkMode
                   ? 'text-white hover:bg-white hover:bg-opacity-10'
@@ -1529,6 +1531,18 @@ const toggleTheme = () => {
     document.documentElement.classList.remove("dark");
     localStorage.setItem("theme", "light");
   }
+};
+
+// Handle theme toggle from Settings card
+const handleThemeToggle = () => {
+  toggleTheme();
+  settingsDropdownOpen.value = false;
+};
+
+// Handle logout from Settings card
+const handleLogoutClick = () => {
+  handleSignOutClick();
+  settingsDropdownOpen.value = false;
 };
 
 // Navigation toggle functions

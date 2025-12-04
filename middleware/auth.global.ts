@@ -5,7 +5,7 @@
 export default defineNuxtRouteMiddleware((to, from) => {
   // Public pages that don't require authentication
   const publicPages = ['/', '/login', '/forgot-password', '/signup']
-  const isPublicPage = publicPages.includes(to.path)
+  const isPublicPage = publicPages.includes(to.path) || to.path.startsWith('/speed-test')
 
   // Simple check: just see if auth token exists in cookie
   const tokenCookie = useCookie('admin_auth_token')
