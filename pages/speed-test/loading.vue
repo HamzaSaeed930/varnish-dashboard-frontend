@@ -1,13 +1,24 @@
 <template>
   <div
-    class="min-h-screen flex items-center justify-center"
-    style="
-      background: #0C1E35;
-      background-image: radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.05) 1px, transparent 0);
-      background-size: 40px 40px;
-    "
+    class="min-h-screen flex items-center justify-center relative overflow-hidden"
+    style="background: #0C1E35;"
   >
-    <div class="text-center">
+    <!-- Background Pattern -->
+    <!-- <div
+      class="absolute inset-0 opacity-100"
+      style="
+        background-image: url('/images/Lines.png');
+        background-repeat: repeat;
+        background-size: cover;
+        background-position: center;
+        pointer-events: none;
+        z-index: 0;
+        width: 60%;
+        height: 40%;
+        margin: 0% 20%;
+      "
+    ></div> -->
+    <div class="text-center relative z-10">
       <!-- Loading Animation -->
       <div class="mb-8 flex justify-center">
         <div class="relative w-20 h-20">
@@ -27,9 +38,14 @@
         style="
           font-family: 'Geist', sans-serif;
           font-weight: 600;
-          font-size: 32px;
-          line-height: 40px;
-          color: #ffffff;
+          font-style: SemiBold;
+          font-size: 30px;
+          line-height: 100%;
+          letter-spacing: -5%;
+          text-align: center;
+          vertical-align: middle;
+          text-transform: capitalize;
+          color: #FFFFFF;
         "
       >
         Running Performance Tests
@@ -38,12 +54,15 @@
         style="
           font-family: 'Geist', sans-serif;
           font-weight: 400;
-          font-size: 16px;
-          line-height: 24px;
-          color: #9ca3af;
+          font-style: Regular;
+          font-size: 14px;
+          line-height: 20px;
+          letter-spacing: 0%;
+          text-align: center;
+          color: #BBBBBB;
         "
       >
-        Analyzing your website performance. This may take a few moments.
+        Analyzing your website performance. This may take a few moments
       </p>
     </div>
   </div>

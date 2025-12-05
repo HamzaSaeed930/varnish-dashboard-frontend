@@ -1,145 +1,192 @@
 <template>
   <DashboardLayout>
-    <div class="space-y-8 sm:space-y-4">
+    <div class="space-y-6">
       <!-- Page Header -->
-      <div class="flex flex-row items-center justify-between w-full gap-2 sm:gap-4">
-        <div class="flex-1 min-w-0">
-          <h1 class="text-lg sm:text-2xl font-semibold text-gray-900 dark:text-white">
-            Dashboard
-          </h1>
-          <label class="text-[#475467] dark:text-white text-[10px] sm:text-base leading-[12px] sm:leading-6"
-            style="font-weight: 400; letter-spacing: 0%">
-            Here's what's happening.
-          </label>
+      <div class="flex flex-row items-center justify-between w-full">
+        <h1 class="text-xl font-semibold text-gray-900 dark:text-gray-900 uppercase">
+          Dashboard
+        </h1>
+      </div>
+
+      <!-- Top Row - KPI Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+        <!-- REQUESTS Card -->
+        <div class="bg-white dark:bg-white rounded-[20px] border border-gray-200 dark:border-gray-200 p-6 shadow-sm">
+          <p class="text-3xl font-bold text-gray-900 dark:text-gray-900 mb-1">
+            {{ formatNumber(dashboardData.requests) }}
+          </p>
+          <p class="text-sm font-medium text-gray-600 dark:text-gray-600 uppercase mb-1">Requests</p>
+          <p class="text-xs text-gray-500 dark:text-gray-500">Server(s): All</p>
+        </div>
+
+        <!-- MISS Card -->
+        <div class="bg-white dark:bg-white rounded-[20px] border border-gray-200 dark:border-gray-200 p-6 shadow-sm">
+          <p class="text-3xl font-bold text-gray-900 dark:text-gray-900 mb-1">
+            {{ formatNumber(dashboardData.miss) }}
+          </p>
+          <p class="text-sm font-medium text-gray-600 dark:text-gray-600 uppercase mb-1">Miss</p>
+          <p class="text-xs text-gray-500 dark:text-gray-500">Server(s): All</p>
+        </div>
+
+        <!-- HITS Card -->
+        <div class="bg-white dark:bg-white rounded-[20px] border border-gray-200 dark:border-gray-200 p-6 shadow-sm">
+          <p class="text-3xl font-bold text-gray-900 dark:text-gray-900 mb-1">
+            {{ formatNumber(dashboardData.hits) }}
+          </p>
+          <p class="text-sm font-medium text-gray-600 dark:text-gray-600 uppercase mb-1">Hits</p>
+          <p class="text-xs text-gray-500 dark:text-gray-500">Server(s): All</p>
+        </div>
+
+        <!-- SESSION CONNECTIONS Card -->
+        <div class="bg-white dark:bg-white rounded-[20px] border border-gray-200 dark:border-gray-200 p-6 shadow-sm">
+          <p class="text-3xl font-bold text-gray-900 dark:text-gray-900 mb-1">
+            {{ formatNumber(dashboardData.sessionConnections) }}
+          </p>
+          <p class="text-sm font-medium text-gray-600 dark:text-gray-600 uppercase mb-1">Session Connections</p>
+          <p class="text-xs text-gray-500 dark:text-gray-500">Server(s): All</p>
         </div>
       </div>
 
-      <!-- Date Filter Tabs -->
-      <div class="flex space-x-1 bg-gray-100 dark:bg-gray-800 p-1 rounded-[8px] w-fit">
-        <button
-          @click="selectedPeriod = '30d'"
-          :class="[
-            selectedPeriod === '30d'
-              ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm'
-              : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300',
-            'px-4 py-2 rounded-[6px] text-sm font-medium transition-all duration-200'
-          ]"
-        >
-          30 Days
-        </button>
-        <button
-          @click="selectedPeriod = '7d'"
-          :class="[
-            selectedPeriod === '7d'
-              ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm'
-              : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300',
-            'px-4 py-2 rounded-[6px] text-sm font-medium transition-all duration-200'
-          ]"
-        >
-          7 Days
-        </button>
-        <button
-          @click="selectedPeriod = '24h'"
-          :class="[
-            selectedPeriod === '24h'
-              ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm'
-              : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300',
-            'px-4 py-2 rounded-[6px] text-sm font-medium transition-all duration-200'
-          ]"
-        >
-          24 Hours
-        </button>
+      <!-- Middle Row - Hit Rate and Hit/Miss Chart -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+        <!-- Hit Rate Card -->
+        <div class="bg-white dark:bg-white rounded-[20px] border border-gray-200 dark:border-gray-200 p-6 shadow-sm">
+          <div class="flex items-center justify-between mb-4">
+            <div>
+              <p class="text-sm font-semibold text-gray-900 dark:text-gray-900 uppercase mb-1">Hit Rate</p>
+              <p class="text-xs text-gray-500 dark:text-gray-500">Server(s): All</p>
+            </div>
+          </div>
+          <div class="flex items-center justify-center mb-4">
+            <div class="relative w-32 h-32">
+              <canvas ref="hitRateChart"></canvas>
+              <div class="absolute inset-0 flex items-center justify-center">
+                <div class="text-center">
+                  <p class="text-3xl font-bold text-gray-900 dark:text-gray-900">{{ hitRate }}%</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <p class="text-xs text-gray-500 dark:text-gray-500 text-center">average per sec</p>
+        </div>
+
+        <!-- Hit and Miss Chart -->
+        <div class="bg-white dark:bg-white rounded-[20px] border border-gray-200 dark:border-gray-200 p-6 shadow-sm">
+          <div class="flex items-center justify-between mb-4">
+            <div>
+              <p class="text-sm font-semibold text-gray-900 dark:text-gray-900 uppercase mb-1">Hit and Miss</p>
+              <p class="text-xs text-gray-500 dark:text-gray-500">Server(s): All</p>
+            </div>
+          </div>
+          <div class="h-48 mb-2">
+            <canvas ref="hitMissChart"></canvas>
+          </div>
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-4">
+              <div class="flex items-center gap-2">
+                <div class="w-3 h-3 rounded-full bg-blue-500"></div>
+                <span class="text-xs text-gray-600 dark:text-gray-600">Hit</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                <span class="text-xs text-gray-600 dark:text-gray-600">Miss</span>
+              </div>
+            </div>
+            <p class="text-xs text-gray-500 dark:text-gray-500">average per sec</p>
+          </div>
+        </div>
       </div>
 
-      <!-- Stats Cards Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-        <!-- Total Revenue Card -->
-        <div class="bg-white dark:bg-[#09090B] rounded-[8px] border border-gray-200 dark:border-gray-800 p-6">
-          <div class="grid grid-cols-2 gap-7">
-            <div>
-                <p class="text-sm font-normal text-[#64748B] dark:text-gray-400">Total Revenue</p>
-              <p class="text-2xl font-medium text-[#020617] dark:text-white">
-                {{ isLoading ? '...' : formatCurrency(metrics.totalRevenue) }}
-              </p>
-            </div>
-              <div class="w-full h-12">
-              <canvas ref="revenueChart"></canvas>
-            </div>
+      <!-- Third Row - Stacked Area Chart -->
+      <div class="bg-white dark:bg-white rounded-[20px] border border-gray-200 dark:border-gray-200 p-6 shadow-sm">
+        <div class="mb-4">
+          <p class="text-sm font-semibold text-gray-900 dark:text-gray-900 uppercase mb-1">
+            Hit, Miss and Others Stacked to Requests
+          </p>
+          <p class="text-xs text-gray-500 dark:text-gray-500 mb-1">Server(s): All</p>
+          <p class="text-xs text-gray-500 dark:text-gray-500 italic">
+            others can be hit_for_pass, synth, pipe, etc
+          </p>
+        </div>
+        <div class="h-48 mb-2">
+          <canvas ref="stackedChart"></canvas>
+        </div>
+        <div class="flex items-center justify-end">
+          <p class="text-xs text-gray-500 dark:text-gray-500">average per sec</p>
+        </div>
+      </div>
+
+      <!-- Bottom Row - Top 5 Servers Tables -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+        <!-- Top 5 Servers by Requests -->
+        <div class="bg-white dark:bg-white rounded-[20px] border border-gray-200 dark:border-gray-200 p-6 shadow-sm">
+          <p class="text-sm font-semibold text-gray-900 dark:text-gray-900 uppercase mb-1">
+            Top 5 Servers by Requests
+          </p>
+          <p class="text-xs text-gray-500 dark:text-gray-500 mb-4">Server(s): All</p>
+          <div class="overflow-x-auto">
+            <table class="w-full">
+              <thead>
+                <tr class="border-b border-gray-200 dark:border-gray-200">
+                  <th class="text-left text-xs font-semibold text-gray-600 dark:text-gray-600 py-2 uppercase">Name</th>
+                  <th class="text-right text-xs font-semibold text-gray-600 dark:text-gray-600 py-2 uppercase">Requests</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(server, index) in topServersByRequests" :key="index" class="border-b border-gray-100 dark:border-gray-100">
+                  <td class="text-sm text-gray-900 dark:text-gray-900 py-2">{{ server.name }}</td>
+                  <td class="text-sm text-gray-900 dark:text-gray-900 py-2 text-right">{{ formatNumber(server.requests) }}</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
 
-        <!-- Total Applications Card -->
-        <div class="bg-white dark:bg-[#09090B] rounded-[8px] border border-gray-200 dark:border-gray-800 p-6">
-          <div class="grid grid-cols-2 gap-7">
-            <div>
-                <p class="text-sm font-normal text-[#64748B] dark:text-gray-400">Total Applications</p>
-              <p class="text-2xl font-medium text-[#020617] dark:text-white">
-                {{ isLoading ? '...' : formatNumber(metrics.totalApplications) }}
-              </p>
-            </div>
-            <div class="w-full h-12">
-              <canvas ref="applicationsChart"></canvas>
-            </div>
+        <!-- Top 5 Servers by Hit -->
+        <div class="bg-white dark:bg-white rounded-[20px] border border-gray-200 dark:border-gray-200 p-6 shadow-sm">
+          <p class="text-sm font-semibold text-gray-900 dark:text-gray-900 uppercase mb-1">
+            Top 5 Servers by Hit
+          </p>
+          <p class="text-xs text-gray-500 dark:text-gray-500 mb-4">Server(s): All</p>
+          <div class="overflow-x-auto">
+            <table class="w-full">
+              <thead>
+                <tr class="border-b border-gray-200 dark:border-gray-200">
+                  <th class="text-left text-xs font-semibold text-gray-600 dark:text-gray-600 py-2 uppercase">Name</th>
+                  <th class="text-right text-xs font-semibold text-gray-600 dark:text-gray-600 py-2 uppercase">Hit</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(server, index) in topServersByHit" :key="index" class="border-b border-gray-100 dark:border-gray-100">
+                  <td class="text-sm text-gray-900 dark:text-gray-900 py-2">{{ server.name }}</td>
+                  <td class="text-sm text-gray-900 dark:text-gray-900 py-2 text-right">{{ formatNumber(server.hit) }}</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
 
-        <!-- Open Applications Card -->
-        <div class="bg-white dark:bg-[#09090B] rounded-[8px] border border-gray-200 dark:border-gray-800 p-6">
-          <div class="grid grid-cols-2 gap-7">
-            <div>
-                <p class="text-sm font-normal text-[#64748B] dark:text-gray-400">Open Applications</p>
-              <p class="text-2xl font-medium text-[#020617] dark:text-white">
-                {{ isLoading ? '...' : formatNumber(metrics.openApplications) }}
-              </p>
-            </div>
-            <div class="w-full h-12">
-              <canvas ref="openApplicationsChart"></canvas>
-            </div>
-          </div>
-        </div>
-
-        <!-- Approved Applications Card -->
-        <div class="bg-white dark:bg-[#09090B] rounded-[8px] border border-gray-200 dark:border-gray-800 p-6">
-          <div class="grid grid-cols-2 gap-7">
-            <div>
-              <p class="text-sm font-normal text-[#64748B] dark:text-gray-400">Approved Applications</p>
-              <p class="text-2xl font-medium text-[#020617] dark:text-white">
-                {{ isLoading ? '...' : formatNumber(metrics.approvedApplications) }}
-              </p>
-            </div>
-            <div class="w-full h-12">
-              <canvas ref="approvedApplicationsChart"></canvas>
-            </div>
-          </div>
-        </div>
-
-        <!-- Total Customers Card -->
-        <div class="bg-white dark:bg-[#09090B] rounded-[8px] border border-gray-200 dark:border-gray-800 p-6">
-          <div class="grid grid-cols-2 gap-7">
-            <div>
-              <p class="text-sm font-normal text-[#64748B] dark:text-gray-400">Total Customers</p>
-              <p class="text-2xl font-medium text-[#020617] dark:text-white">
-                {{ isLoading ? '...' : formatNumber(metrics.totalCustomers) }}
-              </p>
-            </div>
-            <div class="w-full h-12">
-              <canvas ref="customersChart"></canvas>
-            </div>
-          </div>
-        </div>
-
-        <!-- Pending Payments Card -->
-        <div class="bg-white dark:bg-[#09090B] rounded-[8px] border border-gray-200 dark:border-gray-800 p-6">
-          <div class="grid grid-cols-2 gap-7">
-            <div>
-              <p class="text-sm font-normal text-[#64748B] dark:text-gray-400">Pending Payments</p>
-              <p class="text-2xl font-medium text-[#020617] dark:text-white">
-                {{ isLoading ? '...' : formatNumber(metrics.pendingPayments) }}
-              </p>
-            </div>
-            <div class="w-full h-12">
-              <canvas ref="pendingPaymentsChart"></canvas>
-            </div>
+        <!-- Top 5 by Miss -->
+        <div class="bg-white dark:bg-white rounded-[20px] border border-gray-200 dark:border-gray-200 p-6 shadow-sm">
+          <p class="text-sm font-semibold text-gray-900 dark:text-gray-900 uppercase mb-1">
+            Top 5 by Miss
+          </p>
+          <p class="text-xs text-gray-500 dark:text-gray-500 mb-4">Server(s): All</p>
+          <div class="overflow-x-auto">
+            <table class="w-full">
+              <thead>
+                <tr class="border-b border-gray-200 dark:border-gray-200">
+                  <th class="text-left text-xs font-semibold text-gray-600 dark:text-gray-600 py-2 uppercase">Name</th>
+                  <th class="text-right text-xs font-semibold text-gray-600 dark:text-gray-600 py-2 uppercase">Miss</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(server, index) in topServersByMiss" :key="index" class="border-b border-gray-100 dark:border-gray-100">
+                  <td class="text-sm text-gray-900 dark:text-gray-900 py-2">{{ server.name }}</td>
+                  <td class="text-sm text-gray-900 dark:text-gray-900 py-2 text-right">{{ formatNumber(server.miss) }}</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
@@ -149,9 +196,7 @@
 
 <script setup lang="ts">
 import { Chart, registerables } from 'chart.js';
-import { usePaymentsApi, type Payment } from '~/composables/usePaymentsApi';
-import { useApplication } from '~/composables/useApplication';
-import { useCustomersApi } from '~/composables/useCustomersApi';
+import { ref, computed, nextTick, onMounted, onUnmounted } from 'vue';
 
 // Register Chart.js components
 Chart.register(...registerables);
@@ -161,233 +206,137 @@ useHead({
   title: "Dashboard - Varnish Dashboard",
 });
 
-// API composables
-const { getAllPayments, calculateAnalytics } = usePaymentsApi();
-const { getAllApplications, getApplicationSummary } = useApplication();
-const { getAllCustomers, getCustomerSummary } = useCustomersApi();
-
-// Date period selection
-const selectedPeriod = ref('30d');
-
-// Loading state
-const isLoading = ref(false);
-const errorMessage = ref('');
-
 // Dashboard data
-const payments = ref<Payment[]>([]);
-const applications = ref<any[]>([]);
-const customers = ref<any[]>([]);
-const applicationSummary = ref<any>(null);
-const customerSummary = ref<{
-  totalCustomers: number
-  activeCustomers: number
-  inactiveCustomers: number
-  suspendedCustomers: number
-  totalApplications: number
-} | null>(null);
-
-// Dashboard metrics
-const metrics = computed(() => {
-  const paymentAnalytics = calculateAnalytics(payments.value);
-  const filteredPayments = filterByPeriod(payments.value, selectedPeriod.value);
-  const filteredApplications = filterByPeriod(applications.value, selectedPeriod.value);
-  const filteredCustomers = filterByPeriod(customers.value, selectedPeriod.value);
-  
-  // Calculate revenue for selected period
-  const periodRevenue = filteredPayments.reduce((sum, payment) => {
-    const status = payment.status?.toLowerCase() || '';
-    const hasPaidAt = !!(payment.paidAt || payment.datePaid);
-    const isSuccessfulPayment = 
-      status === 'paid' || 
-      status === 'approved' || 
-      status === 'succeeded' || 
-      status === 'completed' ||
-      status === 'success' ||
-      hasPaidAt;
-    const isRefunded = status === 'refunded' || status === 'refund';
-    
-    if (isSuccessfulPayment && !isRefunded) {
-      const amount = typeof payment.amount === 'string' 
-        ? parseFloat(payment.amount.replace(/[^0-9.-]+/g, '')) || 0
-        : (payment.amount || 0);
-      return sum + Math.abs(amount);
-    }
-    return sum;
-  }, 0);
-
-  // Count applications by status
-  const openApplications = filteredApplications.filter(app => {
-    const status = app.status?.toLowerCase() || '';
-    return status === 'open' || status === 'in review' || status === 'pending' || status === 'processing';
-  }).length;
-
-  const approvedApplications = filteredApplications.filter(app => {
-    const status = app.status?.toLowerCase() || '';
-    return status === 'approved' || status === 'completed' || status === 'success';
-  }).length;
-
-  const pendingPayments = filteredPayments.filter(payment => {
-    const status = payment.status?.toLowerCase() || '';
-    const hasPaidAt = !!(payment.paidAt || payment.datePaid);
-    const isSuccessfulPayment = 
-      status === 'paid' || 
-      status === 'approved' || 
-      status === 'succeeded' || 
-      status === 'completed' ||
-      status === 'success' ||
-      hasPaidAt;
-    const isRefunded = status === 'refunded' || status === 'refund';
-    
-    return !isSuccessfulPayment && !isRefunded && 
-           (status === 'pending' || status === 'in review' || status === 'processing' || status === 'processing_payment' || !status);
-  }).length;
-
-  // Use customer summary if available, otherwise fall back to filtered count
-  const totalCustomers = customerSummary.value?.totalCustomers ?? filteredCustomers.length;
-
-  return {
-    totalRevenue: periodRevenue,
-    totalApplications: filteredApplications.length,
-    openApplications,
-    approvedApplications,
-    totalCustomers,
-    pendingPayments,
-  };
+const dashboardData = ref({
+  requests: 286200,
+  miss: 5,
+  hits: 140700,
+  sessionConnections: 286200,
 });
 
-// Filter data by period
-const filterByPeriod = (data: any[], period: string): any[] => {
-  const now = new Date();
-  const cutoffDate = new Date();
-  
-  if (period === '24h') {
-    cutoffDate.setHours(now.getHours() - 24);
-  } else if (period === '7d') {
-    cutoffDate.setDate(now.getDate() - 7);
-  } else if (period === '30d') {
-    cutoffDate.setDate(now.getDate() - 30);
-  }
-  
-  return data.filter(item => {
-    const itemDate = item.createdAt ? new Date(item.createdAt) : 
-                     item.datePaid ? new Date(item.datePaid) : 
-                     item.paidAt ? new Date(item.paidAt) : null;
-    
-    if (!itemDate) return false;
-    return itemDate >= cutoffDate;
-  });
-};
+const hitRate = computed(() => {
+  if (dashboardData.value.requests === 0) return 0;
+  return Math.round((dashboardData.value.hits / dashboardData.value.requests) * 100);
+});
 
-// Generate time-series data for charts
-const generateTimeSeriesData = (data: any[], period: string, valueExtractor: (item: any) => number): number[] => {
-  const filtered = filterByPeriod(data, period);
-  const now = new Date();
-  const startDate = new Date();
-  
-  let intervals: number;
-  let intervalMs: number;
-  
-  if (period === '24h') {
-    intervals = 24;
-    intervalMs = 60 * 60 * 1000; // 1 hour
-    startDate.setHours(now.getHours() - 24);
-  } else if (period === '7d') {
-    intervals = 7;
-    intervalMs = 24 * 60 * 60 * 1000; // 1 day
-    startDate.setDate(now.getDate() - 7);
-  } else {
-    intervals = 30;
-    intervalMs = 24 * 60 * 60 * 1000; // 1 day
-    startDate.setDate(now.getDate() - 30);
-  }
-  
-  const series: number[] = new Array(intervals).fill(0);
-  
-  filtered.forEach(item => {
-    const itemDate = item.createdAt ? new Date(item.createdAt) : 
-                     item.datePaid ? new Date(item.datePaid) : 
-                     item.paidAt ? new Date(item.paidAt) : null;
-    
-    if (!itemDate || itemDate < startDate) return;
-    
-    const diff = itemDate.getTime() - startDate.getTime();
-    const index = Math.floor(diff / intervalMs);
-    
-    if (index >= 0 && index < intervals) {
-      series[index] += valueExtractor(item);
-    }
-  });
-  
-  return series;
-};
+// Top servers data
+const topServersByRequests = ref([
+  { name: 'varnish-server-1', requests: 142300 },
+  { name: 'varnish-server-4', requests: 94300 },
+  { name: 'varnish-server-3', requests: 48300 },
+  { name: 'varnish-server-2', requests: 1300 },
+]);
+
+const topServersByHit = ref([
+  { name: 'varnish-server-1', hit: 140700 },
+  { name: 'varnish-server-4', hit: 0 },
+  { name: 'varnish-server-2', hit: 0 },
+  { name: 'varnish-server-3', hit: 0 },
+]);
+
+const topServersByMiss = ref([
+  { name: 'varnish-server-1', miss: 2 },
+  { name: 'varnish-server-4', miss: 1 },
+  { name: 'varnish-server-2', miss: 1 },
+  { name: 'varnish-server-3', miss: 1 },
+]);
 
 // Chart refs
-const revenueChart = ref(null);
-const applicationsChart = ref(null);
-const openApplicationsChart = ref(null);
-const approvedApplicationsChart = ref(null);
-const customersChart = ref(null);
-const pendingPaymentsChart = ref(null);
+const hitRateChart = ref<HTMLCanvasElement | null>(null);
+const hitMissChart = ref<HTMLCanvasElement | null>(null);
+const stackedChart = ref<HTMLCanvasElement | null>(null);
 
 // Chart instances
-let revenueChartInstance = null;
-let applicationsChartInstance = null;
-let openApplicationsChartInstance = null;
-let approvedApplicationsChartInstance = null;
-let customersChartInstance = null;
-let pendingPaymentsChartInstance = null;
+let hitRateChartInstance: Chart | null = null;
+let hitMissChartInstance: Chart | null = null;
+let stackedChartInstance: Chart | null = null;
 
-// Create revenue chart (stacked bar chart)
-const createRevenueChart = () => {
-  if (revenueChart.value) {
-    // Destroy existing chart if it exists
-    const existingChart = Chart.getChart(revenueChart.value);
+// Generate sample time series data
+const generateTimeLabels = () => {
+  const labels = [];
+  const startDate = new Date('2024-10-18T09:35:00');
+  for (let i = 0; i < 10; i++) {
+    const date = new Date(startDate);
+    date.setMinutes(date.getMinutes() + i * 5);
+    labels.push(date.toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }));
+  }
+  return labels;
+};
+
+// Create Hit Rate gauge chart
+const createHitRateChart = () => {
+  if (hitRateChart.value) {
+    const existingChart = Chart.getChart(hitRateChart.value);
     if (existingChart) {
       existingChart.destroy();
     }
-    
-    const ctx = revenueChart.value.getContext('2d');
-    const revenueData = generateTimeSeriesData(payments.value, selectedPeriod.value, (payment) => {
-      const status = payment.status?.toLowerCase() || '';
-      const hasPaidAt = !!(payment.paidAt || payment.datePaid);
-      const isSuccessfulPayment = 
-        status === 'paid' || 
-        status === 'approved' || 
-        status === 'succeeded' || 
-        status === 'completed' ||
-        status === 'success' ||
-        hasPaidAt;
-      const isRefunded = status === 'refunded' || status === 'refund';
-      
-      if (isSuccessfulPayment && !isRefunded) {
-        const amount = typeof payment.amount === 'string' 
-          ? parseFloat(payment.amount.replace(/[^0-9.-]+/g, '')) || 0
-          : (payment.amount || 0);
-        return Math.abs(amount);
-      }
-      return 0;
-    });
-    
-    // Normalize data for visualization (scale down for better display)
-    const maxValue = Math.max(...revenueData, 1);
-    const normalizedData = revenueData.map(val => (val / maxValue) * 100);
-    
-    revenueChartInstance = new Chart(ctx, {
-      type: 'bar',
+
+    const ctx = hitRateChart.value.getContext('2d') as CanvasRenderingContext2D;
+    const percentage = hitRate.value;
+
+    hitRateChartInstance = new Chart(ctx, {
+      type: 'doughnut',
       data: {
-        labels: revenueData.map((_, i) => i + 1),
+        datasets: [{
+          data: [percentage, 100 - percentage],
+          backgroundColor: ['#8B5CF6', '#E5E7EB'],
+          borderWidth: 0,
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        cutout: '75%',
+        plugins: {
+          legend: { display: false },
+          tooltip: { enabled: false }
+        }
+      }
+    });
+  }
+};
+
+// Create Hit and Miss line chart
+const createHitMissChart = () => {
+  if (hitMissChart.value) {
+    const existingChart = Chart.getChart(hitMissChart.value);
+    if (existingChart) {
+      existingChart.destroy();
+    }
+
+    const ctx = hitMissChart.value.getContext('2d') as CanvasRenderingContext2D;
+    const labels = generateTimeLabels();
+    
+    // Generate sample data
+    const hitData = labels.map(() => Math.random() * 50 + 20);
+    const missData = labels.map(() => Math.random() * 30 + 5);
+
+    hitMissChartInstance = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: labels,
         datasets: [
           {
-            label: 'Revenue',
-            data: normalizedData.map(val => val * 0.6),
-            backgroundColor: '#10B981',
-            borderWidth: 0
+            label: 'Hit',
+            data: hitData,
+            borderColor: '#3B82F6',
+            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+            borderWidth: 2,
+            fill: false,
+            tension: 0.4,
+            pointRadius: 4,
+            pointBackgroundColor: '#3B82F6',
           },
           {
-            label: 'Additional',
-            data: normalizedData.map(val => val * 0.4),
-            backgroundColor: '#F59E0B',
-            borderWidth: 0
+            label: 'Miss',
+            data: missData,
+            borderColor: '#EAB308',
+            backgroundColor: 'rgba(234, 179, 8, 0.1)',
+            borderWidth: 2,
+            fill: false,
+            tension: 0.4,
+            pointRadius: 4,
+            pointBackgroundColor: '#EAB308',
           }
         ]
       },
@@ -395,178 +344,168 @@ const createRevenueChart = () => {
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
-          legend: { display: false }
+          legend: { display: false },
+          tooltip: {
+            mode: 'index',
+            intersect: false,
+          }
         },
         scales: {
-          x: { display: false },
-          y: { display: false }
+          x: {
+            display: true,
+            grid: {
+              display: false
+            },
+            ticks: {
+              maxRotation: 45,
+              minRotation: 45,
+              font: {
+                size: 10
+              }
+            }
+          },
+          y: {
+            display: true,
+            beginAtZero: true,
+            max: 100,
+            grid: {
+              color: 'rgba(0, 0, 0, 0.1)'
+            },
+            ticks: {
+              font: {
+                size: 10
+              }
+            }
+          }
         }
       }
     });
   }
 };
 
-// Create line charts for other metrics
-const createLineChart = (canvasRef: any, dataArray: number[], color = '#8B5CF6') => {
-  if (canvasRef.value && dataArray.length > 0) {
-    // Destroy existing chart if it exists
-    const existingChart = Chart.getChart(canvasRef.value);
+// Create Stacked Area Chart
+const createStackedChart = () => {
+  if (stackedChart.value) {
+    const existingChart = Chart.getChart(stackedChart.value);
     if (existingChart) {
       existingChart.destroy();
     }
+
+    const ctx = stackedChart.value.getContext('2d') as CanvasRenderingContext2D;
+    const labels = generateTimeLabels();
     
-    const ctx = canvasRef.value.getContext('2d');
-    
-    // Normalize data for visualization
-    const maxValue = Math.max(...dataArray, 1);
-    const normalizedData = dataArray.map(val => (val / maxValue) * 100);
-    
-    return new Chart(ctx, {
+    // Generate sample data
+    const hitData = labels.map(() => Math.random() * 40 + 30);
+    const missData = labels.map(() => Math.random() * 20 + 10);
+    const othersData = labels.map(() => Math.random() * 10 + 5);
+
+    stackedChartInstance = new Chart(ctx, {
       type: 'line',
       data: {
-        labels: dataArray.map((_, i) => i + 1),
-        datasets: [{
-          data: normalizedData,
-          borderColor: color,
-          backgroundColor: color + '20',
-          borderWidth: 2,
-          fill: true,
-          tension: 0.4,
-          pointRadius: 0,
-          pointHoverRadius: 0
-        }]
+        labels: labels,
+        datasets: [
+          {
+            label: 'Hit',
+            data: hitData,
+            borderColor: '#3B82F6',
+            backgroundColor: 'rgba(59, 130, 246, 0.5)',
+            borderWidth: 0,
+            fill: true,
+            tension: 0.4,
+          },
+          {
+            label: 'Miss',
+            data: missData,
+            borderColor: '#8B5CF6',
+            backgroundColor: 'rgba(139, 92, 246, 0.5)',
+            borderWidth: 0,
+            fill: true,
+            tension: 0.4,
+          },
+          {
+            label: 'Others',
+            data: othersData,
+            borderColor: '#F97316',
+            backgroundColor: 'rgba(249, 115, 22, 0.5)',
+            borderWidth: 0,
+            fill: true,
+            tension: 0.4,
+          }
+        ]
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
-          legend: { display: false }
+          legend: { display: false },
+          tooltip: {
+            mode: 'index',
+            intersect: false,
+          }
         },
         scales: {
-          x: { display: false },
-          y: { display: false }
+          x: {
+            display: true,
+            grid: {
+              display: false
+            },
+            stacked: true,
+            ticks: {
+              maxRotation: 45,
+              minRotation: 45,
+              font: {
+                size: 10
+              }
+            }
+          },
+          y: {
+            display: true,
+            beginAtZero: true,
+            max: 100,
+            stacked: true,
+            grid: {
+              color: 'rgba(0, 0, 0, 0.1)'
+            },
+            ticks: {
+              font: {
+                size: 10
+              }
+            }
+          }
         }
       }
     });
   }
 };
 
-// Initialize all charts
-const initializeCharts = () => {
-  createRevenueChart();
-  
-  const applicationsData = generateTimeSeriesData(applications.value, selectedPeriod.value, () => 1);
-  applicationsChartInstance = createLineChart(applicationsChart, applicationsData, '#8B5CF6');
-  
-  const openAppsData = generateTimeSeriesData(
-    applications.value.filter(app => {
-      const status = app.status?.toLowerCase() || '';
-      return status === 'open' || status === 'in review' || status === 'pending' || status === 'processing';
-    }), 
-    selectedPeriod.value, 
-    () => 1
-  );
-  openApplicationsChartInstance = createLineChart(openApplicationsChart, openAppsData, '#8B5CF6');
-  
-  const approvedAppsData = generateTimeSeriesData(
-    applications.value.filter(app => {
-      const status = app.status?.toLowerCase() || '';
-      return status === 'approved' || status === 'completed' || status === 'success';
-    }), 
-    selectedPeriod.value, 
-    () => 1
-  );
-  approvedApplicationsChartInstance = createLineChart(approvedApplicationsChart, approvedAppsData, '#8B5CF6');
-  
-  const customersData = generateTimeSeriesData(customers.value, selectedPeriod.value, () => 1);
-  customersChartInstance = createLineChart(customersChart, customersData, '#8B5CF6');
-  
-  const pendingPaymentsData = generateTimeSeriesData(
-    payments.value.filter(payment => {
-      const status = payment.status?.toLowerCase() || '';
-      const hasPaidAt = !!(payment.paidAt || payment.datePaid);
-      const isSuccessfulPayment = 
-        status === 'paid' || 
-        status === 'approved' || 
-        status === 'succeeded' || 
-        status === 'completed' ||
-        status === 'success' ||
-        hasPaidAt;
-      const isRefunded = status === 'refunded' || status === 'refund';
-      
-      return !isSuccessfulPayment && !isRefunded && 
-             (status === 'pending' || status === 'in review' || status === 'processing' || status === 'processing_payment' || !status);
-    }), 
-    selectedPeriod.value, 
-    () => 1
-  );
-  pendingPaymentsChartInstance = createLineChart(pendingPaymentsChart, pendingPaymentsData, '#8B5CF6');
-};
-
-// Load dashboard data
-const loadDashboardData = async () => {
-  isLoading.value = true;
-  errorMessage.value = '';
-  
-  try {
-    // Fetch all data in parallel
-    const [paymentsResult, applicationsResult, customersResult, summaryResult] = await Promise.all([
-      getAllPayments().catch(() => ({ success: false, data: [] })),
-      getAllApplications().catch(() => []),
-      getAllCustomers().catch(() => ({ success: false, data: [] })),
-      getCustomerSummary().catch(() => ({ success: false, data: null })),
-    ]);
-    
-    payments.value = paymentsResult.success ? paymentsResult.data : [];
-    applications.value = Array.isArray(applicationsResult) ? applicationsResult : [];
-    customers.value = customersResult.success ? customersResult.data : [];
-    customerSummary.value = summaryResult.success ? summaryResult.data : null;
-    
-    // Initialize charts after data is loaded
-    await nextTick();
-    initializeCharts();
-  } catch (error: any) {
-    console.error('Error loading dashboard data:', error);
-    errorMessage.value = error.message || 'Failed to load dashboard data';
-  } finally {
-    isLoading.value = false;
-  }
-};
-
-// Format currency
-const formatCurrency = (amount: number) => {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(amount);
-};
-
 // Format number
 const formatNumber = (num: number) => {
-  return new Intl.NumberFormat('en-US').format(num);
+  if (num >= 1000000) {
+    return (num / 1000000).toFixed(1) + 'M';
+  } else if (num >= 1000) {
+    return (num / 1000).toFixed(1) + 'K';
+  }
+  return num.toString();
 };
 
-// Watch for period changes
-watch(selectedPeriod, () => {
+// Initialize charts
+const initializeCharts = () => {
   nextTick(() => {
-    initializeCharts();
+    createHitRateChart();
+    createHitMissChart();
+    createStackedChart();
   });
-});
+};
 
 // Initialize on mount
 onMounted(() => {
-  loadDashboardData();
+  initializeCharts();
 });
 
 // Cleanup on unmount
 onUnmounted(() => {
-  if (revenueChartInstance) revenueChartInstance.destroy();
-  if (applicationsChartInstance) applicationsChartInstance.destroy();
-  if (openApplicationsChartInstance) openApplicationsChartInstance.destroy();
-  if (approvedApplicationsChartInstance) approvedApplicationsChartInstance.destroy();
-  if (customersChartInstance) customersChartInstance.destroy();
-  if (pendingPaymentsChartInstance) pendingPaymentsChartInstance.destroy();
+  if (hitRateChartInstance) hitRateChartInstance.destroy();
+  if (hitMissChartInstance) hitMissChartInstance.destroy();
+  if (stackedChartInstance) stackedChartInstance.destroy();
 });
 </script>

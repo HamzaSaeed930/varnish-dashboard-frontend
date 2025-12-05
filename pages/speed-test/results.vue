@@ -1,13 +1,25 @@
 <template>
   <div
-    class="min-h-screen py-12 px-6"
-    style="
-      background: #0C1E35;
-      background-image: radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.05) 1px, transparent 0);
-      background-size: 40px 40px;
-    "
+    class="min-h-screen cursor-pointer relative overflow-hidden"
+    style="background: #0C1E35;"
+    @click="goToLogin"
   >
-    <div class="max-w-6xl mx-auto">
+    <!-- Background Pattern -->
+    <!-- <div
+      class="absolute inset-0 opacity-100"
+      style="
+        background-image: url('/images/Lines.png');
+        background-repeat: repeat;
+        background-size: cover;
+        background-position: center;
+        pointer-events: none;
+        z-index: 0;
+        width: 60%;
+        height: 40%;
+        margin: 0% 20%;
+      "
+    ></div> -->
+    <div class="max-w-6xl mx-auto relative z-10 mt-24" @click.stop>
       <!-- Header -->
       <div class="text-center mb-8">
         <h1
@@ -165,7 +177,6 @@
                 :key="index"
                 class="bg-white rounded-xl border relative flex flex-col"
                 style="
-                  width: 297.5px;
                   height: 167.5px;
                   border-radius: 12px;
                   border: 1px solid #EAECF0;
@@ -348,10 +359,10 @@
           </div>
         </div>
 
-        <!-- Varnish Optimisation Results Button -->
+        <!-- Continue to Login Button -->
         <div class="mt-6 flex justify-center">
           <button
-            @click="viewOptimizationResults"
+            @click.stop="goToLogin"
             class="relative overflow-hidden transition-all hover:opacity-90"
             style="
               width: 395px;
@@ -367,6 +378,7 @@
               letter-spacing: 0%;
               color: #FFFFFF;
               box-sizing: border-box;
+              cursor: pointer;
             "
           >
             <!-- Gradient Overlay -->
@@ -376,7 +388,7 @@
                 background: linear-gradient(177.61deg, rgba(255, 255, 255, 0) 2%, rgba(255, 255, 255, 0.12) 98.17%);
               "
             ></span>
-            <span class="relative z-10">Varnish Optimisation Results</span>
+            <span class="relative z-10">Continue to Login</span>
           </button>
         </div>
       </div>
@@ -433,6 +445,11 @@ const getScoreColor = (score) => {
   if (score >= 80) return '#10b981' // green
   if (score >= 50) return '#f59e0b' // yellow
   return '#ef4444' // red
+}
+
+// Navigate to login page
+const goToLogin = () => {
+  navigateTo('/login')
 }
 
 // View optimization results

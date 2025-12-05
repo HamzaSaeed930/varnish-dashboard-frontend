@@ -1,9 +1,26 @@
 <template>
   <div
-    class="min-h-screen flex items-center justify-center"
+    class="min-h-screen flex justify-center relative overflow-hidden "
     style="background: #0C1E35;"
   >
-    <div class="w-full max-w-md mx-auto px-6 py-12">
+    <!-- Background Pattern -->
+    <!-- <div
+      class="absolute inset-0 opacity-100"
+      style="
+        background-image: url('/images/Lines.png');
+        background-repeat: repeat;
+        background-size: cover;
+        background-position: center;
+        pointer-events: none;
+        z-index: 0;
+        width: 60%;
+        height: 40%;
+        margin: 0% 20%;
+      "
+    ></div> -->
+    
+    <!-- Centered Content Container -->
+    <div class="w-full max-w-[424px] mx-auto relative z-10 flex flex-col mt-24">
       <!-- Logo -->
       <div class="flex flex-col items-center mb-8">
         <div class="mb-4">
@@ -35,11 +52,10 @@
           line-height: 38px;
           letter-spacing: 0%;
           text-align: center;
-          text-transform: capitalize;
           color: #FFFFFF;
         "
       >
-        Test your website speed
+        Test Your Website Speed
       </h2>
 
       <!-- Description -->
@@ -61,12 +77,12 @@
       </p>
 
       <!-- Form -->
-      <form @submit.prevent="handleSubmit" class="space-y-6">
+      <form @submit.prevent="handleSubmit" class="w-full space-y-6">
         <!-- Website URL Input -->
-        <div class="flex flex-col items-center">
+        <div class="flex flex-col w-full">
           <label
             for="website-url"
-            class="block mb-2 w-full"
+            class="block mb-2 text-left"
             style="
               font-family: 'Geist', sans-serif;
               font-weight: 500;
@@ -79,7 +95,7 @@
           >
             Website URL
           </label>
-          <div class="relative">
+          <div class="relative w-full">
             <input
               id="website-url"
               v-model="websiteUrl"
@@ -88,9 +104,8 @@
               required
               @blur="validateUrl"
               @input="clearError"
-              class="transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              class="transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full"
               style="
-                width: 360px;
                 height: 44px;
                 border-radius: 6px;
                 border: 1px solid #D0D5DD;
@@ -112,7 +127,7 @@
             <div
               v-if="errorMessage"
               class="absolute top-full left-0 mt-2 z-50"
-              style="width: 360px;"
+              style="width: 100%; max-width: 360px;"
             >
               <div
                 class="bg-white rounded-lg shadow-lg p-3 relative"
@@ -163,13 +178,12 @@
         </div>
 
         <!-- Run Tests Button -->
-        <div class="flex justify-center">
+        <div class="w-full">
           <button
             type="submit"
             :disabled="isLoading || !websiteUrl"
-            class="transition-all disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden"
+            class="transition-all disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden w-full"
             style="
-              width: 360px;
               height: 43px;
               border-radius: 6px;
               background: #182230;
@@ -281,5 +295,6 @@ const handleSubmit = async () => {
     query: { url: encodeURIComponent(formattedUrl) },
   })
 }
+
 </script>
 

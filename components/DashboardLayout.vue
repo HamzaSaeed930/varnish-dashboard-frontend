@@ -921,7 +921,7 @@
           "
           style="
             border-radius: 8px;
-            position: absolute;
+            position: fixed;
             top: 764px;
             left: 255px;
             height: 20vh;

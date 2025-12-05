@@ -5,12 +5,5 @@
 </template>
 
 <script setup>
-// Redirect to dashboard if on root pathh
-onMounted(() => {
-  const route = useRoute()
-  if (route.path === '/') {
-    navigateTo('/dashboard')
-
-  }
-})
+// App setup - no redirect needed as index.vue handles the flow
 </script>
