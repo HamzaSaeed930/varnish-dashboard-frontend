@@ -2,10 +2,10 @@
   <DashboardLayout>
     <div class="space-y-6">
       <!-- Page Header -->
-      <div class="flex flex-row items-center justify-between w-full gap-4">
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between w-full gap-4">
         <div class="flex-1 min-w-0">
           <h1 
-            class="text-2xl sm:text-3xl font-bold mb-1"
+            class="text-xl sm:text-2xl lg:text-3xl font-bold mb-1"
             :class="isDarkMode ? 'text-white' : 'text-gray-900'"
             style="
               font-family: 'Inter', sans-serif;
@@ -16,7 +16,7 @@
             Domains
           </h1>
           <p 
-            class="text-sm"
+            class="text-xs sm:text-sm"
             :class="isDarkMode ? 'text-gray-400' : 'text-gray-600'"
             style="
               font-family: 'Inter', sans-serif;
@@ -27,15 +27,15 @@
             Manage, connect and monitor all your domains.
           </p>
         </div>
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-2 sm:gap-3 w-full sm:w-auto">
           <!-- Refresh Button -->
           <button
-            class="w-10 h-10 flex items-center justify-center rounded-lg border transition-colors"
+            class="w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center rounded-lg border transition-colors flex-shrink-0"
             :class="isDarkMode ? 'border-gray-700 hover:bg-[#1a2f4a] bg-[#1a2f4a]' : 'border-gray-200 hover:bg-gray-50 bg-white'"
             style="border-radius: 8px;"
           >
             <svg 
-              class="w-5 h-5" 
+              class="w-4 h-4 sm:w-5 sm:h-5" 
               :class="isDarkMode ? 'text-gray-400' : 'text-gray-600'"
               fill="none" 
               stroke="currentColor" 
@@ -47,16 +47,16 @@
           <!-- Add Domain Button -->
           <button
             @click="$router.push('/dashboard/domains/add')"
-            class="px-4 py-2 rounded-lg font-medium text-white transition-colors hover:opacity-90"
+            class="px-3 sm:px-4 py-2 rounded-lg font-medium text-white transition-colors hover:opacity-90 flex-1 sm:flex-initial text-sm sm:text-base"
             style="
               background: #182230;
               border-radius: 8px;
               font-family: 'Inter', sans-serif;
               font-weight: 600;
-              font-size: 14px;
             "
           >
-            + Domain
+            <span class="hidden sm:inline">+ Domain</span>
+            <span class="sm:hidden">+ Add</span>
           </button>
         </div>
       </div>
@@ -210,33 +210,34 @@
       >
         <!-- Table Header -->
         <div 
-          class="p-4 border-b flex items-center justify-between"
+          class="p-3 sm:p-4 border-b flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0"
           :class="isDarkMode ? 'border-gray-700' : 'border-gray-200'"
         >
           <h2 
-            class="text-lg font-semibold"
+            class="text-base sm:text-lg font-semibold"
             :class="isDarkMode ? 'text-white' : 'text-gray-900'"
             style="font-family: 'Inter', sans-serif; font-weight: 600;"
           >
             List of Domains
           </h2>
-          <div class="flex items-center gap-3">
+          <div class="flex items-center gap-2 sm:gap-3 w-full sm:w-auto">
             <!-- Search Input -->
-            <div class="relative">
+            <div class="relative flex-1 sm:flex-initial">
               <input
                 type="text"
                 placeholder="Search Domains"
-                class="pl-10 pr-4 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                class="pl-9 sm:pl-10 pr-3 sm:pr-4 py-2 border rounded-lg text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 w-full sm:w-auto"
                 :class="isDarkMode ? 'border-gray-700 bg-[#182230] text-white placeholder-gray-400' : 'border-gray-200 bg-white text-gray-900'"
                 style="
-                  width: 200px;
+                  min-width: 120px;
+                  max-width: 200px;
                   height: 36px;
                   border-radius: 8px;
                   font-family: 'Inter', sans-serif;
                 "
               />
               <svg 
-                class="absolute left-3 top-2.5 w-4 h-4" 
+                class="absolute left-2.5 sm:left-3 top-2.5 w-3.5 h-3.5 sm:w-4 sm:h-4" 
                 :class="isDarkMode ? 'text-gray-400' : 'text-gray-400'"
                 fill="none" 
                 stroke="currentColor" 
@@ -247,7 +248,7 @@
             </div>
             <!-- Filters Button -->
             <button
-              class="px-4 py-2 border rounded-lg text-sm font-medium transition-colors"
+              class="px-3 sm:px-4 py-2 border rounded-lg text-xs sm:text-sm font-medium transition-colors whitespace-nowrap"
               :class="isDarkMode ? 'border-gray-700 text-gray-300 hover:bg-[#182230]' : 'border-gray-200 text-gray-700 hover:bg-gray-50'"
               style="
                 height: 36px;
@@ -259,7 +260,7 @@
             </button>
             <!-- Manage Button -->
             <button
-              class="px-4 py-2 rounded-lg text-sm font-medium text-white transition-colors"
+              class="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium text-white transition-colors whitespace-nowrap"
               style="
                 background: #182230;
                 height: 36px;
@@ -274,8 +275,8 @@
         </div>
 
         <!-- Table -->
-        <div class="overflow-x-auto">
-          <table class="w-full">
+        <div class="overflow-x-auto -mx-3 sm:mx-0">
+          <table class="w-full min-w-[800px] sm:min-w-0">
             <thead 
               style="background: #F9FAFB;"
             >
@@ -489,23 +490,23 @@
 
         <!-- Pagination -->
         <div 
-          class="p-4 border-t flex items-center justify-between"
+          class="p-3 sm:p-4 border-t flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-0"
           :class="isDarkMode ? 'border-gray-700' : 'border-gray-200'"
         >
           <button
-            class="px-3 py-2 text-sm font-medium rounded transition-colors disabled:opacity-50"
+            class="px-3 py-2 text-xs sm:text-sm font-medium rounded transition-colors disabled:opacity-50 w-full sm:w-auto"
             :class="isDarkMode ? 'text-gray-300 hover:bg-[#182230]' : 'text-gray-700 hover:bg-gray-50'"
             style="border-radius: 6px;"
             disabled
           >
             ← Previous
           </button>
-          <div class="flex items-center gap-2">
+          <div class="flex items-center gap-1 sm:gap-2 flex-wrap justify-center">
             <button
               v-for="page in [1, 2, 3, '...', 8, 9, 10]"
               :key="page"
               :class="[
-                'px-3 py-1 text-sm font-medium rounded transition-colors',
+                'px-2 sm:px-3 py-1 text-xs sm:text-sm font-medium rounded transition-colors',
                 page === 1 
                   ? (isDarkMode ? 'bg-[#182230] text-white' : 'bg-gray-100 text-gray-900')
                   : (isDarkMode ? 'text-gray-300 hover:bg-[#182230]' : 'text-gray-700 hover:bg-gray-50')
@@ -516,7 +517,7 @@
             </button>
           </div>
           <button
-            class="px-3 py-2 text-sm font-medium rounded transition-colors"
+            class="px-3 py-2 text-xs sm:text-sm font-medium rounded transition-colors w-full sm:w-auto"
             :class="isDarkMode ? 'text-gray-300 hover:bg-[#182230]' : 'text-gray-700 hover:bg-gray-50'"
             style="border-radius: 6px;"
           >
@@ -526,7 +527,7 @@
       </div>
 
       <!-- Charts Section -->
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
         <!-- Performance Chart -->
         <div 
           class="rounded-lg border p-6"
@@ -592,25 +593,25 @@
               </button>
             </div>
           </div>
-          <div class="flex items-center justify-center">
-            <div class="relative w-64 h-64">
+          <div class="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-0">
+            <div class="relative w-48 h-48 sm:w-64 sm:h-64">
               <canvas ref="cacheSplitChart"></canvas>
               <div class="absolute inset-0 flex items-center justify-center flex-col">
                 <span 
-                  class="text-3xl font-bold"
+                  class="text-2xl sm:text-3xl font-bold"
                   :class="isDarkMode ? 'text-white' : 'text-gray-900'"
                 >
                   25%
                 </span>
                 <span 
-                  class="text-sm"
+                  class="text-xs sm:text-sm"
                   :class="isDarkMode ? 'text-gray-400' : 'text-gray-600'"
                 >
                   Hit
                 </span>
               </div>
             </div>
-            <div class="ml-8 space-y-4">
+            <div class="sm:ml-8 space-y-3 sm:space-y-4">
               <div class="flex items-center gap-2">
                 <div class="w-4 h-4 rounded-full" style="background: #14B8A6;"></div>
                 <span 

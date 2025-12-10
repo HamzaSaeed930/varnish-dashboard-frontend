@@ -1,11 +1,11 @@
 <template>
   <DashboardLayout>
-    <div class="space-y-6" style="height: 93vh;">
+    <div class="space-y-4 sm:space-y-6">
       <!-- Page Header -->
-      <div class="flex flex-row items-center justify-between w-full gap-4">
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between w-full gap-4">
         <div class="flex-1 min-w-0">
           <h1 
-            class="text-2xl sm:text-3xl font-bold mb-1"
+            class="text-xl sm:text-2xl lg:text-3xl font-bold mb-1"
             style="
               font-family: 'Inter', sans-serif;
               font-weight: 700;
@@ -15,7 +15,7 @@
             Support
           </h1>
           <p 
-            class="text-sm"
+            class="text-xs sm:text-sm"
             style="
               font-family: 'Inter', sans-serif;
               font-weight: 400;
@@ -25,14 +25,14 @@
             Get Help from our support team or track your open requests.
           </p>
         </div>
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-2 sm:gap-3 w-full sm:w-auto">
           <!-- Refresh Button -->
           <button
-            class="w-10 h-10 flex items-center justify-center rounded-lg border transition-colors hover:bg-gray-50 bg-white"
+            class="w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center rounded-lg border transition-colors hover:bg-gray-50 bg-white flex-shrink-0"
             style="border-radius: 8px; border: 1px solid #E5E7EB;"
           >
             <svg 
-              class="w-5 h-5" 
+              class="w-4 h-4 sm:w-5 sm:h-5" 
               style="color: #6B7280;"
               fill="none" 
               stroke="currentColor" 
@@ -44,22 +44,22 @@
           <!-- New Ticket Button -->
           <button
             @click="$router.push('/dashboard/support/add')"
-            class="px-4 py-2 rounded-lg font-medium text-white transition-colors hover:opacity-90"
+            class="px-3 sm:px-4 py-2 rounded-lg font-medium text-white transition-colors hover:opacity-90 flex-1 sm:flex-initial text-sm sm:text-base"
             style="
               background: #182230;
               border-radius: 8px;
               font-family: 'Inter', sans-serif;
               font-weight: 600;
-              font-size: 14px;
             "
           >
-            + New Ticket
+            <span class="hidden sm:inline">+ New Ticket</span>
+            <span class="sm:hidden">+ New</span>
           </button>
         </div>
       </div>
 
       <!-- Summary Cards -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         <!-- Open Card -->
         <div 
           class="rounded-lg p-4"
@@ -207,24 +207,25 @@
       >
         <!-- Table Header -->
         <div 
-          class="p-4 border-b flex items-center justify-between"
+          class="p-3 sm:p-4 border-b flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3"
           style="border-bottom: 1px solid #E5E7EB;"
         >
           <h2 
-            class="text-lg font-semibold"
+            class="text-base sm:text-lg font-semibold"
             style="font-family: 'Inter', sans-serif; font-weight: 600; color: #101828;"
           >
             List of Tickets
           </h2>
-          <div class="flex items-center gap-3">
+          <div class="flex items-center gap-2 sm:gap-3 w-full sm:w-auto">
             <!-- Search Input -->
-            <div class="relative">
+            <div class="relative flex-1 sm:flex-initial">
               <input
                 type="text"
                 placeholder="Search Ticket"
-                class="pl-10 pr-4 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                class="pl-9 sm:pl-10 pr-3 sm:pr-4 py-2 border rounded-lg text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 w-full sm:w-auto"
                 style="
-                  width: 200px;
+                  min-width: 120px;
+                  max-width: 200px;
                   height: 36px;
                   border-radius: 8px;
                   font-family: 'Inter', sans-serif;
@@ -234,7 +235,7 @@
                 "
               />
               <svg 
-                class="absolute left-3 top-2.5 w-4 h-4" 
+                class="absolute left-2.5 sm:left-3 top-2.5 w-3.5 h-3.5 sm:w-4 sm:h-4" 
                 style="color: #9CA3AF;"
                 fill="none" 
                 stroke="currentColor" 
@@ -245,7 +246,7 @@
             </div>
             <!-- Filters Button -->
             <button
-              class="px-4 py-2 border rounded-lg text-sm font-medium transition-colors hover:bg-gray-50"
+              class="px-3 sm:px-4 py-2 border rounded-lg text-xs sm:text-sm font-medium transition-colors hover:bg-gray-50 whitespace-nowrap"
               style="
                 height: 36px;
                 border-radius: 8px;
@@ -259,7 +260,7 @@
             </button>
             <!-- Manage Button -->
             <button
-              class="px-4 py-2 rounded-lg text-sm font-medium text-white transition-colors"
+              class="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium text-white transition-colors whitespace-nowrap"
               style="
                 background: #182230;
                 height: 36px;
@@ -274,15 +275,15 @@
         </div>
 
         <!-- Table -->
-        <div class="overflow-x-auto">
-          <table class="w-full">
+        <div class="overflow-x-auto -mx-3 sm:mx-0">
+          <table class="w-full min-w-[800px] sm:min-w-0">
             <thead style="background: #F9FAFB;">
               <tr>
-                <th class="px-4 py-3 text-left">
+                <th class="px-2 sm:px-4 py-3 text-left">
                   <input type="checkbox" class="rounded border-gray-300" />
                 </th>
                 <th 
-                  class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider"
+                  class="px-2 sm:px-4 py-3 text-left text-xs font-medium uppercase tracking-wider"
                   style="color: #6B7280; font-family: 'Inter', sans-serif;"
                 >
                   <div class="flex items-center gap-2">
@@ -298,7 +299,7 @@
                   </div>
                 </th>
                 <th 
-                  class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider"
+                  class="px-2 sm:px-4 py-3 text-left text-xs font-medium uppercase tracking-wider"
                   style="color: #6B7280; font-family: 'Inter', sans-serif;"
                 >
                   <div class="flex items-center gap-2">
@@ -314,7 +315,7 @@
                   </div>
                 </th>
                 <th 
-                  class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider"
+                  class="px-2 sm:px-4 py-3 text-left text-xs font-medium uppercase tracking-wider"
                   style="color: #6B7280; font-family: 'Inter', sans-serif;"
                 >
                   <div class="flex items-center gap-2">
@@ -330,7 +331,7 @@
                   </div>
                 </th>
                 <th 
-                  class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider"
+                  class="px-2 sm:px-4 py-3 text-left text-xs font-medium uppercase tracking-wider whitespace-nowrap"
                   style="color: #6B7280; font-family: 'Inter', sans-serif;"
                 >
                   <div class="flex items-center gap-2">
@@ -346,7 +347,7 @@
                   </div>
                 </th>
                 <th 
-                  class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider"
+                  class="px-2 sm:px-4 py-3 text-left text-xs font-medium uppercase tracking-wider whitespace-nowrap"
                   style="color: #6B7280; font-family: 'Inter', sans-serif;"
                 >
                   <div class="flex items-center gap-2">
@@ -362,7 +363,7 @@
                   </div>
                 </th>
                 <th 
-                  class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider"
+                  class="px-2 sm:px-4 py-3 text-left text-xs font-medium uppercase tracking-wider whitespace-nowrap"
                   style="color: #6B7280; font-family: 'Inter', sans-serif;"
                 >
                   <div class="flex items-center gap-2">
@@ -378,7 +379,7 @@
                   </div>
                 </th>
                 <th 
-                  class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider"
+                  class="px-2 sm:px-4 py-3 text-left text-xs font-medium uppercase tracking-wider whitespace-nowrap"
                   style="color: #6B7280; font-family: 'Inter', sans-serif;"
                 >
                   <div class="flex items-center gap-2">
@@ -394,7 +395,7 @@
                   </div>
                 </th>
                 <th 
-                  class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider"
+                  class="px-2 sm:px-4 py-3 text-left text-xs font-medium uppercase tracking-wider whitespace-nowrap"
                   style="color: #6B7280; font-family: 'Inter', sans-serif;"
                 >
                   <div class="flex items-center gap-2">
@@ -410,7 +411,7 @@
                   </div>
                 </th>
                 <th 
-                  class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider"
+                  class="px-2 sm:px-4 py-3 text-left text-xs font-medium uppercase tracking-wider whitespace-nowrap"
                   style="color: #6B7280; font-family: 'Inter', sans-serif;"
                 >
                   <div class="flex items-center gap-2">
@@ -433,65 +434,65 @@
                 :key="index" 
                 class="hover:bg-gray-50"
               >
-                <td class="px-4 py-4">
+                <td class="px-2 sm:px-4 py-4">
                   <input type="checkbox" class="rounded border-gray-300" />
                 </td>
                 <td 
-                  class="px-4 py-4 text-sm"
+                  class="px-2 sm:px-4 py-4 text-xs sm:text-sm whitespace-nowrap"
                   style="color: #101828;"
                 >
                   {{ row.domain }}
                 </td>
                 <td 
-                  class="px-4 py-4 text-sm"
+                  class="px-2 sm:px-4 py-4 text-xs sm:text-sm whitespace-nowrap"
                   style="color: #101828;"
                 >
                   {{ row.cpu }}
                 </td>
                 <td 
-                  class="px-4 py-4 text-sm"
+                  class="px-2 sm:px-4 py-4 text-xs sm:text-sm whitespace-nowrap"
                   style="color: #101828;"
                 >
                   {{ row.ram }}
                 </td>
                 <td 
-                  class="px-4 py-4 text-sm"
+                  class="px-2 sm:px-4 py-4 text-xs sm:text-sm whitespace-nowrap"
                   style="color: #101828;"
                 >
                   {{ row.disk }}
                 </td>
                 <td 
-                  class="px-4 py-4 text-sm"
+                  class="px-2 sm:px-4 py-4 text-xs sm:text-sm whitespace-nowrap"
                   style="color: #101828;"
                 >
                   {{ row.bandwidth }}
                 </td>
                 <td 
-                  class="px-4 py-4 text-sm"
+                  class="px-2 sm:px-4 py-4 text-xs sm:text-sm whitespace-nowrap"
                   style="color: #101828;"
                 >
                   {{ row.uptime }}
                 </td>
                 <td 
-                  class="px-4 py-4 text-sm"
+                  class="px-2 sm:px-4 py-4 text-xs sm:text-sm whitespace-nowrap"
                   style="color: #101828;"
                 >
                   {{ row.plan }}
                 </td>
-                <td class="px-4 py-4">
+                <td class="px-2 sm:px-4 py-4">
                   <div class="flex items-center gap-2">
                     <div class="w-2 h-2 rounded-full bg-green-500"></div>
                     <span 
-                      class="text-sm"
+                      class="text-xs sm:text-sm whitespace-nowrap"
                       style="color: #101828;"
                     >
                       Approved
                     </span>
                   </div>
                 </td>
-                <td class="px-4 py-4">
+                <td class="px-2 sm:px-4 py-4">
                   <button
-                    class="px-3 py-1 text-sm font-medium rounded transition-colors hover:bg-gray-100"
+                    class="px-2 sm:px-3 py-1 text-xs sm:text-sm font-medium rounded transition-colors hover:bg-gray-100 whitespace-nowrap"
                     style="border-radius: 6px; color: #374151; background: #FFFFFF;"
                   >
                     Manage
@@ -504,22 +505,22 @@
 
         <!-- Pagination -->
         <div 
-          class="p-4 border-t flex items-center justify-between"
+          class="p-3 sm:p-4 border-t flex flex-col sm:flex-row items-center justify-between gap-3"
           style="border-top: 1px solid #E5E7EB;"
         >
           <button
-            class="px-3 py-2 text-sm font-medium rounded transition-colors disabled:opacity-50 hover:bg-gray-50"
+            class="px-3 py-2 text-xs sm:text-sm font-medium rounded transition-colors disabled:opacity-50 hover:bg-gray-50 w-full sm:w-auto"
             style="border-radius: 6px; color: #374151;"
             disabled
           >
             ← Previous
           </button>
-          <div class="flex items-center gap-2">
+          <div class="flex items-center gap-1 sm:gap-2 flex-wrap justify-center">
             <button
               v-for="page in [1, 2, 3, '...', 8, 9, 10]"
               :key="page"
               :class="[
-                'px-3 py-1 text-sm font-medium rounded transition-colors',
+                'px-2 sm:px-3 py-1 text-xs sm:text-sm font-medium rounded transition-colors',
                 page === 1 
                   ? 'bg-gray-100 text-gray-900' 
                   : 'text-gray-700 hover:bg-gray-50'
@@ -530,7 +531,7 @@
             </button>
           </div>
           <button
-            class="px-3 py-2 text-sm font-medium rounded transition-colors hover:bg-gray-50"
+            class="px-3 py-2 text-xs sm:text-sm font-medium rounded transition-colors hover:bg-gray-50 w-full sm:w-auto"
             style="border-radius: 6px; color: #374151;"
           >
             Next →

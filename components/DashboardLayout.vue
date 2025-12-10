@@ -1,25 +1,67 @@
 <template>
   <div class="min-h-screen bg-gray-50 dark:bg-[#0C1E35]">
-    <!-- Mobile Menu Button -->
-    <button
-      @click="toggleSidebar"
-      class="lg:hidden fixed top-4 left-4 z-50 p-2 bg-white rounded-md shadow-md"
-      style="display: none"
+    <!-- Mobile/Tablet Header -->
+    <header
+      class="lg:hidden fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4 py-3 bg-white dark:bg-[#1a2f4a] border-b border-gray-200 dark:border-gray-700 shadow-sm"
     >
-      <PanelLeft class="h-6 w-6" />
-    </button>
+      <!-- Left Side: Logo and Name -->
+      <div class="flex items-center gap-2">
+        <img
+          src="/logo/Logomark.svg"
+          alt="Varnish Logo"
+          class="h-8 w-8 sm:h-10 sm:w-10"
+        />
+        <div class="flex flex-col items-start">
+          <h1
+            :class="isDarkMode ? 'text-white' : 'text-gray-900'"
+            style="
+              font-family: Geist, sans-serif;
+              font-weight: 600;
+              font-style: SemiBold;
+              font-size: 16px;
+            "
+          >
+            Varnish
+          </h1>
+          <p
+            :class="isDarkMode ? 'text-white' : 'text-gray-900'"
+            style="
+              font-family: Geist, sans-serif;
+              font-weight: 400;
+              font-style: Regular;
+              font-size: 9px;
+              vertical-align: middle;
+            "
+          >
+            Enterprise
+          </p>
+        </div>
+      </div>
+
+      <!-- Right Side: Sidebar Toggle Button -->
+      <button
+        @click="toggleSidebar"
+        class="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-[#0C1E35] transition-colors"
+      >
+        <PanelLeft class="h-6 w-6 text-gray-700 dark:text-white" />
+      </button>
+    </header>
 
     <!-- Mobile Backdrop -->
     <div
-      v-if="!sidebarCollapsed"
+      v-if="!sidebarCollapsed && isMobile"
       @click="toggleSidebar"
-      class="lg:hidden fixed inset-0 z-30 bg-black bg-opacity-50"
+      class="lg:hidden fixed inset-0 z-30 bg-black bg-opacity-50 transition-opacity"
     ></div>
 
     <!-- Sidebar -->
     <div
-      :class="sidebarClasses"
-      class="fixed inset-y-0 left-0 z-40 transition-all duration-300 ease-in-out flex flex-col"
+      :class="[
+        sidebarClasses,
+        'lg:inset-y-0 lg:top-0',
+        isMobile ? 'top-16 bottom-0' : ''
+      ]"
+      class="fixed left-0 z-40 transition-all duration-300 ease-in-out flex flex-col"
       :style="
         isDarkMode
           ? 'background: #0C1E35; padding: 0% 1%;'
@@ -27,7 +69,7 @@
       "
     >
       <!-- Logo -->
-      <div style="margin: 10% 0% 15% 0%" class="flex flex-col items-start">
+      <div style="margin: 10% 0% 15% 0%" class="hidden lg:flex flex-col items-start">
         <div class="flex items-center gap-2 mb-1">
           <img
             src="/logo/Logomark.svg"
@@ -85,6 +127,7 @@
           <!-- Dashboard -->
           <a
             href="/dashboard"
+            @click="isMobile && !sidebarCollapsed && (sidebarCollapsed = true)"
             class="group flex items-center py-2 text-sm font-medium transition-colors"
             :class="[
               sidebarCollapsed ? 'justify-center px-2' : 'px-3',
@@ -106,11 +149,6 @@
               ]"
             />
             <span v-show="!sidebarCollapsed" class="truncate">Dashboard</span>
-            <ChevronDown
-              v-show="!sidebarCollapsed"
-              :class="isDarkMode ? 'text-white' : 'text-gray-700'"
-              class="ml-auto h-4 w-4"
-            />
           </a>
 
           <!-- Domains -->
@@ -167,6 +205,7 @@
               >
                 <a
                   href="/dashboard/domains"
+                  @click="isMobile && !sidebarCollapsed && (sidebarCollapsed = true)"
                   :class="[
                     'block px-3 py-1.5 text-sm transition-colors',
                     isDomainsListActive
@@ -182,6 +221,7 @@
                 >
                 <a
                   href="/dashboard/domains/add"
+                  @click="isMobile && !sidebarCollapsed && (sidebarCollapsed = true)"
                   :class="[
                     'block px-3 py-1.5 text-sm transition-colors',
                     isDomainsAddActive
@@ -202,10 +242,15 @@
           <!-- Hosting -->
           <div>
             <button
+              @click="toggleHosting"
               class="group flex items-center w-full py-2 text-sm font-medium transition-colors"
               :class="[
                 sidebarCollapsed ? 'justify-center px-2' : 'px-3',
-                isDarkMode
+                isHostingActive
+                  ? isDarkMode
+                    ? 'text-white'
+                    : 'text-gray-900'
+                  : isDarkMode
                   ? 'text-white hover:text-white'
                   : 'text-gray-700 hover:text-gray-900',
               ]"
@@ -221,10 +266,65 @@
               <span v-show="!sidebarCollapsed" class="truncate">Hosting</span>
               <ChevronDown
                 v-show="!sidebarCollapsed"
-                :class="isDarkMode ? 'text-white' : 'text-gray-700'"
-                class="ml-auto h-4 w-4"
+                :class="[
+                  hostingOpen ? 'rotate-180' : '',
+                  isDarkMode ? 'text-white' : 'text-gray-700',
+                ]"
+                class="ml-auto h-4 w-4 transition-transform"
               />
             </button>
+            <Transition
+              enter-active-class="transition-all duration-300 ease-out"
+              enter-from-class="opacity-0 transform -translate-y-2"
+              enter-to-class="opacity-100 transform translate-y-0"
+              leave-active-class="transition-all duration-200 ease-in"
+              leave-from-class="opacity-100 transform translate-y-0"
+              leave-to-class="opacity-0 transform -translate-y-2"
+            >
+              <div
+                v-if="hostingOpen && !sidebarCollapsed"
+                class="ml-4 mt-1 space-y-1 border-l pl-3"
+                :class="isDarkMode ? 'border-gray-700' : 'border-gray-300'"
+                :style="
+                  isDarkMode
+                    ? 'border-left: 1px solid rgba(255, 255, 255, 0.1);'
+                    : 'border-left: 1px solid rgba(0, 0, 0, 0.1);'
+                "
+              >
+                <a
+                  href="/dashboard/hostings"
+                  @click="isMobile && !sidebarCollapsed && (sidebarCollapsed = true)"
+                  :class="[
+                    'block px-3 py-1.5 text-sm transition-colors',
+                    isHostingListActive
+                      ? isDarkMode
+                        ? 'text-black bg-white'
+                        : 'text-gray-900 bg-gray-200'
+                      : isDarkMode
+                      ? 'text-gray-400 hover:text-white'
+                      : 'text-gray-600 hover:text-gray-900',
+                  ]"
+                  style="border-radius: 6px"
+                  >List of Domains</a
+                >
+                <a
+                  href="/dashboard/hostings/add"
+                  @click="isMobile && !sidebarCollapsed && (sidebarCollapsed = true)"
+                  :class="[
+                    'block px-3 py-1.5 text-sm transition-colors',
+                    isHostingAddActive
+                      ? isDarkMode
+                        ? 'text-black bg-white'
+                        : 'text-gray-900 bg-gray-200'
+                      : isDarkMode
+                      ? 'text-gray-400 hover:text-white'
+                      : 'text-gray-600 hover:text-gray-900',
+                  ]"
+                  style="border-radius: 6px"
+                  >Add New Domain</a
+                >
+              </div>
+            </Transition>
           </div>
 
           <!-- Varnish -->
@@ -524,7 +624,7 @@
                       'block px-3 py-1.5 text-sm transition-colors',
                       isSupportListActive
                         ? isDarkMode
-                          ? 'text-black bg-white'
+                          ? 'text-white bg-white bg-opacity-10'
                           : 'text-gray-900 bg-gray-200'
                         : isDarkMode
                         ? 'text-gray-400 hover:text-white'
@@ -540,7 +640,7 @@
                       'block px-3 py-1.5 text-sm transition-colors',
                       isSupportAddActive
                         ? isDarkMode
-                          ? 'text-black bg-white'
+                          ? 'text-white bg-white bg-opacity-10'
                           : 'text-gray-900 bg-gray-200'
                         : isDarkMode
                         ? 'text-gray-400 hover:text-white'
@@ -598,8 +698,10 @@
 
     <!-- Main Content -->
     <div
-      :class="sidebarCollapsed ? 'pl-2 lg:pl-16' : 'pl-2 lg:pl-64'"
-      class="p-2 transition-all duration-300 dark:bg-[#0C1E35] bg-[#f4f4f6]"
+      :class="[
+        isMobile ? 'pl-0 pt-16' : (sidebarCollapsed ? 'lg:pl-16' : 'lg:pl-64'),
+        'p-2 sm:p-3 lg:p-4 transition-all duration-300 dark:bg-[#0C1E35] bg-[#f4f4f6] overflow-x-hidden'
+      ]"
     >
       <!-- Top Header -->
 
@@ -913,20 +1015,19 @@
           v-if="settingsDropdownOpen"
           @click.stop
           data-settings-dropdown
-          class="fixed right-4 top-20 z-50 w-64 rounded-lg shadow-xl border"
+          class="fixed z-50 rounded-lg shadow-xl border"
           :class="
             isDarkMode
               ? 'bg-[#0C1E35] border-gray-700'
               : 'bg-white border-gray-200'
           "
-          style="
-            border-radius: 8px;
-            position: fixed;
-            top: 764px;
-            left: 255px;
-            height: 20vh;
-            margin-bottom: 0px;
-          "
+          :style="{
+            borderRadius: '8px',
+            left: sidebarCollapsed ? '80px' : '257px',
+            bottom: '0px',
+            width: '20%',
+            position: 'fixed',
+          }"
         >
           <!-- Card Header -->
           <div
@@ -948,7 +1049,7 @@
             </div>
             <button
               @click.stop="toggleSettingsDropdown"
-              class="p-1 hover:bg-opacity-10 rounded"
+              class="p-1 hover:bg-opacity-10 rounded transition-colors"
               :class="isDarkMode ? 'hover:bg-white' : 'hover:bg-gray-100'"
             >
               <svg
@@ -982,17 +1083,11 @@
               "
               style="border-radius: 6px; font-family: 'Inter', sans-serif"
             >
-              <Moon
-                v-if="!isDarkMode"
-                class="h-4 w-4"
-                :class="isDarkMode ? 'text-white' : 'text-gray-700'"
-              />
               <Sun
-                v-else
                 class="h-4 w-4"
                 :class="isDarkMode ? 'text-white' : 'text-gray-700'"
               />
-              <span>{{ isDarkMode ? "Light Mode" : "Dark Mode" }}</span>
+              <span>Light Mode</span>
             </button>
 
             <!-- Logout -->
@@ -1007,7 +1102,7 @@
               "
               style="border-radius: 6px; font-family: 'Inter', sans-serif"
             >
-              <LogOut
+              <ChevronRight
                 class="h-4 w-4"
                 :class="isDarkMode ? 'text-white' : 'text-gray-700'"
               />
@@ -1035,7 +1130,7 @@
 
       <!-- Page Content -->
       <main
-        class="p-3 sm:p-4 lg:p-6 border border-[#e4e4e8] rounded-xl shadow-sm bg-white"
+        class="p-3 sm:p-4 lg:p-6 border border-[#e4e4e8] dark:border-gray-700 rounded-xl shadow-sm bg-white dark:bg-[#0C1E35] min-h-[calc(100vh-2rem)] overflow-x-hidden w-full transition-colors duration-200"
       >
         <slot />
       </main>
@@ -1127,6 +1222,7 @@ const additionalInfoOpen = ref(false);
 const guidesOpen = ref(false);
 const usersOpen = ref(false);
 const domainsOpen = ref(false);
+const hostingOpen = ref(false);
 const sslOpen = ref(false);
 const imagesOpen = ref(false);
 const supportOpen = ref(false);
@@ -1142,6 +1238,13 @@ const isDomainsActive = computed(() =>
 const isDomainsListActive = computed(() => route.path === "/dashboard/domains");
 const isDomainsAddActive = computed(
   () => route.path === "/dashboard/domains/add"
+);
+const isHostingActive = computed(() =>
+  route.path.startsWith("/dashboard/hostings")
+);
+const isHostingListActive = computed(() => route.path === "/dashboard/hostings");
+const isHostingAddActive = computed(
+  () => route.path === "/dashboard/hostings/add"
 );
 const isSSLActive = computed(() => route.path.startsWith("/dashboard/ssl"));
 const isSSLListActive = computed(() => route.path === "/dashboard/ssl");
@@ -1249,6 +1352,13 @@ onMounted(() => {
       localStorage.setItem("domainsOpen", "true");
     } else {
       domainsOpen.value = localStorage.getItem("domainsOpen") === "true";
+    }
+
+    if (isHostingActive.value) {
+      hostingOpen.value = true;
+      localStorage.setItem("hostingOpen", "true");
+    } else {
+      hostingOpen.value = localStorage.getItem("hostingOpen") === "true";
     }
 
     if (isSSLActive.value) {
@@ -1440,12 +1550,23 @@ watch(
         localStorage.setItem("couponsOpen", "false");
         localStorage.setItem("additionalInfoOpen", "false");
         localStorage.setItem("usersOpen", "true");
+      } else if (newPath.startsWith("/dashboard/hostings")) {
+        domainsOpen.value = false;
+        hostingOpen.value = true;
+        sslOpen.value = false;
+        imagesOpen.value = false;
+        localStorage.setItem("domainsOpen", "false");
+        localStorage.setItem("hostingOpen", "true");
+        localStorage.setItem("sslOpen", "false");
+        localStorage.setItem("imagesOpen", "false");
       } else if (newPath.startsWith("/dashboard/support")) {
         domainsOpen.value = false;
+        hostingOpen.value = false;
         sslOpen.value = false;
         imagesOpen.value = false;
         supportOpen.value = true;
         localStorage.setItem("domainsOpen", "false");
+        localStorage.setItem("hostingOpen", "false");
         localStorage.setItem("sslOpen", "false");
         localStorage.setItem("imagesOpen", "false");
         localStorage.setItem("supportOpen", "true");
@@ -1508,12 +1629,31 @@ const sidebarModes = [
   { label: "Icon", value: "icon" },
 ];
 
-// Computed countries
+// Mobile detection
+const isMobile = ref(false);
+
+// Check if mobile on mount and resize
+const checkMobile = () => {
+  if (process.client) {
+    isMobile.value = window.innerWidth < 1024; // lg breakpoint
+    if (isMobile.value) {
+      sidebarCollapsed.value = true; // Collapse sidebar on mobile by default
+    }
+  }
+};
+
+// Computed sidebar classes
 const sidebarClasses = computed(() => {
-  if (sidebarCollapsed.value) {
-    return "w-64 lg:w-16 -translate-x-full lg:translate-x-0";
+  if (isMobile.value) {
+    // On mobile: show/hide based on collapsed state
+    return sidebarCollapsed.value 
+      ? "w-64 -translate-x-full" 
+      : "w-64 translate-x-0";
   } else {
-    return "w-64 lg:w-64 translate-x-0";
+    // On desktop: show always, adjust width based on collapsed state
+    return sidebarCollapsed.value 
+      ? "w-16 translate-x-0" 
+      : "w-64 translate-x-0";
   }
 });
 
@@ -1521,6 +1661,16 @@ const sidebarClasses = computed(() => {
 const toggleSidebar = () => {
   sidebarCollapsed.value = !sidebarCollapsed.value;
 };
+
+// Close sidebar on mobile when route changes
+watch(
+  () => route.path,
+  () => {
+    if (isMobile.value && !sidebarCollapsed.value) {
+      sidebarCollapsed.value = true;
+    }
+  }
+);
 
 const toggleTheme = () => {
   isDarkMode.value = !isDarkMode.value;
@@ -1551,6 +1701,7 @@ const toggleDomains = () => {
   visaproductsOpen.value = false;
   nationalitiesOpen.value = false;
   embassiesOpen.value = false;
+  hostingOpen.value = false;
   sslOpen.value = false;
   imagesOpen.value = false;
   domainsOpen.value = !domainsOpen.value;
@@ -1562,6 +1713,30 @@ const toggleDomains = () => {
     localStorage.setItem("visaproductsOpen", "false");
     localStorage.setItem("nationalitiesOpen", "false");
     localStorage.setItem("embassiesOpen", "false");
+    localStorage.setItem("hostingOpen", "false");
+    localStorage.setItem("sslOpen", "false");
+    localStorage.setItem("imagesOpen", "false");
+  }
+};
+
+const toggleHosting = () => {
+  countriesOpen.value = false;
+  visaproductsOpen.value = false;
+  nationalitiesOpen.value = false;
+  embassiesOpen.value = false;
+  domainsOpen.value = false;
+  sslOpen.value = false;
+  imagesOpen.value = false;
+  hostingOpen.value = !hostingOpen.value;
+
+  // Save to localStorage
+  if (process.client) {
+    localStorage.setItem("hostingOpen", hostingOpen.value.toString());
+    localStorage.setItem("countriesOpen", "false");
+    localStorage.setItem("visaproductsOpen", "false");
+    localStorage.setItem("nationalitiesOpen", "false");
+    localStorage.setItem("embassiesOpen", "false");
+    localStorage.setItem("domainsOpen", "false");
     localStorage.setItem("sslOpen", "false");
     localStorage.setItem("imagesOpen", "false");
   }
@@ -1569,6 +1744,7 @@ const toggleDomains = () => {
 
 const toggleSSL = () => {
   domainsOpen.value = false;
+  hostingOpen.value = false;
   countriesOpen.value = false;
   visaproductsOpen.value = false;
   nationalitiesOpen.value = false;
@@ -1580,6 +1756,7 @@ const toggleSSL = () => {
   if (process.client) {
     localStorage.setItem("sslOpen", sslOpen.value.toString());
     localStorage.setItem("domainsOpen", "false");
+    localStorage.setItem("hostingOpen", "false");
     localStorage.setItem("countriesOpen", "false");
     localStorage.setItem("visaproductsOpen", "false");
     localStorage.setItem("nationalitiesOpen", "false");
@@ -1590,6 +1767,7 @@ const toggleSSL = () => {
 
 const toggleImages = () => {
   domainsOpen.value = false;
+  hostingOpen.value = false;
   countriesOpen.value = false;
   visaproductsOpen.value = false;
   nationalitiesOpen.value = false;
@@ -1602,6 +1780,7 @@ const toggleImages = () => {
   if (process.client) {
     localStorage.setItem("imagesOpen", imagesOpen.value.toString());
     localStorage.setItem("domainsOpen", "false");
+    localStorage.setItem("hostingOpen", "false");
     localStorage.setItem("countriesOpen", "false");
     localStorage.setItem("visaproductsOpen", "false");
     localStorage.setItem("nationalitiesOpen", "false");
@@ -1613,6 +1792,7 @@ const toggleImages = () => {
 
 const toggleSupport = () => {
   domainsOpen.value = false;
+  hostingOpen.value = false;
   countriesOpen.value = false;
   visaproductsOpen.value = false;
   nationalitiesOpen.value = false;
@@ -1626,6 +1806,7 @@ const toggleSupport = () => {
   if (process.client) {
     localStorage.setItem("supportOpen", supportOpen.value.toString());
     localStorage.setItem("domainsOpen", "false");
+    localStorage.setItem("hostingOpen", "false");
     localStorage.setItem("countriesOpen", "false");
     localStorage.setItem("visaproductsOpen", "false");
     localStorage.setItem("nationalitiesOpen", "false");
@@ -1867,12 +2048,23 @@ onMounted(() => {
     document.documentElement.classList.remove("dark");
   }
 
+  // Check mobile on mount
+  checkMobile();
+  
+  // Add resize listener for mobile detection
+  if (process.client) {
+    window.addEventListener("resize", checkMobile);
+  }
+
   // Add click outside listener
   document.addEventListener("click", handleClickOutside);
 });
 
 // Component unmounted
 onUnmounted(() => {
+  if (process.client) {
+    window.removeEventListener("resize", checkMobile);
+  }
   document.removeEventListener("click", handleClickOutside);
 });
 </script>

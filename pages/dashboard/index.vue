@@ -3,66 +3,66 @@
     <div class="space-y-6">
       <!-- Page Header -->
       <div class="flex flex-row items-center justify-between w-full">
-        <h1 class="text-xl font-semibold text-gray-900 dark:text-gray-900 uppercase">
+        <h1 class="text-lg sm:text-xl lg:text-2xl font-semibold text-gray-900 dark:text-gray-900 uppercase">
           Dashboard
         </h1>
       </div>
 
       <!-- Top Row - KPI Cards -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
         <!-- REQUESTS Card -->
-        <div class="bg-white dark:bg-white rounded-[20px] border border-gray-200 dark:border-gray-200 p-6 shadow-sm">
-          <p class="text-3xl font-bold text-gray-900 dark:text-gray-900 mb-1">
+        <div class="bg-white dark:bg-white rounded-[20px] border border-gray-200 dark:border-gray-200 p-4 sm:p-6 shadow-sm">
+          <p class="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-gray-900 mb-1">
             {{ formatNumber(dashboardData.requests) }}
           </p>
-          <p class="text-sm font-medium text-gray-600 dark:text-gray-600 uppercase mb-1">Requests</p>
+          <p class="text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-600 uppercase mb-1">Requests</p>
           <p class="text-xs text-gray-500 dark:text-gray-500">Server(s): All</p>
         </div>
 
         <!-- MISS Card -->
-        <div class="bg-white dark:bg-white rounded-[20px] border border-gray-200 dark:border-gray-200 p-6 shadow-sm">
-          <p class="text-3xl font-bold text-gray-900 dark:text-gray-900 mb-1">
+        <div class="bg-white dark:bg-white rounded-[20px] border border-gray-200 dark:border-gray-200 p-4 sm:p-6 shadow-sm">
+          <p class="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-gray-900 mb-1">
             {{ formatNumber(dashboardData.miss) }}
           </p>
-          <p class="text-sm font-medium text-gray-600 dark:text-gray-600 uppercase mb-1">Miss</p>
+          <p class="text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-600 uppercase mb-1">Miss</p>
           <p class="text-xs text-gray-500 dark:text-gray-500">Server(s): All</p>
         </div>
 
         <!-- HITS Card -->
-        <div class="bg-white dark:bg-white rounded-[20px] border border-gray-200 dark:border-gray-200 p-6 shadow-sm">
-          <p class="text-3xl font-bold text-gray-900 dark:text-gray-900 mb-1">
+        <div class="bg-white dark:bg-white rounded-[20px] border border-gray-200 dark:border-gray-200 p-4 sm:p-6 shadow-sm">
+          <p class="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-gray-900 mb-1">
             {{ formatNumber(dashboardData.hits) }}
           </p>
-          <p class="text-sm font-medium text-gray-600 dark:text-gray-600 uppercase mb-1">Hits</p>
+          <p class="text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-600 uppercase mb-1">Hits</p>
           <p class="text-xs text-gray-500 dark:text-gray-500">Server(s): All</p>
         </div>
 
         <!-- SESSION CONNECTIONS Card -->
-        <div class="bg-white dark:bg-white rounded-[20px] border border-gray-200 dark:border-gray-200 p-6 shadow-sm">
-          <p class="text-3xl font-bold text-gray-900 dark:text-gray-900 mb-1">
+        <div class="bg-white dark:bg-white rounded-[20px] border border-gray-200 dark:border-gray-200 p-4 sm:p-6 shadow-sm">
+          <p class="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-gray-900 mb-1">
             {{ formatNumber(dashboardData.sessionConnections) }}
           </p>
-          <p class="text-sm font-medium text-gray-600 dark:text-gray-600 uppercase mb-1">Session Connections</p>
+          <p class="text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-600 uppercase mb-1">Session Connections</p>
           <p class="text-xs text-gray-500 dark:text-gray-500">Server(s): All</p>
         </div>
       </div>
 
       <!-- Middle Row - Hit Rate and Hit/Miss Chart -->
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-5">
         <!-- Hit Rate Card -->
-        <div class="bg-white dark:bg-white rounded-[20px] border border-gray-200 dark:border-gray-200 p-6 shadow-sm">
+        <div class="bg-white dark:bg-white rounded-[20px] border border-gray-200 dark:border-gray-200 p-4 sm:p-6 shadow-sm">
           <div class="flex items-center justify-between mb-4">
             <div>
-              <p class="text-sm font-semibold text-gray-900 dark:text-gray-900 uppercase mb-1">Hit Rate</p>
+              <p class="text-xs sm:text-sm font-semibold text-gray-900 dark:text-gray-900 uppercase mb-1">Hit Rate</p>
               <p class="text-xs text-gray-500 dark:text-gray-500">Server(s): All</p>
             </div>
           </div>
           <div class="flex items-center justify-center mb-4">
-            <div class="relative w-32 h-32">
+            <div class="relative w-24 h-24 sm:w-32 sm:h-32">
               <canvas ref="hitRateChart"></canvas>
               <div class="absolute inset-0 flex items-center justify-center">
                 <div class="text-center">
-                  <p class="text-3xl font-bold text-gray-900 dark:text-gray-900">{{ hitRate }}%</p>
+                  <p class="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-gray-900">{{ hitRate }}%</p>
                 </div>
               </div>
             </div>
@@ -71,14 +71,14 @@
         </div>
 
         <!-- Hit and Miss Chart -->
-        <div class="bg-white dark:bg-white rounded-[20px] border border-gray-200 dark:border-gray-200 p-6 shadow-sm">
+        <div class="bg-white dark:bg-white rounded-[20px] border border-gray-200 dark:border-gray-200 p-4 sm:p-6 shadow-sm">
           <div class="flex items-center justify-between mb-4">
             <div>
-              <p class="text-sm font-semibold text-gray-900 dark:text-gray-900 uppercase mb-1">Hit and Miss</p>
+              <p class="text-xs sm:text-sm font-semibold text-gray-900 dark:text-gray-900 uppercase mb-1">Hit and Miss</p>
               <p class="text-xs text-gray-500 dark:text-gray-500">Server(s): All</p>
             </div>
           </div>
-          <div class="h-48 mb-2">
+          <div class="h-40 sm:h-48 mb-2">
             <canvas ref="hitMissChart"></canvas>
           </div>
           <div class="flex items-center justify-between">
@@ -98,9 +98,9 @@
       </div>
 
       <!-- Third Row - Stacked Area Chart -->
-      <div class="bg-white dark:bg-white rounded-[20px] border border-gray-200 dark:border-gray-200 p-6 shadow-sm">
+      <div class="bg-white dark:bg-white rounded-[20px] border border-gray-200 dark:border-gray-200 p-4 sm:p-6 shadow-sm">
         <div class="mb-4">
-          <p class="text-sm font-semibold text-gray-900 dark:text-gray-900 uppercase mb-1">
+          <p class="text-xs sm:text-sm font-semibold text-gray-900 dark:text-gray-900 uppercase mb-1">
             Hit, Miss and Others Stacked to Requests
           </p>
           <p class="text-xs text-gray-500 dark:text-gray-500 mb-1">Server(s): All</p>
@@ -108,7 +108,7 @@
             others can be hit_for_pass, synth, pipe, etc
           </p>
         </div>
-        <div class="h-48 mb-2">
+        <div class="h-40 sm:h-48 mb-2">
           <canvas ref="stackedChart"></canvas>
         </div>
         <div class="flex items-center justify-end">
@@ -117,15 +117,15 @@
       </div>
 
       <!-- Bottom Row - Top 5 Servers Tables -->
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
         <!-- Top 5 Servers by Requests -->
-        <div class="bg-white dark:bg-white rounded-[20px] border border-gray-200 dark:border-gray-200 p-6 shadow-sm">
-          <p class="text-sm font-semibold text-gray-900 dark:text-gray-900 uppercase mb-1">
+        <div class="bg-white dark:bg-white rounded-[20px] border border-gray-200 dark:border-gray-200 p-4 sm:p-6 shadow-sm">
+          <p class="text-xs sm:text-sm font-semibold text-gray-900 dark:text-gray-900 uppercase mb-1">
             Top 5 Servers by Requests
           </p>
           <p class="text-xs text-gray-500 dark:text-gray-500 mb-4">Server(s): All</p>
           <div class="overflow-x-auto">
-            <table class="w-full">
+            <table class="w-full min-w-[200px]">
               <thead>
                 <tr class="border-b border-gray-200 dark:border-gray-200">
                   <th class="text-left text-xs font-semibold text-gray-600 dark:text-gray-600 py-2 uppercase">Name</th>
@@ -143,13 +143,13 @@
         </div>
 
         <!-- Top 5 Servers by Hit -->
-        <div class="bg-white dark:bg-white rounded-[20px] border border-gray-200 dark:border-gray-200 p-6 shadow-sm">
-          <p class="text-sm font-semibold text-gray-900 dark:text-gray-900 uppercase mb-1">
+        <div class="bg-white dark:bg-white rounded-[20px] border border-gray-200 dark:border-gray-200 p-4 sm:p-6 shadow-sm">
+          <p class="text-xs sm:text-sm font-semibold text-gray-900 dark:text-gray-900 uppercase mb-1">
             Top 5 Servers by Hit
           </p>
           <p class="text-xs text-gray-500 dark:text-gray-500 mb-4">Server(s): All</p>
           <div class="overflow-x-auto">
-            <table class="w-full">
+            <table class="w-full min-w-[200px]">
               <thead>
                 <tr class="border-b border-gray-200 dark:border-gray-200">
                   <th class="text-left text-xs font-semibold text-gray-600 dark:text-gray-600 py-2 uppercase">Name</th>
@@ -167,13 +167,13 @@
         </div>
 
         <!-- Top 5 by Miss -->
-        <div class="bg-white dark:bg-white rounded-[20px] border border-gray-200 dark:border-gray-200 p-6 shadow-sm">
-          <p class="text-sm font-semibold text-gray-900 dark:text-gray-900 uppercase mb-1">
+        <div class="bg-white dark:bg-white rounded-[20px] border border-gray-200 dark:border-gray-200 p-4 sm:p-6 shadow-sm">
+          <p class="text-xs sm:text-sm font-semibold text-gray-900 dark:text-gray-900 uppercase mb-1">
             Top 5 by Miss
           </p>
           <p class="text-xs text-gray-500 dark:text-gray-500 mb-4">Server(s): All</p>
           <div class="overflow-x-auto">
-            <table class="w-full">
+            <table class="w-full min-w-[200px]">
               <thead>
                 <tr class="border-b border-gray-200 dark:border-gray-200">
                   <th class="text-left text-xs font-semibold text-gray-600 dark:text-gray-600 py-2 uppercase">Name</th>

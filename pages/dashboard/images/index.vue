@@ -2,10 +2,10 @@
   <DashboardLayout>
     <div class="space-y-6">
       <!-- Page Header -->
-      <div class="flex flex-row items-center justify-between w-full gap-4">
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between w-full gap-4">
         <div class="flex-1 min-w-0">
           <h1 
-            class="text-2xl sm:text-3xl font-bold mb-1"
+            class="text-xl sm:text-2xl lg:text-3xl font-bold mb-1"
             style="
               font-family: 'Inter', sans-serif;
               font-weight: 700;
@@ -15,7 +15,7 @@
             Image Optimization
           </h1>
           <p 
-            class="text-sm"
+            class="text-xs sm:text-sm"
             style="
               font-family: 'Inter', sans-serif;
               font-weight: 400;
@@ -25,14 +25,14 @@
             Monitor compression savings and configure rules for image optimization through Varnish.
           </p>
         </div>
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-2 sm:gap-3 w-full sm:w-auto">
           <!-- Refresh Button -->
           <button
-            class="w-10 h-10 flex items-center justify-center rounded-lg border transition-colors hover:bg-gray-50 bg-white"
+            class="w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center rounded-lg border transition-colors hover:bg-gray-50 bg-white flex-shrink-0"
             style="border-radius: 8px; border: 1px solid #E5E7EB;"
           >
             <svg 
-              class="w-5 h-5" 
+              class="w-4 h-4 sm:w-5 sm:h-5" 
               style="color: #6B7280;"
               fill="none" 
               stroke="currentColor" 
@@ -44,22 +44,22 @@
           <!-- Add Rule Button -->
           <button
             @click="$router.push('/dashboard/images/add')"
-            class="px-4 py-2 rounded-lg font-medium text-white transition-colors hover:opacity-90"
+            class="px-3 sm:px-4 py-2 rounded-lg font-medium text-white transition-colors hover:opacity-90 flex-1 sm:flex-initial text-sm sm:text-base"
             style="
               background: #182230;
               border-radius: 8px;
               font-family: 'Inter', sans-serif;
               font-weight: 600;
-              font-size: 14px;
             "
           >
-            + Add Rule
+            <span class="hidden sm:inline">+ Add Rule</span>
+            <span class="sm:hidden">+ Add</span>
           </button>
         </div>
       </div>
 
       <!-- Key Metrics Cards -->
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <!-- Total images optimized -->
         <div 
           class="rounded-lg p-4"

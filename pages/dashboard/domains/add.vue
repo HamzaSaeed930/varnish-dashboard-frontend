@@ -1,14 +1,14 @@
 <template>
   <DashboardLayout>
-    <div class="space-y-6" style="height: 93vh">
+    <div class="space-y-4 lg:space-y-6">
       <!-- Form Card -->
-      <div class="bg-white p-6" style="background: #ffffff">
+      <div class="bg-white p-4 lg:p-6" style="background: #ffffff">
         <div
-          class="flex flex-row items-center justify-between w-full gap-4 mb-4"
+          class="flex flex-col lg:flex-row items-start lg:items-center justify-between w-full gap-3 lg:gap-4 mb-4"
         >
           <div class="flex-1 min-w-0">
             <h1
-              class="text-2xl sm:text-3xl font-bold mb-1"
+              class="text-xl lg:text-2xl xl:text-3xl font-bold mb-1"
               style="
                 font-family: 'Inter', sans-serif;
                 font-weight: 700;
@@ -18,18 +18,17 @@
               Add Domain
             </h1>
           </div>
-          <div class="flex items-center gap-3">
+          <div class="flex items-center gap-2 lg:gap-3 w-full lg:w-auto">
             <!-- Back Button -->
             <button
               @click="$router.back()"
-              class="px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2"
+              class="px-3 lg:px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 text-sm lg:text-base w-full lg:w-auto"
               style="
                 background: #182230;
                 color: #ffffff;
                 border-radius: 8px;
                 font-family: 'Inter', sans-serif;
                 font-weight: 600;
-                font-size: 14px;
               "
             >
               <svg
@@ -64,12 +63,12 @@
                 Domain
               </label>
             </div>
-            <div class="flex">
+            <div class="flex w-full lg:w-auto">
               <input
                 v-model="formData.domain"
                 type="text"
                 placeholder="www.mynet.com"
-                class="w-full px-4 py-3 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                class="w-full lg:w-[50%] px-4 py-3 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 mx-auto lg:mx-0"
                 style="
                   height: 44px;
                   border-radius: 8px;
@@ -77,9 +76,6 @@
                   border: 1px solid #d0d5dd;
                   background: #ffffff;
                   color: #101828;
-                  width: 50%;
-                  display: flex;
-                  margin: auto;
                 "
                 :class="{ 'border-red-500': errors.domain }"
               />
@@ -91,8 +87,8 @@
 
           <!-- Checkboxes -->
           <div
-            class="space-y-4"
-            style="width: 50%; margin: 0 auto; padding-top: 20px"
+            class="space-y-4 w-full lg:w-[50%] mx-auto lg:mx-0"
+            style="padding-top: 20px"
           >
             <!-- Use Varnish edge caching -->
             <div
@@ -173,13 +169,13 @@
 
           <!-- Form Actions -->
           <div
-            class="flex items-center justify-end gap-3 pt-4 border-t"
+            class="flex flex-col sm:flex-row items-stretch sm:items-center justify-end gap-3 pt-4 border-t"
             style="border-top: 1px solid #e5e7eb"
           >
             <button
               type="button"
               @click="$router.back()"
-              class="px-6 py-2 rounded-lg font-medium transition-colors"
+              class="px-6 py-2 rounded-lg font-medium transition-colors w-full sm:w-auto"
               style="
                 background: #ffffff;
                 color: #374151;
@@ -195,7 +191,7 @@
             <button
               type="submit"
               :disabled="isLoading || !isFormValid"
-              class="px-6 py-2 rounded-lg font-medium text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              class="px-6 py-2 rounded-lg font-medium text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed w-full sm:w-auto"
               style="
                 background: #182230;
                 border-radius: 8px;

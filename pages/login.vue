@@ -14,7 +14,7 @@
       "
     ></div> -->
     <!-- Centered Form Container -->
-    <div class="mx-auto flex flex-col relative z-10" style="margin-top: 100px;">
+    <div class="mx-auto flex flex-col relative z-10 px-4 sm:px-6 lg:px-8" style="margin-top: 60px; sm:margin-top: 80px; lg:margin-top: 100px; width: 100%; max-width: 420px;">
       <!-- Logo -->
       <div class="flex flex-col items-center" style="margin-bottom: 32px">
         <div class="mb-2">
@@ -40,11 +40,11 @@
         <!-- Header Text -->
         <div class="text-center mb-8">
           <h2
+            class="text-2xl sm:text-3xl lg:text-[30px]"
             style="
               font-family: 'Geist', sans-serif;
               font-weight: 600;
-              font-size: 30px;
-              line-height: 38px;
+              line-height: 1.2;
               letter-spacing: -5%;
               text-align: center;
               text-transform: capitalize;
@@ -55,10 +55,10 @@
             Log in to your account
           </h2>
           <p
+            class="text-sm sm:text-base"
             style="
               font-family: 'Geist', sans-serif;
               font-weight: 400;
-              font-size: 16px;
               line-height: 24px;
               letter-spacing: 0%;
               text-align: center;
@@ -80,7 +80,7 @@
         <!-- Form -->
         <form @submit.prevent="handleSubmit" class="flex flex-col gap-6 w-full" style="align-items: center;">
           <!-- Email Field -->
-          <div class="flex flex-col items-center" style="width: 100%; max-width: 360px;">
+          <div class="flex flex-col items-center w-full">
             <label
               style="
                 font-family: 'Geist', sans-serif;
@@ -101,8 +101,6 @@
               :disabled="isLoading"
               style="
                 width: 100%;
-                min-width: 360px;
-                max-width: 360px;
                 height: 44px;
                 padding: 10px 14px;
                 border-radius: 6px;
@@ -124,7 +122,7 @@
           </div>
 
           <!-- Password Field -->
-          <div class="flex flex-col items-center" style="width: 100%; max-width: 360px;">
+          <div class="flex flex-col items-center w-full">
             <label
               style="
                 font-family: 'Geist', sans-serif;
@@ -145,8 +143,6 @@
               :disabled="isLoading"
               style="
                 width: 100%;
-                min-width: 360px;
-                max-width: 360px;
                 height: 44px;
                 padding: 10px 14px;
                 border-radius: 6px;
@@ -168,7 +164,7 @@
           </div>
 
           <!-- Remember me and Forgot password -->
-          <div class="flex items-center justify-between" style="width: 100%; max-width: 360px;">
+          <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-0 w-full">
             <label class="flex items-center cursor-pointer">
               <input
                 type="checkbox"
@@ -205,7 +201,7 @@
           </div>
 
           <!-- Sign In Button -->
-          <div class="flex justify-center" style="width: 100%; max-width: 360px;">
+          <div class="flex justify-center w-full">
             <button
               type="submit"
               :disabled="isLoading || !isFormValid"
@@ -217,8 +213,6 @@
                 letter-spacing: 0%;
                 color: #ffffff;
                 width: 100%;
-                min-width: 360px;
-                max-width: 360px;
                 height: 44px;
                 padding: 0;
                 border-radius: 6px;
@@ -475,7 +469,7 @@ const handleSubmit = async () => {
     userCookie.value = mockUser;
 
     // Redirect to dashboard
-    await router.push("/dashboard/countries");
+    await router.push("/dashboard");
   } catch (error) {
     errorMessage.value = "Something went wrong. Please try again.";
   } finally {
