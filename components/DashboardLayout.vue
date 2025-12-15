@@ -328,7 +328,7 @@
           </div>
 
           <!-- Varnish -->
-          <div>
+          <!-- <div>
             <button
               class="group flex items-center w-full py-2 text-sm font-medium transition-colors"
               :class="[
@@ -353,7 +353,7 @@
                 class="ml-auto h-4 w-4"
               />
             </button>
-          </div>
+          </div> -->
 
           <!-- SSL -->
           <div>
@@ -631,7 +631,7 @@
                         : 'text-gray-600 hover:text-gray-900',
                     ]"
                     style="border-radius: 6px; text-decoration: none"
-                    >List of Support</NuxtLink
+                    >List of Tickets</NuxtLink
                   >
                   <NuxtLink
                     to="/dashboard/support/add"
@@ -655,9 +655,8 @@
 
             <!-- Settings -->
             <div>
-              <button
-                @click.stop="toggleSettingsDropdown"
-                data-settings-button
+              <NuxtLink
+                to="/dashboard/settings"
                 class="group flex items-center w-full py-2 text-sm font-medium transition-colors"
                 :class="[
                   sidebarCollapsed ? 'justify-center px-2' : 'px-3',
@@ -669,7 +668,7 @@
                     ? 'text-white hover:text-white'
                     : 'text-gray-700 hover:text-gray-900',
                 ]"
-                style="border-radius: 6px"
+                style="border-radius: 6px; text-decoration: none"
               >
                 <Settings
                   class="h-4 w-4"
@@ -681,14 +680,32 @@
                 <span v-show="!sidebarCollapsed" class="truncate"
                   >Settings</span
                 >
-                <ChevronDown
-                  v-show="!sidebarCollapsed"
+              </NuxtLink>
+            </div>
+
+            <!-- Logout -->
+            <div>
+              <button
+                @click="handleSignOutClick"
+                class="group flex items-center w-full py-2 text-sm font-medium transition-colors"
+                :class="[
+                  sidebarCollapsed ? 'justify-center px-2' : 'px-3',
+                  isDarkMode
+                    ? 'text-white hover:text-white'
+                    : 'text-gray-700 hover:text-gray-900',
+                ]"
+                style="border-radius: 6px"
+              >
+                <LogOut
+                  class="h-4 w-4"
                   :class="[
-                    settingsDropdownOpen ? 'rotate-180' : '',
+                    sidebarCollapsed ? '' : 'mr-3',
                     isDarkMode ? 'text-white' : 'text-gray-700',
                   ]"
-                  class="ml-auto h-4 w-4 transition-transform"
                 />
+                <span v-show="!sidebarCollapsed" class="truncate"
+                  >Logout</span
+                >
               </button>
             </div>
           </div>
@@ -1002,131 +1019,6 @@
         </div>
       </header>
 
-      <!-- Settings Card Overlay -->
-      <Transition
-        enter-active-class="transition-all duration-300 ease-out"
-        enter-from-class="opacity-0 transform translate-x-4"
-        enter-to-class="opacity-100 transform translate-x-0"
-        leave-active-class="transition-all duration-200 ease-in"
-        leave-from-class="opacity-100 transform translate-x-0"
-        leave-to-class="opacity-0 transform translate-x-4"
-      >
-        <div
-          v-if="settingsDropdownOpen"
-          @click.stop
-          data-settings-dropdown
-          class="fixed z-50 rounded-lg shadow-xl border"
-          :class="
-            isDarkMode
-              ? 'bg-[#0C1E35] border-gray-700'
-              : 'bg-white border-gray-200'
-          "
-          :style="{
-            borderRadius: '8px',
-            left: sidebarCollapsed ? '80px' : '257px',
-            bottom: '0px',
-            width: '20%',
-            position: 'fixed',
-          }"
-        >
-          <!-- Card Header -->
-          <div
-            class="px-4 py-3 border-b flex items-center justify-between"
-            :class="isDarkMode ? 'border-gray-700' : 'border-gray-200'"
-          >
-            <div class="flex items-center gap-2">
-              <Settings
-                class="h-4 w-4"
-                :class="isDarkMode ? 'text-white' : 'text-gray-700'"
-              />
-              <span
-                class="text-sm font-semibold"
-                :class="isDarkMode ? 'text-white' : 'text-gray-900'"
-                style="font-family: 'Inter', sans-serif"
-              >
-                Settings
-              </span>
-            </div>
-            <button
-              @click.stop="toggleSettingsDropdown"
-              class="p-1 hover:bg-opacity-10 rounded transition-colors"
-              :class="isDarkMode ? 'hover:bg-white' : 'hover:bg-gray-100'"
-            >
-              <svg
-                class="h-4 w-4"
-                :class="isDarkMode ? 'text-white' : 'text-gray-600'"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            </button>
-          </div>
-
-          <!-- Card Content -->
-          <div class="p-2 space-y-1">
-            <!-- Theme Toggle -->
-            <button
-              @click="handleThemeToggle"
-              type="button"
-              class="w-full px-3 py-2.5 text-sm transition-colors text-left rounded-md flex items-center gap-3 cursor-pointer"
-              :class="
-                isDarkMode
-                  ? 'text-white hover:bg-white hover:bg-opacity-10'
-                  : 'text-gray-700 hover:bg-gray-100'
-              "
-              style="border-radius: 6px; font-family: 'Inter', sans-serif"
-            >
-              <Sun
-                class="h-4 w-4"
-                :class="isDarkMode ? 'text-white' : 'text-gray-700'"
-              />
-              <span>Light Mode</span>
-            </button>
-
-            <!-- Logout -->
-            <button
-              @click="handleLogoutClick"
-              type="button"
-              class="w-full px-3 py-2.5 text-sm transition-colors text-left rounded-md flex items-center gap-3 cursor-pointer"
-              :class="
-                isDarkMode
-                  ? 'text-white hover:bg-white hover:bg-opacity-10'
-                  : 'text-gray-700 hover:bg-gray-100'
-              "
-              style="border-radius: 6px; font-family: 'Inter', sans-serif"
-            >
-              <ChevronRight
-                class="h-4 w-4"
-                :class="isDarkMode ? 'text-white' : 'text-gray-700'"
-              />
-              <span>Log out</span>
-            </button>
-          </div>
-        </div>
-      </Transition>
-
-      <!-- Backdrop -->
-      <Transition
-        enter-active-class="transition-opacity duration-200"
-        enter-from-class="opacity-0"
-        enter-to-class="opacity-100"
-        leave-active-class="transition-opacity duration-200"
-        leave-from-class="opacity-100"
-        leave-to-class="opacity-0"
-      >
-        <div
-          v-if="settingsDropdownOpen"
-          @click="settingsDropdownOpen = false"
-          class="fixed inset-0 z-40 bg-black bg-opacity-20"
-        ></div>
-      </Transition>
 
       <!-- Page Content -->
       <main

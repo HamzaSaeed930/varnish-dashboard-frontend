@@ -69,35 +69,35 @@
             @click="goToStep(index + 1)"
           >
             <div class="relative">
-               <!-- Completed step (dark gray circle with white checkmark) -->
+               <!-- Completed step (light grey circle with black checkmark) -->
                <div
                  v-if="index + 1 < currentStep || currentStep === 5"
-                 class="w-8 h-8 rounded-full flex items-center justify-center"
-                 style="background-color: #4A5568;"
+                 class="w-8 h-8 rounded-full flex items-center justify-center relative"
+                 style="background-color: #9CA3AF;"
                >
-                 <svg
-                   class="w-4 h-4 text-white"
-                   fill="none"
-                   stroke="currentColor"
-                   viewBox="0 0 24 24"
-                 >
-                   <path
-                     stroke-linecap="round"
-                     stroke-linejoin="round"
-                     stroke-width="2"
-                     d="M5 13l4 4L19 7"
-                   ></path>
-                 </svg>
+                 <img
+                   src="/images/Tick.svg"
+                   alt="Tick"
+                   style="
+                     width: 15.995532035827637px;
+                     height: 14.0059175491333px;
+                     position: absolute;
+                     top: 9.49px;
+                     left: 8.46px;
+                     opacity: 1;
+                     filter: brightness(0);
+                   "
+                 />
                </div>
-              <!-- Current step (white outlined circle with dark gray dot) -->
+              <!-- Current step (white circle with black dot) -->
               <div
                 v-else-if="index + 1 === currentStep && currentStep !== 5"
-                class="w-8 h-8 rounded-full flex items-center justify-center border-2"
-                style="background-color: transparent; border-color: #ffffff;"
+                class="w-8 h-8 rounded-full flex items-center justify-center"
+                style="background: var(--Grays-White, rgba(255, 255, 255, 1)); box-shadow: 0px 0px 0px 4px rgba(158, 119, 237, 0.24); border: 2px solid var(--Grays-White, rgba(255, 255, 255, 1));"
               >
                 <div
                   class="w-3 h-3 rounded-full"
-                  style="background-color: #4A5568;"
+                  style="background: var(--Grays-Black, rgba(0, 0, 0, 1));"
                 ></div>
               </div>
               <!-- Upcoming step (light gray outlined circle with dark gray dot) -->
