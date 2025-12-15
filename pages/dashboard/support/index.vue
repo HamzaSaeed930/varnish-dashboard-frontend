@@ -4,22 +4,28 @@
       <!-- Page Header -->
       <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between w-full gap-4">
         <div class="flex-1 min-w-0">
-          <h1 
-            class="text-xl sm:text-2xl lg:text-3xl font-bold mb-1"
+          <h1
+            class="mb-1"
             style="
-              font-family: 'Inter', sans-serif;
-              font-weight: 700;
-              color: #101828;
+              font-family: 'Geist', sans-serif;
+              font-weight: 600;
+              font-size: 30px;
+              line-height: 38px;
+              letter-spacing: 0%;
+              color: #020617;
             "
           >
             Support
           </h1>
-          <p 
-            class="text-xs sm:text-sm"
+          <p
+            class=""
             style="
-              font-family: 'Inter', sans-serif;
+              font-family: 'Geist', sans-serif;
               font-weight: 400;
-              color: #475467;
+              font-size: 14px;
+              line-height: 20px;
+              letter-spacing: 0%;
+              color: #64748b;
             "
           >
             Get Help from our support team or track your open requests.
@@ -28,31 +34,54 @@
         <div class="flex items-center gap-2 sm:gap-3 w-full sm:w-auto">
           <!-- Refresh Button -->
           <button
-            class="w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center rounded-lg border transition-colors hover:bg-gray-50 bg-white flex-shrink-0"
-            style="border-radius: 8px; border: 1px solid #E5E7EB;"
+            class="w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center border transition-colors flex-shrink-0 hover:bg-gray-50 bg-white"
+            style="border-radius: 12px; border: 1px solid #e5e7eb"
           >
-            <svg 
-              class="w-4 h-4 sm:w-5 sm:h-5" 
-              style="color: #6B7280;"
-              fill="none" 
-              stroke="currentColor" 
+            <svg
+              class="w-4 h-4 sm:w-5 sm:h-5 text-gray-900"
               viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
             >
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+              <path
+                d="M21 3V8M21 8H16M21 8L18 5.5C16.7429 4.46819 15.1767 3.82137 13.5201 3.65709C11.8635 3.49282 10.1904 3.81828 8.73005 4.59077C7.26972 5.36325 6.09895 6.54555 5.37667 7.98564C4.65439 9.42573 4.41727 11.0516 4.69612 12.6329C4.97497 14.2142 5.75638 15.6707 6.93334 16.7917C8.11031 17.9127 9.62331 18.6411 11.2528 18.8765C12.8823 19.1119 14.5476 18.8428 16.0128 18.1065C17.4781 17.3703 18.6707 16.2035 19.4271 14.7634"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
             </svg>
           </button>
           <!-- New Ticket Button -->
           <button
             @click="$router.push('/dashboard/support/add')"
-            class="px-3 sm:px-4 py-2 rounded-lg font-medium text-white transition-colors hover:opacity-90 flex-1 sm:flex-initial text-sm sm:text-base"
+            class="px-3 sm:px-4 py-2 rounded-lg transition-colors hover:opacity-90 flex-1 sm:flex-initial flex items-center gap-1.5 sm:gap-2"
             style="
               background: #182230;
               border-radius: 8px;
-              font-family: 'Inter', sans-serif;
-              font-weight: 600;
+              font-family: 'Geist', sans-serif;
+              font-weight: 500;
+              font-size: 14px;
+              line-height: 16px;
+              letter-spacing: -0.6%;
+              color: #ffffff;
             "
           >
-            <span class="hidden sm:inline">+ New Ticket</span>
+            <svg
+              class="w-4 h-4 flex-shrink-0"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              style="color: #ffffff"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 4v16m8-8H4"
+              />
+            </svg>
+            <span class="hidden sm:inline"> New Ticket</span>
             <span class="sm:hidden">+ New</span>
           </button>
         </div>
@@ -63,12 +92,11 @@
         <!-- Open Card -->
         <div 
           class="rounded-lg p-4"
-          style="border-radius: 8px; background: #F9FAFB; border: 1px solid #E5E7EB;"
+          style="border-radius: 8px; background: #F6F6F6; border: 1px solid #D8D8D8;"
         >
           <div class="flex items-center gap-3 mb-3">
             <div 
               class="w-10 h-10 flex items-center justify-center rounded-lg"
-              style="background: #E5E7EB;"
             >
               <svg 
                 class="w-5 h-5" 
@@ -89,7 +117,7 @@
           </div>
           <div 
             class="rounded-lg p-4 flex items-center justify-between"
-            style="background: #FFFFFF; border-radius: 8px;"
+            style="background: #FFFFFF; border-radius: 8px; border: 1px solid #E8E1E1; box-shadow: 0px 2px 4px 0px #0000000D;"
           >
             <p 
               class="text-2xl font-bold"
@@ -109,12 +137,11 @@
         <!-- In Progress Card -->
         <div 
           class="rounded-lg p-4"
-          style="border-radius: 8px; background: #F9FAFB; border: 1px solid #E5E7EB;"
+          style="border-radius: 8px; background: #F6F6F6; border: 1px solid #D8D8D8;"
         >
           <div class="flex items-center gap-3 mb-3">
             <div 
               class="w-10 h-10 flex items-center justify-center rounded-lg"
-              style="background: #E5E7EB;"
             >
               <svg 
                 class="w-5 h-5" 
@@ -136,7 +163,7 @@
           </div>
           <div 
             class="rounded-lg p-4 flex items-center justify-between"
-            style="background: #FFFFFF; border-radius: 8px;"
+            style="background: #FFFFFF; border-radius: 8px; border: 1px solid #E8E1E1; box-shadow: 0px 2px 4px 0px #0000000D;"
           >
             <p 
               class="text-2xl font-bold"
@@ -156,12 +183,11 @@
         <!-- Resolved Card -->
         <div 
           class="rounded-lg p-4"
-          style="border-radius: 8px; background: #F9FAFB; border: 1px solid #E5E7EB;"
+          style="border-radius: 8px; background: #F6F6F6; border: 1px solid #D8D8D8;"
         >
           <div class="flex items-center gap-3 mb-3">
             <div 
               class="w-10 h-10 flex items-center justify-center rounded-lg"
-              style="background: #E5E7EB;"
             >
               <svg 
                 class="w-5 h-5" 
@@ -182,7 +208,7 @@
           </div>
           <div 
             class="rounded-lg p-4 flex items-center justify-between"
-            style="background: #FFFFFF; border-radius: 8px;"
+            style="background: #FFFFFF; border-radius: 8px; border: 1px solid #E8E1E1; box-shadow: 0px 2px 4px 0px #0000000D;"
           >
             <p 
               class="text-2xl font-bold"
@@ -206,61 +232,70 @@
         style="background: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 8px;"
       >
         <!-- Table Header -->
-        <div 
-          class="p-3 sm:p-4 border-b flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3"
-          style="border-bottom: 1px solid #E5E7EB;"
+        <div
+          class="p-3 lg:p-4 border-b flex flex-col lg:flex-row items-start lg:items-center justify-between gap-3"
+          style="border-bottom: 1px solid #e5e7eb"
         >
-          <h2 
-            class="text-base sm:text-lg font-semibold"
-            style="font-family: 'Inter', sans-serif; font-weight: 600; color: #101828;"
+          <h2
+            class="text-base lg:text-lg font-semibold"
+            style="
+              font-family: 'Inter', sans-serif;
+              font-weight: 600;
+              color: #101828;
+            "
           >
             List of Tickets
           </h2>
-          <div class="flex items-center gap-2 sm:gap-3 w-full sm:w-auto">
+          <div class="flex items-center gap-2 lg:gap-3 w-full lg:w-auto">
             <!-- Search Input -->
-            <div class="relative flex-1 sm:flex-initial">
+            <div class="relative flex-1 lg:flex-initial">
               <input
                 type="text"
                 placeholder="Search Ticket"
-                class="pl-9 sm:pl-10 pr-3 sm:pr-4 py-2 border rounded-lg text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 w-full sm:w-auto"
+                class="pl-9 lg:pl-10 pr-3 lg:pr-4 py-2 border rounded-lg text-xs lg:text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 w-full lg:w-auto"
                 style="
                   min-width: 120px;
                   max-width: 200px;
                   height: 36px;
                   border-radius: 8px;
                   font-family: 'Inter', sans-serif;
-                  border: 1px solid #D0D5DD;
-                  background: #FFFFFF;
+                  border: 1px solid #d0d5dd;
+                  background: #ffffff;
                   color: #101828;
                 "
               />
-              <svg 
-                class="absolute left-2.5 sm:left-3 top-2.5 w-3.5 h-3.5 sm:w-4 sm:h-4" 
-                style="color: #9CA3AF;"
-                fill="none" 
-                stroke="currentColor" 
+              <svg
+                class="absolute left-2.5 lg:left-3 top-2.5 w-3.5 h-3.5 lg:w-4 lg:h-4"
+                style="color: #9ca3af"
+                fill="none"
+                stroke="currentColor"
                 viewBox="0 0 24 24"
               >
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                />
               </svg>
             </div>
             <!-- Filters Button -->
             <button
-              class="px-3 sm:px-4 py-2 border rounded-lg text-xs sm:text-sm font-medium transition-colors hover:bg-gray-50 whitespace-nowrap"
+              class="px-3 lg:px-4 py-2 border rounded-lg text-xs lg:text-sm font-medium transition-colors hover:bg-gray-50 whitespace-nowrap"
               style="
                 height: 36px;
                 border-radius: 8px;
                 font-family: 'Inter', sans-serif;
-                border: 1px solid #D0D5DD;
+                border: 1px solid #d0d5dd;
                 color: #374151;
-                background: #FFFFFF;
+                background: #ffffff;
               "
             >
               Filters
             </button>
             <!-- Manage Button -->
             <button
-              class="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium text-white transition-colors whitespace-nowrap"
+              class="px-3 lg:px-4 py-2 rounded-lg text-xs lg:text-sm font-medium text-white transition-colors whitespace-nowrap"
               style="
                 background: #182230;
                 height: 36px;
@@ -275,16 +310,16 @@
         </div>
 
         <!-- Table -->
-        <div class="overflow-x-auto -mx-3 sm:mx-0">
-          <table class="w-full min-w-[800px] sm:min-w-0">
-            <thead style="background: #F9FAFB;">
+        <div class="overflow-x-auto -mx-3 lg:mx-0">
+          <table class="w-full min-w-[700px] lg:min-w-0">
+            <thead style="background: #f9fafb">
               <tr>
                 <th class="px-2 sm:px-4 py-3 text-left">
                   <input type="checkbox" class="rounded border-gray-300" />
                 </th>
-                <th 
-                  class="px-2 sm:px-4 py-3 text-left text-xs font-medium uppercase tracking-wider"
-                  style="color: #6B7280; font-family: 'Inter', sans-serif;"
+                <th
+                  class="px-2 lg:px-4 py-3 text-left text-xs font-medium uppercase tracking-wider whitespace-nowrap"
+                  style="color: #6b7280; font-family: 'Inter', sans-serif"
                 >
                   <div class="flex items-center gap-2">
                     Domain
@@ -298,9 +333,9 @@
                     </div>
                   </div>
                 </th>
-                <th 
-                  class="px-2 sm:px-4 py-3 text-left text-xs font-medium uppercase tracking-wider"
-                  style="color: #6B7280; font-family: 'Inter', sans-serif;"
+                <th
+                  class="px-2 lg:px-4 py-3 text-left text-xs font-medium uppercase tracking-wider whitespace-nowrap"
+                  style="color: #6b7280; font-family: 'Inter', sans-serif"
                 >
                   <div class="flex items-center gap-2">
                     CPU
@@ -314,9 +349,9 @@
                     </div>
                   </div>
                 </th>
-                <th 
-                  class="px-2 sm:px-4 py-3 text-left text-xs font-medium uppercase tracking-wider"
-                  style="color: #6B7280; font-family: 'Inter', sans-serif;"
+                <th
+                  class="px-2 lg:px-4 py-3 text-left text-xs font-medium uppercase tracking-wider whitespace-nowrap"
+                  style="color: #6b7280; font-family: 'Inter', sans-serif"
                 >
                   <div class="flex items-center gap-2">
                     Ram
@@ -428,72 +463,144 @@
                 </th>
               </tr>
             </thead>
-            <tbody style="background: #FFFFFF;" class="divide-y divide-gray-200">
-              <tr 
-                v-for="(row, index) in ticketsData" 
-                :key="index" 
+            <tbody style="background: #ffffff" class="divide-y divide-gray-200">
+              <tr
+                v-for="(row, index) in ticketsData"
+                :key="index"
                 class="hover:bg-gray-50"
               >
-                <td class="px-2 sm:px-4 py-4">
+                <td class="px-2 lg:px-4 py-4">
                   <input type="checkbox" class="rounded border-gray-300" />
                 </td>
-                <td 
-                  class="px-2 sm:px-4 py-4 text-xs sm:text-sm whitespace-nowrap"
-                  style="color: #101828;"
+                <td
+                  class="px-2 lg:px-4 py-4 whitespace-nowrap align-middle"
+                  style="
+                    font-family: 'Geist', sans-serif;
+                    font-weight: 500;
+                    font-size: 14px;
+                    line-height: 20px;
+                    letter-spacing: -2.6%;
+                    vertical-align: middle;
+                    color: #020617;
+                  "
                 >
                   {{ row.domain }}
                 </td>
-                <td 
-                  class="px-2 sm:px-4 py-4 text-xs sm:text-sm whitespace-nowrap"
-                  style="color: #101828;"
+                <td
+                  class="px-2 lg:px-4 py-4 whitespace-nowrap align-middle"
+                  style="
+                    font-family: 'Geist', sans-serif;
+                    font-weight: 500;
+                    font-size: 14px;
+                    line-height: 20px;
+                    letter-spacing: -2.6%;
+                    vertical-align: middle;
+                    color: #020617;
+                  "
                 >
                   {{ row.cpu }}
                 </td>
-                <td 
-                  class="px-2 sm:px-4 py-4 text-xs sm:text-sm whitespace-nowrap"
-                  style="color: #101828;"
+                <td
+                  class="px-2 lg:px-4 py-4 whitespace-nowrap align-middle"
+                  style="
+                    font-family: 'Geist', sans-serif;
+                    font-weight: 500;
+                    font-size: 14px;
+                    line-height: 20px;
+                    letter-spacing: -2.6%;
+                    vertical-align: middle;
+                    color: #020617;
+                  "
                 >
                   {{ row.ram }}
                 </td>
-                <td 
-                  class="px-2 sm:px-4 py-4 text-xs sm:text-sm whitespace-nowrap"
-                  style="color: #101828;"
+                <td
+                  class="px-2 lg:px-4 py-4 whitespace-nowrap align-middle"
+                  style="
+                    font-family: 'Geist', sans-serif;
+                    font-weight: 500;
+                    font-size: 14px;
+                    line-height: 20px;
+                    letter-spacing: -2.6%;
+                    vertical-align: middle;
+                    color: #020617;
+                  "
                 >
                   {{ row.disk }}
                 </td>
-                <td 
-                  class="px-2 sm:px-4 py-4 text-xs sm:text-sm whitespace-nowrap"
-                  style="color: #101828;"
+                <td
+                  class="px-2 lg:px-4 py-4 whitespace-nowrap align-middle"
+                  style="
+                    font-family: 'Geist', sans-serif;
+                    font-weight: 500;
+                    font-size: 14px;
+                    line-height: 20px;
+                    letter-spacing: -2.6%;
+                    vertical-align: middle;
+                    color: #020617;
+                  "
                 >
                   {{ row.bandwidth }}
                 </td>
-                <td 
-                  class="px-2 sm:px-4 py-4 text-xs sm:text-sm whitespace-nowrap"
-                  style="color: #101828;"
+                <td
+                  class="px-2 lg:px-4 py-4 whitespace-nowrap align-middle"
+                  style="
+                    font-family: 'Geist', sans-serif;
+                    font-weight: 500;
+                    font-size: 14px;
+                    line-height: 20px;
+                    letter-spacing: -2.6%;
+                    vertical-align: middle;
+                    color: #020617;
+                  "
                 >
                   {{ row.uptime }}
                 </td>
-                <td 
-                  class="px-2 sm:px-4 py-4 text-xs sm:text-sm whitespace-nowrap"
-                  style="color: #101828;"
+                <td
+                  class="px-2 lg:px-4 py-4 whitespace-nowrap align-middle"
+                  style="
+                    font-family: 'Geist', sans-serif;
+                    font-weight: 500;
+                    font-size: 14px;
+                    line-height: 20px;
+                    letter-spacing: -2.6%;
+                    vertical-align: middle;
+                    color: #020617;
+                  "
                 >
                   {{ row.plan }}
                 </td>
-                <td class="px-2 sm:px-4 py-4">
-                  <div class="flex items-center gap-2">
-                    <div class="w-2 h-2 rounded-full bg-green-500"></div>
-                    <span 
-                      class="text-xs sm:text-sm whitespace-nowrap"
-                      style="color: #101828;"
+                <td class="px-2 lg:px-4 py-4">
+                  <span
+                    class="inline-flex items-center gap-2 px-2 py-1 rounded border"
+                    style="
+                      background: #f9fafb;
+                      border-color: #e5e7eb;
+                      border-radius: 6px;
+                    "
+                  >
+                    <div
+                      class="w-2 h-2 rounded-full flex-shrink-0"
+                      style="background: #10b981"
+                    ></div>
+                    <span
+                      class="text-xs lg:text-sm whitespace-nowrap"
+                      style="color: #101828; font-family: 'Inter', sans-serif"
                     >
                       Approved
                     </span>
-                  </div>
+                  </span>
                 </td>
-                <td class="px-2 sm:px-4 py-4">
+                <td class="px-2 lg:px-4 py-4">
                   <button
-                    class="px-2 sm:px-3 py-1 text-xs sm:text-sm font-medium rounded transition-colors hover:bg-gray-100 whitespace-nowrap"
-                    style="border-radius: 6px; color: #374151; background: #FFFFFF;"
+                    class="px-2 lg:px-3 py-1 text-xs lg:text-sm font-medium rounded transition-colors hover:bg-gray-50 whitespace-nowrap border"
+                    style="
+                      border-radius: 6px;
+                      color: #374151;
+                      background: #ffffff;
+                      border-color: #e5e7eb;
+                      font-family: 'Inter', sans-serif;
+                    "
                   >
                     Manage
                   </button>
@@ -504,37 +611,81 @@
         </div>
 
         <!-- Pagination -->
-        <div 
-          class="p-3 sm:p-4 border-t flex flex-col sm:flex-row items-center justify-between gap-3"
-          style="border-top: 1px solid #E5E7EB;"
+        <div
+          class="p-3 lg:p-4 border-t flex flex-col lg:flex-row items-center justify-between gap-3"
+          style="border-top: 1px solid #e5e7eb; background: #f9fafb"
         >
           <button
-            class="px-3 py-2 text-xs sm:text-sm font-medium rounded transition-colors disabled:opacity-50 hover:bg-gray-50 w-full sm:w-auto"
-            style="border-radius: 6px; color: #374151;"
+            class="px-3 py-2 text-xs lg:text-sm font-medium rounded transition-colors disabled:opacity-50 hover:bg-gray-50 w-full lg:w-auto flex items-center gap-1 border"
+            style="
+              border-radius: 6px;
+              color: #374151;
+              background: #ffffff;
+              border-color: #e5e7eb;
+              font-family: 'Inter', sans-serif;
+            "
             disabled
           >
-            ← Previous
+            <svg
+              class="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M15 19l-7-7 7-7"
+              />
+            </svg>
+            Previous
           </button>
-          <div class="flex items-center gap-1 sm:gap-2 flex-wrap justify-center">
+          <div
+            class="flex items-center gap-1 lg:gap-2 flex-wrap justify-center"
+          >
             <button
               v-for="page in [1, 2, 3, '...', 8, 9, 10]"
               :key="page"
               :class="[
-                'px-2 sm:px-3 py-1 text-xs sm:text-sm font-medium rounded transition-colors',
-                page === 1 
-                  ? 'bg-gray-100 text-gray-900' 
-                  : 'text-gray-700 hover:bg-gray-50'
+                'px-2 lg:px-3 py-1 text-xs lg:text-sm font-medium rounded transition-colors',
+                page === 1 ? '' : '',
               ]"
-              style="border-radius: 6px;"
+              :style="
+                page === 1
+                  ? 'border-radius: 6px; color: #101828; background: #FFFFFF; border: 1px solid #E5E7EB; font-family: Inter, sans-serif;'
+                  : page === '...'
+                  ? 'border-radius: 6px; color: #6B7280; font-family: Inter, sans-serif;'
+                  : 'border-radius: 6px; color: #374151; font-family: Inter, sans-serif;'
+              "
             >
               {{ page }}
             </button>
           </div>
           <button
-            class="px-3 py-2 text-xs sm:text-sm font-medium rounded transition-colors hover:bg-gray-50 w-full sm:w-auto"
-            style="border-radius: 6px; color: #374151;"
+            class="px-3 py-2 text-xs lg:text-sm font-medium rounded transition-colors hover:bg-gray-50 w-full lg:w-auto flex items-center gap-1 border"
+            style="
+              border-radius: 6px;
+              color: #374151;
+              background: #ffffff;
+              border-color: #e5e7eb;
+              font-family: 'Inter', sans-serif;
+            "
           >
-            Next →
+            Next
+            <svg
+              class="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
           </button>
         </div>
       </div>
@@ -543,6 +694,13 @@
 </template>
 
 <script setup lang="ts">
+/// <reference types="nuxt/app" />
+import { ref } from "vue";
+
+// Type declarations for Nuxt auto-imports
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+declare const useHead: any;
+
 // Set page title
 useHead({
   title: "Support - Varnish Dashboard",

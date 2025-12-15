@@ -98,14 +98,13 @@
           class="rounded-lg p-4"
           style="
             border-radius: 8px;
-            background: #f9fafb;
-            border: 1px solid #e5e7eb;
+            background: rgba(246, 246, 246, 1);
+            border: 1px solid rgba(216, 216, 216, 1);
           "
         >
-          <div class="flex items-center gap-3 mb-3">
+          <div class="flex items-center mb-3">
             <div
               class="w-10 h-10 flex items-center justify-center rounded-lg"
-              style="background: #e5e7eb"
             >
               <svg
                 class="w-5 h-5"
@@ -139,7 +138,7 @@
           </div>
           <div
             class="rounded-lg p-4"
-            style="background: #ffffff; border-radius: 8px"
+            style="background: rgba(255, 255, 255, 1); border: 1px solid rgba(232, 225, 225, 1); box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.05); border-radius: 8px"
           >
             <div class="flex items-center gap-2">
               <span
@@ -194,14 +193,13 @@
           class="rounded-lg p-4"
           style="
             border-radius: 8px;
-            background: #f9fafb;
-            border: 1px solid #e5e7eb;
+            background: rgba(246, 246, 246, 1);
+            border: 1px solid rgba(216, 216, 216, 1);
           "
         >
-          <div class="flex items-center gap-3 mb-3">
+          <div class="flex items-center mb-3">
             <div
               class="w-10 h-10 flex items-center justify-center rounded-lg"
-              style="background: #e5e7eb"
             >
               <svg
                 class="w-5 h-5"
@@ -235,7 +233,7 @@
           </div>
           <div
             class="rounded-lg p-4"
-            style="background: #ffffff; border-radius: 8px"
+            style="background: rgba(255, 255, 255, 1); border: 1px solid rgba(232, 225, 225, 1); box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.05); border-radius: 8px"
           >
             <div class="flex items-center gap-2">
               <span
@@ -290,14 +288,13 @@
           class="rounded-lg p-4"
           style="
             border-radius: 8px;
-            background: #f9fafb;
-            border: 1px solid #e5e7eb;
+            background: rgba(246, 246, 246, 1);
+            border: 1px solid rgba(216, 216, 216, 1);
           "
         >
-          <div class="flex items-center gap-3 mb-3">
+          <div class="flex items-center mb-3">
             <div
               class="w-10 h-10 flex items-center justify-center rounded-lg"
-              style="background: #e5e7eb"
             >
               <svg
                 class="w-5 h-5"
@@ -331,7 +328,7 @@
           </div>
           <div
             class="rounded-lg p-4"
-            style="background: #ffffff; border-radius: 8px"
+            style="background: rgba(255, 255, 255, 1); border: 1px solid rgba(232, 225, 225, 1); box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.05); border-radius: 8px"
           >
             <div class="flex items-center gap-2">
               <span
@@ -1212,12 +1209,17 @@
 </template>
 
 <script setup lang="ts">
+/// <reference types="nuxt/app" />
+import { ref, onMounted, onUnmounted, nextTick } from "vue";
 import {
   Chart,
   registerables,
   ArcElement,
   type Chart as ChartType,
 } from "chart.js";
+
+// Type declarations for Nuxt auto-imports
+declare const useHead: any;
 
 // Register Chart.js components
 Chart.register(...registerables, ArcElement);

@@ -4,17 +4,31 @@
     style="background: linear-gradient(180deg, #0c1e35 0%, #0c1e35 100%)"
   >
     <!-- Background Pattern -->
-    <!-- <div
-      class="absolute inset-0 opacity-100"
-      style="
-        background-image: url('/images/Background_pattern_decorative.svg');
-        background-repeat: no-repeat;
-        background-position: center;
-        pointer-events: none;
-      "
-    ></div> -->
+    <div class="absolute inset-0 opacity-100">
+      <img
+        src="/images/Content.svg"
+        alt="Background Grid"
+        class="max-w-none opacity-50"
+        style="
+          margin: auto;
+          mask-image: radial-gradient(
+            circle 300px at top center,
+            black 90%,
+            transparent 100%
+          );
+          -webkit-mask-image: radial-gradient(
+            circle 300px at top center,
+            black 90%,
+            transparent 100%
+          );
+        "
+      />
+    </div>
     <!-- Centered Form Container -->
-    <div class="mx-auto flex flex-col relative z-10 px-4 sm:px-6 lg:px-8" style="margin-top: 60px; sm:margin-top: 80px; lg:margin-top: 100px; width: 100%; max-width: 420px;">
+    <div
+      class="mx-auto flex flex-col relative z-10 px-4 sm:px-6 lg:px-8"
+      style="margin-top: 60px; sm:margin-top: 80px; lg:margin-top: 100px; width: 100%; max-width: 420px;"
+    >
       <!-- Logo -->
       <div class="flex flex-col items-center" style="margin-bottom: 32px">
         <div class="mb-2">
@@ -78,7 +92,11 @@
         </div>
 
         <!-- Form -->
-        <form @submit.prevent="handleSubmit" class="flex flex-col gap-6 w-full" style="align-items: center;">
+        <form
+          @submit.prevent="handleSubmit"
+          class="flex flex-col gap-6 w-full"
+          style="align-items: center"
+        >
           <!-- Email Field -->
           <div class="flex flex-col items-center w-full">
             <label
@@ -99,6 +117,7 @@
               type="email"
               placeholder="Enter your email"
               :disabled="isLoading"
+              autocomplete="off"
               style="
                 width: 100%;
                 height: 44px;
@@ -114,7 +133,7 @@
               class="focus:outline-none focus:border-white/40 placeholder-gray-400"
               :class="emailError ? 'border-red-500' : ''"
             />
-            <div class="h-4 mt-1 w-full" style="min-height: 16px;">
+            <div class="h-4 mt-1 w-full" style="min-height: 16px">
               <p v-if="emailError" class="text-sm text-red-300">
                 {{ emailError }}
               </p>
@@ -141,6 +160,7 @@
               type="password"
               placeholder="Enter your password"
               :disabled="isLoading"
+              autocomplete="new-password"
               style="
                 width: 100%;
                 height: 44px;
@@ -156,7 +176,7 @@
               class="focus:outline-none focus:border-white/40 placeholder-gray-400"
               :class="passwordError ? 'border-red-500' : ''"
             />
-            <div class="h-4 mt-1 w-full" style="min-height: 16px;">
+            <div class="h-4 mt-1 w-full" style="min-height: 16px">
               <p v-if="passwordError" class="text-sm text-red-300">
                 {{ passwordError }}
               </p>
@@ -164,7 +184,9 @@
           </div>
 
           <!-- Remember me and Forgot password -->
-          <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-0 w-full">
+          <div
+            class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-0 w-full"
+          >
             <label class="flex items-center cursor-pointer">
               <input
                 type="checkbox"
@@ -281,7 +303,9 @@
                 </svg>
                 Signing in...
               </span>
-              <span v-else class="relative z-10 whitespace-nowrap">Sign in</span>
+              <span v-else class="relative z-10 whitespace-nowrap"
+                >Sign in</span
+              >
             </button>
           </div>
         </form>
@@ -322,15 +346,15 @@
 
 <script setup lang="ts">
 /// <reference types="nuxt/app" />
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch } from "vue";
 
 // Type declarations for Nuxt auto-imports (Vetur-compatible)
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-declare const useHead: any
+declare const useHead: any;
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-declare const useRouter: any
+declare const useRouter: any;
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-declare const useCookie: any
+declare const useCookie: any;
 
 // Page metadata
 useHead({
