@@ -1,14 +1,14 @@
 // Mock composable for UI-only development
 export const usePermissions = () => {
   const hasPermission = (permission: string): boolean => {
-    // UI only - always return true
-    return true
-  }
+    // UI only - return true for all permissions
+    return true;
+  };
 
   const isSuperAdmin = (): boolean => {
-    // UI only - always return true
-    return true
-  }
+    // UI only - return true
+    return true;
+  };
 
   const getUserPermissions = () => {
     // UI only - return mock permissions
@@ -22,13 +22,13 @@ export const usePermissions = () => {
       customers: true,
       applications: true,
       finances: true,
-    }
-  }
+    };
+  };
 
   return {
     hasPermission,
     isSuperAdmin,
     getUserPermissions,
-  }
-}
+  };
+};
 
